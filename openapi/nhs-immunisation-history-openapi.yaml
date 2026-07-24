@@ -1,0 +1,359 @@
+# This is an OpenAPI Specification (https://swagger.io/specification/)
+# for the Innunisation History API
+# owned by NHS Digital (https://digital.nhs.uk/)
+openapi: "3.0.0"
+x-nhs-api-spec-guid: 1b22efff-7b41-4fa0-9146-dc87686a7b5c
+info:
+  version: 1.0.0
+  title: Immunisation History - FHIR API
+  license:
+    name: MIT
+  contact:
+    name: NHS Digital API Management
+    url: 'https://digital.nhs.uk/developer/help-and-support'
+    email: api.management@nhs.net
+  description: |
+    ## Overview
+    Use this API to access a patient's immunisation history.
+    
+    You can:
+
+    - get a patient's coronavirus (`COVID-19`) immunisation history, based on their NHS number
+    - get a patient's influenza (`FLU`) immunisation history, based on their NHS number
+    - get a patient's human papillomavirus (`HPV`) immunisation history, based on their NHS number
+
+    You cannot currently use this API to:
+
+    - get details of other types of immunisation
+
+    You get the following data:
+
+    - immunisation event details
+    - patient demographic details, as captured at the point of immunisation
+
+    The patient demographic details might differ from those held in the Personal Demographics Service (PDS). To get demographic details from PDS, use the [Personal Demographics FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir).
+
+    ### Data availability, timing and quality
+    All immunisation records are verified to ensure the NHS number is correct before making them available via the API.
+
+    In most cases this is automatic, and the record is available within 48 hours of the immunisation event, sometimes sooner.
+
+    Where automated NHS number verification fails, we verify the NHS number manually, which can take longer.
+
+    In a very small number of cases, we are unable to verify the NHS number, and we do not make the immunisation record available at all.
+
+    The `COVID-19` data store is limited to vaccinations from England, Wales and The Isle of Man for the last 4 years. It has been approved to be used for clinical use cases.
+
+    The `FLU` data store is not yet populated and is planned to contain vaccination events captured through a point of care system in England for the last year. It has been approved to be used for clinical use cases.
+
+    The `HPV` data store is not yet populated and is planned to be limited at first with vaccinations captured by the NHAIS system and in England only. It has been approved for use in clinical use cases.
+
+    ## Who can use this API
+    This API can only be used where there is a legal basis to do so. Make sure you have a valid use case before you go too far with your development. 
+    
+    You must demonstrate you have a valid use case as part of digital onboarding.
+
+    You must do this before you can go live (see 'Onboarding' below).
+
+    ### Who can access immunisation history records
+    Health and care organisations in England and the Isle of Man can access immunisation history records. 
+    
+    Legitimate direct care examples include NHS organisations delivering healthcare, local authorities delivering care, third sector and private sector health and care organisations, and developers delivering systems to health and care organisations.
+    
+    Health and care organisations in Scotland, Northern Ireland and the Channel Islands access their own equivalents of this API.
+    
+    Patients who receive health and social care or make use of NHS services in England, Wales and the Isle of Man. 
+
+    ## API status and roadmap
+    This API is [in production](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses).
+
+    To see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?tag=immunisation-history-api).
+
+    If you have any other queries, [contact us](https://digital.nhs.uk/developer/help-and-support).
+
+    ## Service level
+
+    This API is a platinum service, meaning it is operational and supported 24 x 7 x 365.
+
+    For more details, see [service levels](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#service-levels).
+
+    ## Technology
+    This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/our-api-technologies#basic-rest).
+
+    It conforms to the [FHIR](https://digital.nhs.uk/developer/guides-and-documentation/our-api-technologies#fhir) global standard for health care data exchange, specifically to [FHIR R4 (v4.0.1)](https://hl7.org/fhir/r4/), except that it does not support the [capabilities](http://hl7.org/fhir/R4/http.html#capabilities) interaction.
+
+    It includes some country-specific FHIR extensions, which conform to [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), specifically [fhir.r4.ukcore.stu1 0.5.1](https://simplifier.net/packages/fhir.r4.ukcore.stu1/0.5.1).
+    
+    You do not need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
+    In particular:
+    - resource names are capitalised and singular, and use US spellings, for example `/Immunization` not `/immunisations`
+    - array names are singular, for example `entry` not `entries` for address lines
+    - data items that are country-specific and thus not included in the FHIR global base resources are usually wrapped in an `extension` object
+
+    There are [libraries and SDKs available](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir-libraries-and-sdks) to help with FHIR API integration.
+
+    ## Network access
+    This API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
+
+    For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
+
+    ## Security and authorisation
+
+    This API has two access modes: 
+    * application-restricted access
+    * user-restricted access
+
+    ### Application-restricted access
+    
+    This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate the calling application but not the end user.
+    
+    To use this access mode, use the following security pattern:
+    * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
+    
+    ### User-restricted access
+
+    Use this [user-restricted access mode](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis) if the end user is a patient:
+    * the end user must have their identity verified to 'high' (P9) level
+    * the NHS number in the request must match the NHS number in the NHS login account
+    
+    To use this access mode, use the following security pattern:
+    * [User-restricted RESTful APIs - NHS login separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation)
+
+    ## Environments and testing
+    | Environment       | Base URL                                                               |
+    | ----------------- | ---------------------------------------------------------------------- |
+    | Sandbox           | `https://sandbox.api.service.nhs.uk/immunisation-history/FHIR/R4/`     |
+    | Integration test  | `https://int.api.service.nhs.uk/immunisation-history/FHIR/R4/`         |
+    | Production        | `https://api.service.nhs.uk/immunisation-history/FHIR/R4/`             |
+
+    ### Sandbox testing
+    Our [sandbox environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#sandbox-testing):
+    * is for early developer testing
+    * only covers a limited set of scenarios
+    * is open access, so does not allow you to test authorisation
+
+    For details of sandbox test scenarios, or to try out the sandbox using our 'Try this API' feature, see the documentation for each endpoint.
+
+    Alternatively, you can try out the sandbox using our Postman collection:
+
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/b7dfde415e5726658d09)
+
+    ### Integration testing
+    Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
+    * is for formal integration testing
+    * includes authorisation
+
+    It also includes ready-to-use [immunisation history test data](https://digital.nhs.uk/developer/api-catalogue/immunisation-history-fhir/immunisation-history-fhir-api-test-data).
+
+    For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing-with-our-restful-apis).
+
+    ## Onboarding
+    You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.  
+    
+    As part of this process, you need to demonstrate that you can manage risks and that your software conforms technically with the requirements for this API. 
+    
+    Information on this page might impact the design of your software. For details, see [Onboarding support information](https://digital.nhs.uk/developer/api-catalogue/immunisation-history-fhir/onboarding-support-information). 
+    
+    To understand how our online digital onboarding process works, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/digital-onboarding#using-the-digital-onboarding-portal). 
+    
+    <div class="nhsd-m-emphasis-box nhsd-m-emphasis-box--emphasis nhsd-!t-margin-bottom-6" aria-label="Highlighted Information">
+        <div class="nhsd-a-box nhsd-a-box--border-blue">
+            <div class="nhsd-m-emphasis-box__image-box">
+                <figure class="nhsd-a-image">
+                    <picture class="nhsd-a-image__picture">
+                        <img src="http://digital.nhs.uk/binaries/content/gallery/icons/play-circle.svg?colour=231f20" alt="" style="object-fit:fill">
+                    </picture>
+                </figure>
+            </div>
+            <div class="nhsd-m-emphasis-box__content-box">
+                <div data-uipath="website.contentblock.emphasis.content" class="nhsd-t-word-break"><p class="nhsd-t-body">To get started, sign in or create a <a href="http://onboarding.prod.api.platform.nhs.uk/">developer account</a>, then select 'product onboarding'.</p></div>            
+            </div>
+        </div>
+    </div> 
+    
+    ## Errors
+    We use standard HTTP status codes to show whether an API request succeeded or not. They are usually in the range:
+
+    * 200 to 299 if it succeeded, including code 202 if it was accepted by an API that needs to wait for further action
+    * 400 to 499 if it failed because of a client error by your application
+    * 500 to 599 if it failed because of an error on our server
+    
+    Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.    
+
+servers:
+  - url: 'https://sandbox.api.service.nhs.uk/immunisation-history/FHIR/R4'
+    description: Sandbox environment.
+  - url: 'https://int.api.service.nhs.uk/immunisation-history/FHIR/R4'
+    description: Integration test environment.
+  - url: 'https://api.service.nhs.uk/immunisation-history/FHIR/R4'
+    description: Production environment.
+paths:
+  /Immunization:
+    get:
+      summary: Get immunisation history
+      operationId: get-immunisation-history
+      description: |
+        Given an NHS number, get the patient's immunisation history.
+        Also returns the patient's demographic details, as captured at the point of immunisation.
+
+        ## Sandbox testing
+        You can test the following scenarios in our sandbox environment:
+
+        | Scenario                      | Request                                                              | Response                                                |
+        | ----------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------- |
+        | Immunisation history found    | `patient.identifier`=`https://fhir.nhs.uk/Id/nhs-number\|9000000009` | HTTP Status 200 with immunisation data in response body |
+        | No immunisations found        | `patient.identifier`=`https://fhir.nhs.uk/Id/nhs-number\|9000000033` | HTTP Status 200 with empty bundle in response body      |
+        | Bad Request                   | `patient.identifier`= anything else                                  | HTTP Status 400 Bad Request                             |
+
+
+        You can try out the sandbox using the 'Try this API' feature on this page.
+
+        Alternatively, you can try out the sandbox using our Postman collection:
+
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/b7dfde415e5726658d09)
+      parameters:
+        - name: patient.identifier
+          in: query
+          description: |
+            The patient's NHS number.
+            Expressed as `<type>|<value>` where `<type>` must be `https://fhir.nhs.uk/Id/nhs-number` and `<value>` must be a [valid NHS number](https://www.datadictionary.nhs.uk/attributes/nhs_number.html).
+          required: true
+          schema:
+            type: string
+            example: "https://fhir.nhs.uk/Id/nhs-number|9000000009"
+        - name: procedure-code:below
+          deprecated: true
+          in: query
+          description: |
+            Parent SNOMED immunisation procedure code.
+            For example, `90640007`, which is the parent code for all COVID-19 vaccinations.
+            This parameter has been deprecated and will be replaced by the `immunization.target` parameter.
+          required: false
+          schema:
+            type: string
+            description: Parent SNOMED code for all COVID-19 vaccinations.
+        - name: immunization.target
+          in: query
+          description: |
+            Immunization History is segmented into multiple Data Stores, which may target specific procedures, disorders, diseases, infections or organisms.
+          schema:
+            type: string
+            example: COVID19
+            enum:
+            - COVID19
+            - HPV
+            - FLU
+        - name: date.from
+          in: query
+          description: |
+            The earliest date to be included (e.g. 2020-01-01)
+          schema:
+            type: string
+            format: date
+            default: "1900-01-01"
+        - name: date.to
+          in: query
+          description: |
+            The latest date to be included (e.g. 2020-12-31)
+          schema:
+            type: string
+            format: date
+            default: "9999-12-31"
+        - name: _include
+          in: query
+          description: |
+            Specifies other resources to be included in the response along with the immunisations.
+            Must be `Immunization:patient`, which will include patient demographic details.
+          required: true
+          schema:
+            type: string
+            example: "Immunization:patient"
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 bearer token, obtained using our [NHS login pattern](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation).
+          required: true
+          schema:
+            type: string
+            format: '^Bearer\ [[:ascii:]]+$'
+            example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
+        - name: X-Correlation-ID
+          in: header
+          required: false
+          description: |
+            An optional ID which you can use to track transactions across multiple systems. It can take any value, but we recommend avoiding `.` characters.
+
+            Mirrored back in a response header.
+          schema:
+            type: string
+            example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
+        - name: Accept
+          in: header
+          required: false
+          description: |
+            Optional header to select the version of the api. Version number will follow semver.
+          schema:
+            type: string
+            example: version=1.0, version=2.0
+      responses:
+        '200':
+          description: |
+            The request was valid, and the response contains immunisation history and associated patient details.
+            If there are no immunisations for the given NHS number, the response bundle will be empty.
+          headers:
+            X-Correlation-Id:
+              $ref: components/schemas/XCorrelationId.yaml
+          content:
+            application/fhir+json:
+              schema:
+                $ref: "components/schemas/Bundle.yaml"
+              example:
+                $ref: "components/examples/Immunization.json"
+        '4XX':
+          description: |
+            An error occurred as follows:
+
+            | HTTP status | Error code                 | Description                                                         |
+            | ----------- | -------------------------- | ------------------------------------------------------------------- |
+            | 400         | `processing`               | Missing or invalid NHS number                                       |
+            | 400         | `processing`               | Missing, invalid or conflicting parent SNOMED code / Target         |
+            | 401         | `processing`               | Missing or invalid ID token                                         |
+            | 401         | `processing`               | Missing or invalid OAuth 2.0 bearer token                           |
+            | 401         | `processing`               | NHS number in request doesn't match NHS number in NHS login account |
+
+            For details see the `diagnostics` field.
+
+          content:
+            application/fhir+json:
+              schema:
+                $ref: 'components/schemas/OperationOutcome.yaml'
+              example:
+                $ref: 'components/examples/OperationOutcome.json'
+# components object must be present for spec rendering to work in Bloomreach, even if the spec has no components
+components:
+  parameters:
+    Dummy:
+      name: dummy
+      in: path
+      description: Dummy.
+      required: true
+      schema:
+        type: string
+        example: "DUMMY"
+  schemas:
+    Patient:
+      $ref: components/schemas/Patient.yaml
+  examples:
+    Dummy:
+      summary: Dummy example
+      value:
+        resourceType: Dummy
+        issue:
+          - severity: error
+            code: value
+            details:
+              coding:
+                - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                  version: '1'
+                  code: INVALID_RESOURCE_ID
+                  display: Resource Id is invalid

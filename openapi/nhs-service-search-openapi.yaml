@@ -1,0 +1,1137 @@
+openapi: "3.0.0"
+info:
+  description: |
+    ## Overview   
+    Use this API to find information about organisations that provide NHS healthcare services, NHS organisation types, and coronavirus (COVID-19) walk-in sites.
+
+    You can:
+    * retrieve a list of organisation types, for example, GP practices or hospitals
+    * search for NHS organisations that provide healthcare services listed in [NHS service near you](https://www.nhs.uk/nhs-services/services-near-you/), for example, Leeds General Infirmary
+    * search for coronavirus (COVID-19) walk-in sites
+
+    This API does not support the FHIR standard.
+
+    ## Who can use this API
+    This API can only be used where there is a legal basis to do so. Make sure you have a valid use case before you go too far with your development. To do this, [contact us](https://digital.nhs.uk/developer/help-and-support). You must do this before you can go live (see ‘Onboarding’ below).
+
+    ## Related APIs
+    The following APIs are related to this API:
+
+    * [Directory of Services - Urgent and Emergency Care - SOAP API](https://digital.nhs.uk/developer/api-catalogue/directory-of-services-soap) - use this SOAP API to access information on a wide range of health and care services across England
+    * [Directory of Services - Urgent and Emergency Care - REST API](https://digital.nhs.uk/developer/api-catalogue/directory-of-services-urgent-and-emergency-care-rest) - use this REST API to access information on a wide range of health and care services across England
+    * [EPS Directory of Services - REST API](https://digital.nhs.uk/developer/api-catalogue/electronic-prescription-service-directory-of-services) - use this to access information about dispensing services, including searching for dispensers who can provide services for a patient with a given location and urgency
+    * [Electronic Transmission of Prescriptions Web Services - SOAP API](https://digital.nhs.uk/developer/api-catalogue/electronic-transmission-of-prescriptions-web-services-soap) - use this to access EPS dispenser (and dispensing appliance contractor) information for a patient via NHS UK Web Services
+    * [e-Referral Services - A010 Patient service search endpoint](https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir#api-Default-a010-patient-service-search) - use this endpoint to find services that meet the referral needs of a patient
+
+    ## API status and roadmap
+    This API is [in development](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses), meaning:
+      * it is available for testing in the integration environment
+      * we expect to make breaking changes based on developer feedback
+    
+    ## Service level
+    This API is a bronze service, meaning it is operational and supported only during business hours (8am to 6pm), Monday to Friday excluding bank holidays.
+    For more details, see [service levels](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#service-levels).
+
+    ## Technology
+    This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#basic-rest).
+
+    This API does not support the FHIR standard.
+
+    ## Network access
+    This API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
+    For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
+
+    ## Security and authorisation
+    This API is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
+    meaning we authenticate the calling application but not the end user.
+
+    To use this API, use the following security pattern:
+    * [application-restricted RESTful API - API key authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-api-key-authentication)
+
+    ## Environments and testing
+
+    | Environment       | Base URL                                                  |
+    | ----------------- |---------------------------------------------------------- |
+    | Sandbox           | `https://sandbox.api.service.nhs.uk/service-search-api/`    |
+    | Integration test  | `https://int.api.service.nhs.uk/service-search-api/`        |
+    | Production        | Not yet available         |
+
+    ### Sandbox testing
+    Our [sandbox environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#sandbox-testing):
+    * is for early developer testing
+    * only covers a limited set of scenarios
+    * is open access, so does not allow you to test authorisation
+
+    For details of sandbox test scenarios, or to try out the sandbox using our 'Try this API' feature, see the documentation for each endpoint.
+
+    Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing) is for formal integration testing.
+
+    ### Integration testing
+    Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
+    * is for formal integration testing
+    * includes authorisation, with options for appliation-restricted access
+    * test data is a close copy of the production data
+
+    For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing-with-our-restful-apis).
+
+    ### Rate Limiting
+    Rate limits apply to both integration test and production environments:
+    * 7800 requests per minute per product
+    * 6000 requests per minute per application
+
+    ## Onboarding
+    This API is not yet available for onboarding.
+
+    ## Errors
+    We use standard HTTP status codes to show whether an API request succeeded or not. They are usually in the range:
+
+    * 200 to 299 if it succeeded, including code 202 if it was accepted by an API that needs to wait for further action
+    * 400 to 499 if it failed because of a client error by your application
+    * 500 to 599 if it failed because of an error on our server
+
+    Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.
+
+    ## Examples
+    The Directory of Healthcare Services (Service Search) API can be used to search for services and sites based on a variety of filters. These filters can be passed as query parameters for a GET request or as part of the body for a POST request, examples of which are below.
+
+    ## Contact us
+    For help and support connecting to our APIs and to join our developer community, see [Help and support building healthcare software](https://digital.nhs.uk/developer/help-and-support).
+
+  version: "Computed and injected at build time by `scripts/set_version.py`"
+  title: "Directory of Healthcare Services API - version 3"
+  contact:
+    name: "Directory of Healthcare Services API - version 3"
+    url: "https://digital.nhs.uk/developer/help-and-support"
+    email: api.management@nhs.net
+servers:
+  - url: "https://sandbox.api.service.nhs.uk/service-search-api"
+    description: Sandbox environment.
+  - url: "https://int.api.service.nhs.uk/service-search-api"
+    description: Integration test environment.
+  - url: "https://api.service.nhs.uk/service-search-api"
+    description: Production environment.
+tags:
+  - name: Organisation
+security:
+  - OAuth_Token: []
+paths:
+  "/":
+    get:
+      summary: Search for organisations
+      tags:
+        - Organisation
+      operationId: search-GET
+      description: |
+        ## Overview
+        Use this endpoint to find information about services provided by NHS organisations.
+
+        For more information on how to use search identifiers with this endpoint, see [DoHS API guide to search identifiers and service codes](https://digital.nhs.uk/developer/api-catalogue/directory-of-healthcare-services/guide-to-search-identifiers-and-service-codes).
+
+        ## Sandbox test scenarios
+        You can test the following scenarios in our sandbox environment:
+
+        | Scenario                                                           | Request                                                                                                                                                                                                                                   | Response                                 |
+        | -------------------------------------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ---------------------------------------- |
+        | All organisations                                                  | No parameters                                                                                                                                                                                                                             | HTTP status 200 with all organisations   |
+        | Single organisation                                                | `search`=`Y02494`                                                                                                                                                                                                                         | HTTP status 200 with single organisation |
+        | Search By ODS Code and Filter by EPS enabled                       | `searchFields`=`ODSCode` <br /> `$filter`=`IsEpsEnabled eq 'true'`                                                                                                                                                                        | HTTP status 200 with filtered results    |
+        | Filtered by EPS enabled and organisation type                      | `search`=`pharmacy2u` <br /> `searchfields`=`OrganisationName` <br /> `$filter`=`IsEpsEnabled eq 'true' and OrganisationTypeId eq 'PHA' and OrganisationSubType eq 'DistanceSelling'`                                                     | HTTP status 200 with filtered results    |
+        | Search by location                                                 | `search`=`Bletchley` <br /> `searchfields`=`Address3,City,County`                                                                                                                                                                         | HTTP status 200 with found organisations |                                                                                                                             
+        | Filtered by EPS enabled, organisation type and ordered by geocode  | `$filter`=`"IsEpsEnabled eq 'true' and OrganisationTypeId eq 'PHA' and OrganisationSubType eq 'Community'"` <br /> `$orderby`= `geo.distance(Geocode, geography'POINT(-0.76444095373153675 52.000820159912109)')`                         | HTTP status 200 with ordered results     | 
+        | Filtered by postcode, EPS enabled and organisation type            | `$filter`=`search.ismatch('B11', 'Postcode') and IsEpsEnabled eq 'true' and OrganisationTypeId eq 'PHA' and OrganisationSubType eq 'Community'`                                                                                           | Http status 200 with filtered results    | 
+        | Filtered by closing time and location                              | `search`=`Bletchley` <br /> `searchFields`=`Address3` <br /> `$filter`=`OpeningTimes / any (x: x/ClosingTime eq '14:00')`                                                                                                                 | Http status 200 with filtered results    | 
+        | Filtered by location, EPS enabled and wheelchair access            | `search`=`Bletchley` <br /> `searchFields`=`Address3` <br /> `$filter`=`Facilities / any (x: x/Name eq 'Wheelchair access' and x/Value eq 'Yes') and IsEpsEnabled eq 'true'`                                                              | Http status 200 with filtered results    | 
+        | No organisations found                                             | `search`=`no-organisation`                                                                                                                                                                                                                | HTTP status 200 with no organisations    |
+        | Invalid API version                                                | No api-version parameter                                                                                                                                                                                                                  | HTTP status 404 with problem description |
+
+        You can try out the sandbox using the 'Try this API feature' on this page.
+
+      parameters:
+        - name: api-version
+          description: |
+            The API version number can be supplied as a query parameter.
+          in: query
+          required: true
+          schema:
+            type: number
+            default: 3
+        - name: search
+          in: query
+          description: |
+            The text to search for. All searchable fields are searched by default unless `searchFields` is specified. 
+
+            When searching searchable fields, the search text itself is tokenized, so multiple terms can be separated by white space, for example `search=hello world`. 
+
+            To match any term, use `*` which can be useful for boolean filter queries. Omitting this parameter has the same effect as setting it to `*`.
+          schema:
+            type: string
+        - name: searchMode
+          in: query
+          description: Defaults to any. Specifies whether any or all of the search terms must be matched in order to count the document as a match.
+          schema:
+            type: string
+            enum:
+              - "any"
+              - "all"
+            default: "any"
+        - name: searchFields
+          in: query
+          description: |
+            A comma-separated list of field names to search for the specified text. This field works in conjunction with the `search` field.
+
+            Example search field: `searchFields=ODSCode`
+          schema:
+            type: string
+        - name: queryType
+          description: |
+            When set to simple, search text is interpreted using a simple query language that allows for symbols such as +, * and "".
+
+            When the query type is set to full, search text is interpreted using the Lucene query language which allows field-specific and weighted searches.
+
+            The following example is a search over independent terms, with a requirement that all matching documents include `pool`.
+
+            For more information, see [Simple query syntax in Azure Cognitive Search](https://learn.microsoft.com/en-us/azure/search/query-simple-syntax).
+
+            Example using simple query type:
+
+            `queryType=simple`
+
+            `search=budget hotel +pool`
+
+            `searchMode=all`  
+
+            This particular example shows in-field search and term boosting. It looks for hotels where the category field contains the term `budget`.
+
+            Any documents containing the phrase `recently renovated` are ranked higher as a result of the term boost value.
+
+            For more information, see [Lucene query syntax in Azure Cognitive Search](https://learn.microsoft.com/en-us/azure/search/query-lucene-syntax).
+
+            Example using full query type:
+
+            `queryType=full`
+
+            `search=category:budget AND \'recently renovated\'^3`
+
+            `searchMode=all`
+
+          in: query
+          schema:
+            type: string
+            enum:
+              - "simple"
+              - "full"
+            default: "simple"
+        - name: $skip
+          description: The number of search results to skip. For example, `$skip:25` returns the entries after the first 25 entries in the search results.
+          in: query
+          schema:
+            type: number
+            format: int32
+        - name: $top
+          description: The number of search results to retrieve. The default is 50.
+          in: query
+          schema:
+            type: number
+            format: int32
+            default: 50
+        - name: $count
+          description: |
+            Optional, defaults to false. Specifies whether to fetch the total count of results. 
+
+            This is the count of all documents that match the search and `$filter` parameters, ignoring `$top` and `$skip`. 
+
+            Setting this value to true may have a performance impact. The count returned is an approximation. 
+
+            If you’d like to get only the count without any documents, you can use `$top=0`.
+          in: query
+          schema:
+            type: boolean
+            default: false
+        - name: $orderBy
+          in: query
+          description: |
+            A list of comma-separated expressions to sort the results by. Each expression can be either a field name or a call to the `geo.distance()` function. 
+
+            Each expression can be followed by `asc` to indicate ascending, and `desc` to indicate descending. The default is ascending order.
+
+            This `$orderBy` routine orders the results by the distance from the geography point included in the expression. 
+
+            The geography point can be a position from where you are and the results are ordered by how local the results are.
+
+            For more information, see [Simple query syntax in Azure Cognitive Search](https://learn.microsoft.com/en-us/azure/search/search-query-odata-orderby).
+
+            Example: 
+            `$orderby=geo.distance(Geocode, geography'POINT(-0.76444095373153675 52.000820159912109)')`
+          schema:
+            type: string
+        - name: $select
+          in: query
+          description: |
+            A list of comma-separated fields to include in the result set. 
+
+            If unspecified or set to *, all fields marked as retrievable in the schema are included in the projection.
+
+            Example: `$select=ODSCode,OrganisationName,Contacts,Address1,Address2,Address3,City,Postcode,OrganisationSubType`
+          schema:
+            type: string
+        - name: $filter
+          in: query
+          description: |
+            A structured search expression in standard OData syntax.
+
+            The `$filter` parameter specifies inclusion or exclusion criteria for returning matches in search results.
+
+            For more information on using the `$filter`, see [OData $filter syntax in Azure Cognitive Search](https://learn.microsoft.com/en-us/azure/search/search-query-odata-filter).
+
+            Examples:
+
+            Filter results by Pharmacies that are EPS-enabled and classed as 'Community', that is, `IsEpsEnabled` is `true`, `Organisation Type` is `PHA` and `Sub Type` is `Community`:
+
+            `$filter=IsEpsEnabled eq 'true' and OrganisationTypeId eq 'PHA' and OrganisationSubType eq 'Community'`
+
+            Filter results that match our postcode, that is `Postcode` field is `NG16`:
+
+            `$filter=search.ismatch('NG16', 'Postcode')`
+
+            Filter results by `Postcode` is `CW9` and `OrganisationTypeId" is a dentist:
+
+            `$filter=search.ismatch('CW9', 'Postcode') and OrganisationTypeId eq 'DEN'`
+
+            For details on organisation types and service codes, see [organisation and service codes](https://digital.nhs.uk/developer/api-catalogue/directory-of-healthcare-services/guide-to-search-identifiers-and-service-codes#organisation-and-service-codes).
+          schema:
+            type: string
+      responses:
+        "200":
+          $ref: "#/components/responses/SearchResponse"
+        "4XX":
+          $ref: "#/components/responses/4XX-BARS"
+
+    post:
+      summary: Search for organisations
+      tags:
+        - Organisation
+      operationId: search-POST
+      description: |
+        ## Overview
+        Use this endpoint to find information about services provided by NHS organisations.
+
+        For more information on how to use search identifiers with this endpoint, see [DoHS API guide to search identifiers and service codes](https://digital.nhs.uk/developer/api-catalogue/directory-of-healthcare-services/guide-to-search-identifiers-and-service-codes).
+
+        ## Sandbox test scenarios
+        You can test the following scenarios in our sandbox environment:
+
+        | Scenario               | Request                    | Response                                 |
+        | ---------------------- | -------------------------- | ---------------------------------------- |
+        | All organisations      | No parameters              | HTTP status 200 with all organisations   |
+        | Single organisation    | `search`=`Y02494`           | HTTP status 200 with single organisation |
+        | No organisations found | `search`=`no-organisation` | HTTP status 200 with no organisations    |
+        | Invalid API version    | No api-version parameter   | HTTP status 404 with problem description |
+
+        You can try out the sandbox using the 'Try this API feature' on this page.
+
+      parameters:
+        - name: api-version
+          description: Specify the version of the API.  MUST be 3.
+          in: query
+          required: true
+          schema:
+            type: number
+            default: 3
+      requestBody:
+        description: To generate a request body you can read Microsoft's search documentation at https://docs.microsoft.com/en-us/rest/api/searchservice/search-documents
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/OrganisationPostRequest"
+            examples:
+              organisationsByServiceCodeFiltered:
+                summary: "Organisations filtering by EPS enabled"
+                value:
+                  search: "FKH23"
+                  searchMode: "all"
+                  searchFields: "ODSCode"
+                  top: 10
+                  count: true
+                  select: "ODSCode,OrganisationName,Contacts,Address1,Address2,Address3,City,Postcode,OrganisationType,OrganisationSubType"
+                  filter: "IsEpsEnabled eq 'true'"
+
+              organisationsByNameFilteredRequest:
+                summary: "Organisations by name filtered by EPS enabled"
+                value:
+                  search: "pharmacy2u"
+                  searchMode: "all"
+                  searchFields: "OrganisationName"
+                  top: 10
+                  count: true
+                  select: "ODSCode,OrganisationName,Contacts,Address1,Address2,Address3,City,Postcode,OrganisationType,OrganisationSubType"
+                  filter: "IsEpsEnabled eq 'true' and OrganisationTypeId eq 'PHA' and OrganisationSubType eq 'DistanceSelling'"
+
+              organisationsByLocation:
+                summary: "Organisations by location"
+                value:
+                  search: "Bletchley"
+                  searchMode: "all"
+                  searchFields: "Address3,City,County"
+                  top: 10,
+                  count: true,
+                  select: "Latitude,Longitude,Address3,City,County,Postcode"
+
+              organisationsByGeocodeFiltered:
+                summary: "Organisations filtered by EPS enabled and organisation type and ordered by geocode"
+                value:
+                  search: "*"
+                  searchMode: "all"
+                  searchFields: "*"
+                  top: 10
+                  count: true
+                  select: "ODSCode,OrganisationName,Contacts,Address1,Address2,Address3,City,Postcode,OrganisationSubType"
+                  filter: "IsEpsEnabled eq 'true' and OrganisationTypeId eq 'PHA' and OrganisationSubType eq 'Community'"
+                  orderby": "geo.distance(Geocode, geography'POINT(-0.76444095373153675 52.000820159912109)')"
+
+              organisationsByLocationAndClosingTimeFiltered:
+                summary: "Organisations searched by location, filtered by closing time"
+                value:
+                  search: "Bletchley"
+                  searchFields: "Address3"
+                  select: "*"
+                  filter: "OpeningTimes / any (x: x/ClosingTime eq '14:00')"
+
+              organisationsByLocationAndWheelchairAccessFiltered:
+                summary: "Organisations search by location, filtered by available wheelchair access and EPS enabled"
+                value:
+                  search: "Bletchley"
+                  searchFields: "Address3"
+                  select: "Facilities, ODSCode, IsEpsEnabled"
+                  filter: "Facilities / any (x: x/Name eq 'Wheelchair access' and x/Value eq 'Yes') and IsEpsEnabled eq 'true'"
+
+              organisationsByPostcodeFiltered:
+                summary: "Organisations by postcode, filtered by EPS enabled and organisation type"
+                value:
+                  search: "*"
+                  searchMode: "all"
+                  searchFields: "*"
+                  top: 10
+                  count: true
+                  select: "ODSCode, OrganisationType, OrganisationSubType, OrganisationName, Contacts, Address1, Address2, Address3, City, Postcode, Latitude, Longitude"
+                  filter: "search.ismatch('B11', 'Postcode') and IsEpsEnabled eq 'true' and OrganisationTypeId eq 'PHA' and OrganisationSubType eq 'Community'"
+
+      responses:
+        "200":
+          $ref: "#/components/responses/OrganisationSearchPostResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+components:
+  responses:
+    4XX-BARS:
+      description: |
+        Below are examples of potential HTTP status codes and their associated error codes, which could be returned in the event of a fault. 
+        Guidance on error handling within BaRS can be found [here](https://simplifier.net/guide/nhsbookingandreferralstandard/Home/Design/Design--Core#Error-handling).
+
+        | HTTP status | Error code                 | Description |
+        | ----------- | -------------------------- | --------------------------------------------- |
+        | 400         | SEND_BAD_REQUEST           | The API was unable to process the request. |
+        | 400         | REC_BAD_REQUEST            | The Receiver has responded stating the message was malformed. |
+        | 401         | SEND_UNAUTHORIZED          | The API deemed you unauthorized to make this request. |
+        | 401         | REC_UNAUTHORIZED           | The receiver deemed you unauthorized to make request. |
+        | 403         | SEND_FORBIDDEN             | Missing or Expired Token. |
+        | 404         | PROXY_NOT_FOUND            | No related people exist for given NHS number. |
+        | 404         | REC_NOT_FOUND              | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |
+        | 405         | SEND_METHOD_NOT_ALLOWED    | HTTP Verb is not correct for this scenario.|
+        | 405         | REC_METHOD_NOT_ALLOWED     | Receiver does not allow this.|
+        | 405         | PROXY_METHOD_NOT_ALLOWED   | Proxy does not allow this.|
+        | 406         | SEND_NOT_ACCEPTABLE        | Senders message had an incorrect content type defined for a response.|
+        | 408         | REC_TIMEOUT                | The downstream domain processing has not completed within the configured timeout period. |
+        | 409         | SEND_CONFLICT              |  |
+        | 409         | REC_CONFLICT               |  |
+        | 409         | PROXY_CONFLICT             |  |
+        | 422         | SEND_UNPROCESSABLE_ENTITY  | Message was not malformed but deemed unprocessable. |
+        | 422         | REC_UNPROCESSABLE_ENTITY   | Message was not malformed but deemed unprocessable. |         
+        | 422         | PROXY_UNPROCESSABLE_ENTITY | Message was not malformed but deemed unprocessable. |         
+        | 429         | SEND_TOO_MANY_REQUESTS     | The user has sent too many requests in a given amount of time|
+        | 429         | REC_TOO_MANY_REQUESTS      | The user has sent too many requests in a given amount of time|
+
+      headers:
+        X-Correlation-Id:
+          description: "The X-Correlation-Id from the request header, if supplied, mirrored back."
+          schema:
+            type: string
+            format: uuid
+            example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
+        X-Request-Id:
+          description: "The X-Request-Id from the request header, if supplied, mirrored back."
+          schema:
+            type: string
+            format: uuid
+            example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
+
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: {}
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: {}
+
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: {}
+
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: {}
+
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: {}
+
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          examples:
+            OrganisationNotFound:
+              $ref: "examples/organisations-not-found_v3.json"
+          schema:
+            type: object
+            properties: {}
+
+    SearchResponse:
+      description: Search Response
+      content:
+        "application/json":
+          examples:
+            Organisations:
+              $ref: "examples/organisations_v3.json"
+            SingleItem:
+              $ref: "examples/organisations-single_v3.json"
+            NotFound:
+              $ref: "examples/organisations-not-found_v3.json"
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/SearchResults"
+              - type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Organisation"
+
+    OrganisationSearchPostResponse:
+      description: Organisation post response
+      content:
+        "application/json":
+          examples:
+            AllOrganisations:
+              summary: "All Organisations"
+              $ref: "examples/search-organisation-response-body_v3.json"
+
+            FilteredByServicecode:
+              summary: "Organisations filtered by service code"
+              $ref: "examples/search-organisations-service-code-filtered-response.json"
+
+            ByLocation:
+              summary: "Organisations by location"
+              $ref: "examples/search-organisations-location-response.json"
+
+            ByNameFilteredByServicecodeAndOrgType:
+              summary: "Organisations by name filtered by service code"
+              $ref: "examples/search-organisations-by-name-filtered-response.json"
+
+            FilteredByServieCodeAndOrgTypeOrdered:
+              summary: "Organisations filtered by service code and organisation type and ordered by geocode"
+              $ref: "examples/search-organisations-geocode-filtered-response.json"
+
+            ByLocationAndClosingTimeFiltered:
+              summary: "Organisations searched by location, filtered by closing time"
+              $ref: "examples/search-organisation-closing-time-location.json"
+
+            ByLocationAndWheelchairAccessFiltered:
+              summary: "Organisations search by location, filtered by available wheelchair access and EPS enabled"
+              $ref: "examples/search-organisations-by-location-filter-by-wheelchair-access.json"
+
+            ByPostcodeFiltered:
+              summary: "Organisations by postcode, filtered by service code and organisation type"
+              $ref: "examples/search-organisations-by-nearest-filter-postcode-response.json"
+
+  schemas:
+    SearchResult:
+      type: object
+      properties:
+        "@search.score":
+          type: "number"
+
+    SearchResults:
+      type: object
+      properties:
+        "@odata.context":
+          type: string
+          format: uri
+        "@odata.count":
+          type: number
+          format: int32
+        "@odata.next":
+          type: string
+          format: uri
+        "value":
+          type: array
+          items:
+            $ref: "#/components/schemas/SearchResult"
+
+    OrganisationPostRequest:
+      description: Organisation post request
+      type: object
+      example:
+        $ref: "examples/search-organisation-request-body_v3.json"
+
+    Organisation:
+      description: Organisation v3
+      type: object
+      properties:
+        "SearchKey":
+          type: string
+          description: Unique identifier for entity
+        "ODSCode":
+          type: string
+          description: Unique code for an organisation, service or trust
+        "OrganisationName":
+          type: string
+          description: Name for an organisation
+        Organisation Aliases:
+          type: object
+          description: Optional alias(es) for organisation
+          properties:
+            "OrganisationAlias":
+              type: string
+              description: Legacy feature - where trading name might be different from legal registered name
+            "OrganisationAliasId":
+              type: string
+              description: Alias ID for organisation
+        "OrganisationTypeId":
+          type: string
+          description: identifies sector, e.g. DEN for dentist
+        "OrganisationType":
+          type: string
+          description: Verbose representation of organisation type, identifying sector for org
+        "OrganisationStatus":
+          type: string
+          description: ((Always should exist, should always have value of 'visible'))
+        "Address 1":
+          type: string
+          description: Address line 1
+        "Address 2":
+          type: string
+          description: Address line 2
+        "Address 3":
+          type: string
+          description: Address line 3
+        "City":
+          type: string
+          description: City or town
+        "County":
+          type: string
+          description: County
+        "Latitude":
+          type: number
+          description: Specific location latitude
+        "Longitude":
+          type: number
+          description: Specific location longitude
+        "Postcode":
+          type: string
+          description: Post code
+        "Geocode":
+          type: number
+          description: Nested data - { type, coordinates, crs { type, properties { name } } }
+        "ParentOrganisation":
+          type: object
+          description: Parent for NHS organisations. Potentially nullable based on sector. Generally parent trust for primary care organisations.
+          properties:
+            "ODSCode":
+              type: string
+              description: Unique code for an organisation, service or trust
+            "OrganisationName":
+              type: string
+              description: Name for an organisation
+
+        "Services":
+          type: object
+          description: Medical services offered
+          properties:
+            "ServiceName":
+              type: string
+              description: Name for a service, e.g. Urgent dental appointments
+            "ServiceCode":
+              type: string
+              description: Code for a service, e.g. SRV0165
+            "Contacts":
+              type: object
+              description: Contact service
+              properties:
+                "ContactMethodType":
+                  type: string
+                  description: Medium for contact - telephone, email, web, fax
+                "ContactValue":
+                  type: string
+                  description: Contact number, email, et c.
+            "ServiceProvider":
+              type: object
+              description: Trust that provides service
+              properties:
+                "ODSCode":
+                  type: string
+                  description: Unique code for an organisation, service or trust
+                "OrganisationName":
+                  type: string
+                  description: Name for an organisation
+            "Treatments":
+              type: object
+              description: bullet list of treatments provided
+              properties:
+                "Name":
+                  type: string
+                  description: Name of treatment
+            "OpeningTimes":
+              type: object
+              description: Contains subfields for service opening times
+              properties:
+                "Weekday":
+                  type: string
+                  description: Day of the week
+                "OpeningTime":
+                  type: string
+                  description: Opening time for service in 24hr clock
+                "ClosingTime":
+                  type: string
+                  description: Closing time for service in 24hr clock
+                "OffsetOpeningTime":
+                  type: number
+                  description: Opening time offset in minutes from midnight
+                "OffsetClosingTime":
+                  type: number
+                  description: Closing time offset in minutes from midnight
+                "OpeningTimeType":
+                  type: string
+                  description: General, Additional, Reception, Surgery - opening times for each
+                "AdditionOpeningDate":
+                  type: string
+                  description: Temporary changes and bank holidays - bank holidays must be validated
+                "IsOpen":
+                  type: boolean
+                  description: If set to true there should be opening times, if set to false there should be none.
+                "FromAgeDays":
+                  type: number
+                  description: Age range based opening times - e.g. under 16s or over 60s
+                "ToAgeDays":
+                  type: number
+                  description: Age range based opening times - e.g. under 16s or over 60s
+            "AgeRange":
+              type: object
+              description: List of age ranges for service
+              properties:
+                "FromAgeDays":
+                  type: number
+                  description: Age range based opening times - e.g. under 16s or over 60s
+                "ToAgeDays":
+                  type: number
+                  description: Age range based opening times - e.g. under 16s or over 60s
+            "Metrics":
+              type: object
+              description: Indicators of service health -
+              properties:
+                "MetricID":
+                  type: number
+                  description: Id for Metric
+                "MetricName":
+                  type: string
+                  description: Name for metric
+                "Description":
+                  type: string
+                  description: Description of metric
+                "Text":
+                  type: string
+                  description: Verbose description
+                "BandingClassification":
+                  type: string
+                  description: representation of grading for metric in words - e.g. "good," "adequate," "yes," "no,"
+            "KeyValueData":
+              type: object
+              description: Meta data about service
+              properties:
+                "Key":
+                  type: string
+                  description: Key for meta data - e.g. "flu booking link"
+                "Value":
+                  type: string
+                  description: Value for meta data - e.g. flu booking link url
+
+        "OpeningTimes":
+          type: object
+          description: Opening times at organisational level
+          properties:
+            "Weekday":
+              type: string
+              description: Day of the week
+            "OpeningTime":
+              type: string
+              description: Opening time for organisation in 24hr clock
+            "ClosingTime":
+              type: string
+              description: Closing time for organisation in 24hr clock
+            "OffsetOpeningTime":
+              type: number
+              description: Opening time offset in minutes from midnight
+            "OffsetClosingTime":
+              type: number
+              description: Closing time offset in minutes from midnight
+            "OpeningTimeType":
+              type: string
+              description: General, Additional, Reception, Surgery - opening times for each
+            "AdditionOpeningDate":
+              type: string
+              description: Temporary changes and bank holidays - bank holidays must be validated
+            "IsOpen":
+              type: boolean
+              description: If set to true there should be opening times, if set to false there should be none.
+
+        "Contacts":
+          type: object
+          description: Contact organisation
+          properties:
+            "ContactType":
+              type: string
+              description: can be primary, pals, alternative - usually primary.
+            "ContactAvailabilityType":
+              type: string
+              description: Office hours, out of hours, or weekend
+            "ContactMethodType":
+              type: string
+              description: Medium for contact - telephone, email, web, fax
+            "ContactValue":
+              type: string
+              description: Contact number, email, et c.
+
+        "Facilities":
+          type: object
+          description: Facilities offered by organisation
+          properties:
+            "Id":
+              type: number
+              description: number identifier for facility
+            "Name":
+              type: string
+              description: Name of facility
+            "Value":
+              type: string
+              description: '"Yes" or "No" string value indicating whether facility is offered at organisation'
+            "FacilityGroupName":
+              type: string
+              description: Groups facilities by category - e.g. accessibility, parking, other
+
+        "GSD":
+          type: object
+          description: General service directory (general directory of services) profiles - non-NHS managed service providers
+          properties:
+            "Metrics":
+              type: object
+              description: Indicators for GSD profile health
+              properties:
+                "ElementTitle":
+                  type: string
+                  description: Title for metric
+                "ElementText":
+                  type: string
+                  description: Body text for metric
+                "ElementOrder":
+                  type: number
+                  description: Sort order
+                "MetricId":
+                  type: string
+                  description: Id for metric
+            "DataSupplier":
+              type: object
+              description: Outside organisation providing information
+              properties:
+                "ProvidedBy":
+                  type: string
+                  description: Organisation providing info
+                "ProvidedByImage":
+                  type: string
+                  description: Image logo
+                "ProvidedByUrl":
+                  type: string
+                  description: Link to org
+                "ProvidedOn":
+                  type: string
+                  format: date-time
+                  description: Last time updated
+            "GsdServices":
+              type: object
+              description: GSD Services
+              properties:
+                "ServiceId":
+                  type: string
+                  description: Service ID
+                "ServiceName":
+                  type: string
+                  description: Service Name
+
+        "LastUpdatedDates":
+          type: object
+          description: Date a field was last updated
+          properties:
+            "OpeningTimes":
+              type: string
+              format: date-time
+              description: Date Opening Times was last updated
+            "BankHolidayOpeningTimes":
+              type: string
+              format: date-time
+              description: Date Bank Holiday Opening Times was last updated
+            "TemporaryChangesOpeningTimes":
+              type: string
+              format: date-time
+              description: Date Temporary Opening Times (holidays outside of bank holidays) was last updated
+            "DentistsAcceptingPatients":
+              type: string
+              format: date-time
+              description: Date Dentists Accepting Patients was last updated
+            "Facilities":
+              type: string
+              format: date-time
+              description: Date Facilities was last updated
+            "HospitalDepartment":
+              type: string
+              format: date-time
+              description: Date Hospital Department was last updated
+            "Services":
+              type: string
+              format: date-time
+              description: Date Services was last updated
+            "ContactDetails":
+              type: string
+              format: date-time
+              description: Date Contact Details were last updated
+            "AcceptingPatients":
+              type: string
+              format: date-time
+              description: Date Accepting Patients was last updated (only applies to Dentists and GPs)
+            "ServiceOpeningTimes":
+              type: string
+              format: date-time
+              description: Date Service Opening Times was last updated
+            "KeyValueData":
+              type: object
+              description: Date KeyValueData was updated - one entry per key
+              properties:
+                "ServiceCode":
+                  type: string
+                  description: Service code
+                "Key":
+                  type: string
+                  description: Key changed
+                "LastUpdatedDated":
+                  type: string
+                  format: date-time
+                  description: Date last updated
+
+        "AcceptingPatients":
+          type: object
+          description: Information on whether the organisation accepting patients
+          properties:
+            "Dentist":
+              type: object
+              description: Information on whether a dentist is accepting patients
+              properties:
+                "Id":
+                  type: number
+                  description: Number identifier for type of acceptance
+                "Name":
+                  type: string
+                  description: Name/description of type of acceptance, e.g. "Adults (18 and over)"
+                "AcceptingPatients":
+                  type: boolean
+                  description: is the dentist accepting patients?
+            "GP":
+              type: string
+              description: '"Yes," or "no," indicating whether GP is accepting dentists'
+
+        "GPRegistration":
+          type: object
+          description: Information for registering with GP
+          properties:
+            "RegistrationLink":
+              type: string
+              description: Registration Link
+            "AcceptingOutOfArea":
+              type: boolean
+              description: Accepting patients outside of catchment area
+
+        "RelatedIAPTCCGs":
+          type: object
+          description: Psychological therapies comission group - only applies to hospitals and clinics
+          properties:
+            "ODSCode":
+              type: string
+              description: Unique code for an organisation, service or trust
+            "OrganisationName":
+              type: string
+              description: Name for an organisation
+
+        "OrganisationSubType":
+          type: string
+          description: Organisation sub type - e.g. Distance selling for pharmacy. Not all org types have a sub type
+
+        "Trusts":
+          type: object
+          description: If the entity is a trust, this contains a list of organisations managed by that trust
+          properties:
+            "ODSCode":
+              type: string
+              description: ODSCode for orgs that provide services at this location
+            "OrganisationName":
+              type: string
+              description: Organisation name for orgs that provide services at this location
+
+        "Metrics":
+          type: object
+          description: Indicators for organisational health e.g. Care Quality Commission inspection ratings, Hospital waiting times for department
+          properties:
+            "MetricID":
+              type: number
+              description: Id for Metric
+            "MetricName":
+              type: string
+              description: Name for metric
+            "DisplayName":
+              type: string
+              description: Description of metric
+            "Description":
+              type: string
+              description: Verbose description
+            "Value":
+              type: string
+              description: Value
+            "Value2":
+              type: string
+              description: Optional value
+            "Value3":
+              type: string
+              description: optional value
+            "Text":
+              type: string
+              description: Description of metric
+            "LinkUrl":
+              type: string
+              description: Describe URL to put on link
+            "LinkText":
+              type: string
+              description: Describe text to put on link
+            "MetricDisplayTypeID":
+              type: number
+              description: Defines type of metric - e.g. yes or no field
+            "MetricDisplayTypeName":
+              type: string
+              description: Name to describe type of metric
+            "HospitalSectorType":
+              type: string
+              description: Hospital Sector Type
+            "MetricText":
+              type: string
+              description: Description of metric
+            "DefaultText":
+              type: string
+              description: Description of metric
+            "IsMetaMetric":
+              type: boolean
+              description: Is metric meta
+            "BandingClassification":
+              type: string
+              description: representation of grading for metric in words - e.g. "good," "adequate," "yes," "no,"
+            "BandingName":
+              type: string
+              description: Descriptive name for banding
+
+        "Country":
+          type: string
+          description: Country organisation is located (England or Wales)
+
+        "ServiceOpeningTimes":
+          type: object
+          description: Opening times for pharmacies, covid clinics and vaccination centres.
+          properties:
+            "Id":
+              type: number
+              description: Number identifier for clinic
+            "TypeId":
+              type: number
+              description: Identifies age range of clinic
+            "Name":
+              type: string
+              description: Name of clinic
+            "StartDate":
+              type: string
+              description: Start date of clinic
+            "EndDate":
+              type: string
+              description: End date of clinic
+            "Services":
+              type: object
+              description: Age ranged based services which apply to this clinic
+              properties:
+                "ServiceCode":
+                  type: string
+                  description: Code for service
+                "ServiceName":
+                  type: string
+                  description: Name of service - e.g. "children aged 5 to 11"
+            "DailyOpeningTimes":
+              type: object
+              description: Opening times at organisational level
+              properties:
+                "Weekday":
+                  type: string
+                  description: Day of the week
+                "OpeningTimes":
+                  type: object
+                  description: Opening times for organisation
+                  properties:
+                    "OpeningTime":
+                      type: string
+                      description: Opening time for organisation in 24hr clock
+                    "ClosingTime":
+                      type: string
+                      description: Closing time for organisation in 24hr clock
+                    "OffsetOpeningTime":
+                      type: number
+                      description: Opening time offset in minutes from midnight
+                    "OffsetClosingTime":
+                      type: number
+                      description: Closing time offset in minutes from midnight
+
+        "IsEpsEnabled":
+          type: string
+          description: '"Yes" or "No" string value indicating whether the organisation is EPS enabled'

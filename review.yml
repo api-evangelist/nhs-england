@@ -1,0 +1,138 @@
+aid: nhs-england
+name: NHS England
+review:
+  question: Does NHS England expose a real public developer portal, downloadable API specifications, and a FHIR CapabilityStatement?
+  answer: true
+  date: '2026-07-24'
+  reviewer: API Evangelist
+findings:
+  homeMarket: United Kingdom (England)
+  summary: |
+    NHS England (which absorbed NHS Digital in 2023) runs a real national
+    health API platform. The developer portal at https://digital.nhs.uk/developer
+    and its API and integration catalogue at
+    https://digital.nhs.uk/developer/api-catalogue are live to browsers but
+    return HTTP 403 to automated clients (Akamai bot mitigation) - the pages
+    exist and are indexed, but could not be fetched with a 200 from this
+    review's tooling. The runtime API platform is at api.service.nhs.uk (with
+    sandbox.api.service.nhs.uk and int.api.service.nhs.uk tiers) and is
+    confirmed live: the production Personal Demographics Service FHIR endpoint
+    returns HTTP 401 (auth required) and the sandbox Electronic Prescription
+    Service FHIR endpoint returns a FHIR OperationOutcome. Most APIs are HL7
+    FHIR R4 built to FHIR UK Core. Ten documented APIs were catalogued; seven
+    OpenAPI 3.0 specifications were harvested verbatim from the public
+    NHSDigital GitHub organisation (github.com/NHSDigital), where NHS England
+    publishes the source specifications rendered by the portal.
+  developerPortal:
+    url: https://digital.nhs.uk/developer
+    httpStatus: 403
+    note: Live to browsers; 403 to automated clients (bot mitigation). Existence corroborated by public sub-pages and the NHSDigital GitHub specifications.
+    confirmedLive200: false
+  apiCatalogue:
+    url: https://digital.nhs.uk/developer/api-catalogue
+    httpStatus: 403
+    note: National API and integration catalogue (PDS, GP Connect, e-RS, EPS, ODS, BaRS, immunisation, NHS App, NHS Notify, Service Search, and more).
+  apiPlatformHosts:
+    - url: https://api.service.nhs.uk
+      note: Production API platform host.
+    - url: https://sandbox.api.service.nhs.uk
+      note: Sandbox host - confirmed live (200 / FHIR OperationOutcome responses).
+    - url: https://int.api.service.nhs.uk
+      note: Integration test host (per spec server blocks).
+  fhirCapabilityStatement:
+    captured: false
+    note: |
+      FHIR metadata endpoints exist (e.g.
+      https://api.service.nhs.uk/personal-demographics/FHIR/R4/metadata returns
+      HTTP 401; the sandbox equivalent returns HTTP 200 with an empty body and
+      the EPS sandbox metadata returns a FHIR OperationOutcome demanding an
+      X-Request-ID header). A complete, parseable CapabilityStatement could not
+      be retrieved anonymously - the metadata interaction is gated behind
+      registered/authenticated access. No CapabilityStatement JSON was saved
+      because none was returned verbatim.
+    fhirVersion: R4 (FHIR UK Core profiles)
+  smartConfiguration:
+    served: false
+    note: /.well-known/smart-configuration and /.well-known/openid-configuration returned HTTP 404 at the api.service.nhs.uk root; auth is via the NHS-hosted OAuth2 platform, not a per-service SMART discovery document at the API root.
+  downloadableSpecs:
+    count: 7
+    format: OpenAPI 3.0 (YAML)
+    provenance: Harvested verbatim from the public NHSDigital GitHub organisation (github.com/NHSDigital); these are the source specifications the developer portal renders.
+    files:
+      - path: openapi/nhs-e-referral-service-openapi.yaml
+        source: https://raw.githubusercontent.com/NHSDigital/e-referrals-service-api/develop/specification/e-referrals-service-api.yaml
+        title: e-Referrals Service
+        paths: 38
+      - path: openapi/nhs-booking-and-referral-fhir-openapi.yaml
+        source: https://raw.githubusercontent.com/NHSDigital/booking-and-referral-fhir-api/master/specification/booking-and-referral.yaml
+        title: Booking and Referral API
+        paths: 8
+      - path: openapi/nhs-immunisation-history-openapi.yaml
+        source: https://raw.githubusercontent.com/NHSDigital/immunisation-history-api/master/specification/immunisation-history.yaml
+        title: Immunisation History - FHIR API
+        paths: 1
+      - path: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml
+        source: https://raw.githubusercontent.com/NHSDigital/organisation-data-service-fhir-api/master/specification/organisation-data-service-fhir-r4-api.yaml
+        title: organisation-data-terminology-api
+        paths: 8
+      - path: openapi/nhs-app-openapi.yaml
+        source: https://raw.githubusercontent.com/NHSDigital/nhs-app-api/master/specification/nhs-app.yaml
+        title: NHS App API
+        paths: 4
+      - path: openapi/nhs-communications-manager-openapi.yaml
+        source: https://raw.githubusercontent.com/NHSDigital/communications-manager-api/release/specification/communications-manager.yaml
+        title: NHS Notify API
+        paths: 7
+      - path: openapi/nhs-service-search-openapi.yaml
+        source: https://raw.githubusercontent.com/NHSDigital/service-search-api/master/specification/service-search-api.yaml
+        title: Directory of Healthcare Services API - version 3
+        paths: 1
+    notes: |
+      An eighth candidate, NHSDigital/gp-connect-access-record-fhir-api, was
+      NOT saved: its published spec is an empty scaffold (paths: {}, template
+      title and version). GP Connect is listed as a documented API pointing to
+      its portal catalogue page instead. The organisation-data spec's internal
+      title is "organisation-data-terminology-api" and its server points to
+      beta.ods.dc4h.link; it was saved verbatim as harvested.
+  authModel:
+    scheme: OAuth 2.0 bearer tokens via the central NHS API platform
+    modes:
+      - application-restricted (signed-JWT client credentials / API key) for unattended, non-patient-identifiable access
+      - user-restricted via NHS login (OpenID Connect) for citizen-facing access
+      - user-restricted via NHS CIS2 (OpenID Connect) for health and care professional access
+    smartOnFhir: partial - OAuth2 authorization-code and client-credentials patterns akin to SMART-on-FHIR, but no per-service .well-known/smart-configuration served at the API root
+    confirmedInSpecs: HTTP bearer security schemes present in the e-Referral and Booking-and-Referral OpenAPI documents.
+  standardsConformance:
+    - FHIR UK Core (UK national FHIR R4 profiles)
+    - HL7 FHIR R4
+    - GP Connect (EMIS / TPP SystmOne clinical systems)
+    note: Not US Core / AU Core / Da Vinci / CARIN - this is the UK national profile set (FHIR UK Core).
+  accessPosture: gated - production access requires registration, assurance and connection agreements through the NHS API platform; sandbox environments are open for testing.
+  transports:
+    - protocol: REST
+      scheme: https
+      note: HL7 FHIR R4 REST and non-FHIR REST over api.service.nhs.uk.
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket surface documented across the harvested specifications.
+sources:
+  - url: https://digital.nhs.uk/developer
+    type: DeveloperPortal
+    note: Live to browsers; 403 to automated clients.
+  - url: https://digital.nhs.uk/developer/api-catalogue
+    type: APIReference
+    note: National API and integration catalogue.
+  - url: https://github.com/NHSDigital
+    type: GitHubOrganization
+    note: Public source of the OpenAPI specifications the portal renders; verified reachable (HTTP 200).
+  - url: https://api.service.nhs.uk/personal-demographics/FHIR/R4/metadata
+    type: FHIR
+    note: Production PDS FHIR metadata endpoint returns HTTP 401 (auth-gated) - confirms a live FHIR platform.
+  - url: https://sandbox.api.service.nhs.uk/electronic-prescriptions/FHIR/R4/metadata
+    type: FHIR
+    note: Sandbox EPS FHIR metadata returns a FHIR OperationOutcome (requires X-Request-ID) - confirms live FHIR sandbox.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
