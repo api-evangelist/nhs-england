@@ -2,23 +2,18 @@ aid: nhs-england
 url: https://raw.githubusercontent.com/api-evangelist/nhs-england/refs/heads/main/apis.yml
 name: NHS England
 kind: company
-description: >-
-  NHS England (which absorbed NHS Digital in 2023) is the national body that
-  runs England's public health and social care API platform at digital.nhs.uk
-  and api.service.nhs.uk. It publishes a large catalogue of internet-facing
-  APIs - most of them HL7 FHIR R4 built to the FHIR UK Core profile - covering
-  the national spine services: the Personal Demographics Service (PDS), GP
-  Connect, the e-Referral Service (e-RS), the Electronic Prescription Service
-  (EPS), the Organisation Data Service (ODS), Booking and Referral Standard
-  (BaRS), immunisation history, the NHS App, NHS Notify, and the Directory of
-  Healthcare Services. Access is governed centrally: applications onboard
-  through the NHS API platform and authenticate with OAuth 2.0 bearer tokens -
-  application-restricted (signed-JWT client credentials / API key) or
-  user-restricted via NHS login (OIDC) and NHS CIS2 - with production access
-  gated behind registration, assurance, and connection agreements. Home market
-  is the United Kingdom (England). Positioning: a single national health system
-  operating public, standards-based (FHIR UK Core) interoperability APIs rather
-  than a commercial API vendor.
+description: 'NHS England (which absorbed NHS Digital in 2023) is the national body that runs England''s
+  public health and social care API platform at digital.nhs.uk and api.service.nhs.uk. It publishes a
+  large catalogue of internet-facing APIs - most of them HL7 FHIR R4 built to the FHIR UK Core profile
+  - covering the national spine services: the Personal Demographics Service (PDS), GP Connect, the e-Referral
+  Service (e-RS), the Electronic Prescription Service (EPS), the Organisation Data Service (ODS), Booking
+  and Referral Standard (BaRS), immunisation history, the NHS App, NHS Notify, and the Directory of Healthcare
+  Services. Access is governed centrally: applications onboard through the NHS API platform and authenticate
+  with OAuth 2.0 bearer tokens - application-restricted (signed-JWT client credentials / API key) or user-restricted
+  via NHS login (OIDC) and NHS CIS2 - with production access gated behind registration, assurance, and
+  connection agreements. Home market is the United Kingdom (England). Positioning: a single national health
+  system operating public, standards-based (FHIR UK Core) interoperability APIs rather than a commercial
+  API vendor.'
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Healthcare
@@ -37,11 +32,9 @@ specificationVersion: '0.19'
 apis:
 - aid: nhs-england:nhs-personal-demographics-service-fhir
   name: Personal Demographics Service (PDS) - FHIR API
-  description: >-
-    National electronic database of NHS patient demographic details - name,
-    address, date of birth, related people, registered GP, nominated pharmacy
-    and NHS number - exposed as an HL7 FHIR R4 API. Production endpoint confirmed
-    live and auth-gated (HTTP 401 without a token).
+  description: National electronic database of NHS patient demographic details - name, address, date of
+    birth, related people, registered GP, nominated pharmacy and NHS number - exposed as an HL7 FHIR R4
+    API. Production endpoint confirmed live and auth-gated (HTTP 401 without a token).
   humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
   baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
   tags:
@@ -53,10 +46,9 @@ apis:
     url: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
 - aid: nhs-england:nhs-gp-connect-access-record-structured-fhir
   name: GP Connect Access Record - Structured - FHIR API
-  description: >-
-    Lets authorised health and social care staff retrieve a patient's GP
-    practice record as structured HL7 FHIR resources (medications, allergies,
-    problems, immunisations, and more) from EMIS and TPP SystmOne GP systems.
+  description: Lets authorised health and social care staff retrieve a patient's GP practice record as
+    structured HL7 FHIR resources (medications, allergies, problems, immunisations, and more) from EMIS
+    and TPP SystmOne GP systems.
   humanURL: https://digital.nhs.uk/developer/api-catalogue/gp-connect-access-record-structured-fhir
   tags:
   - FHIR
@@ -67,11 +59,9 @@ apis:
     url: https://digital.nhs.uk/developer/api-catalogue/gp-connect-access-record-structured-fhir
 - aid: nhs-england:nhs-electronic-prescription-service-fhir
   name: Electronic Prescription Service (EPS) - FHIR API
-  description: >-
-    National service for sending electronic prescriptions from prescribers to
-    dispensers (pharmacies), exposed as an HL7 FHIR R4 API. Sandbox FHIR
-    endpoint confirmed live (returns a FHIR OperationOutcome when required
-    headers are absent).
+  description: National service for sending electronic prescriptions from prescribers to dispensers (pharmacies),
+    exposed as an HL7 FHIR R4 API. Sandbox FHIR endpoint confirmed live (returns a FHIR OperationOutcome
+    when required headers are absent).
   humanURL: https://digital.nhs.uk/developer/api-catalogue/electronic-prescription-service-fhir
   baseURL: https://api.service.nhs.uk/electronic-prescriptions/FHIR/R4
   tags:
@@ -83,10 +73,9 @@ apis:
     url: https://digital.nhs.uk/developer/api-catalogue/electronic-prescription-service-fhir
 - aid: nhs-england:nhs-e-referral-service-fhir
   name: e-Referral Service (e-RS) - FHIR API
-  description: >-
-    Create paperless referrals from primary to secondary care and receive
-    referrals, Clinical Referral Information (CRI) and attachments from the NHS
-    e-Referral Service, as an HL7 FHIR API. OpenAPI harvested verbatim (38 paths).
+  description: Create paperless referrals from primary to secondary care and receive referrals, Clinical
+    Referral Information (CRI) and attachments from the NHS e-Referral Service, as an HL7 FHIR API. OpenAPI
+    harvested verbatim (38 paths).
   humanURL: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
   baseURL: https://api.service.nhs.uk/referrals/FHIR
   tags:
@@ -100,12 +89,12 @@ apis:
     url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
   - type: SourceCode
     url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: Overlay
+    url: overlays/nhs-e-referral-service-overlay.yaml
 - aid: nhs-england:nhs-booking-and-referral-fhir
   name: Booking and Referral Standard (BaRS) - FHIR API
-  description: >-
-    Sends booking and referral information between NHS service providers using
-    the Booking and Referral Standard as an HL7 FHIR R4 API. OpenAPI harvested
-    verbatim (8 paths).
+  description: Sends booking and referral information between NHS service providers using the Booking
+    and Referral Standard as an HL7 FHIR R4 API. OpenAPI harvested verbatim (8 paths).
   humanURL: https://github.com/NHSDigital/booking-and-referral-fhir-api
   baseURL: https://api.service.nhs.uk/booking-and-referral/FHIR/R4
   tags:
@@ -117,11 +106,12 @@ apis:
     url: openapi/nhs-booking-and-referral-fhir-openapi.yaml
   - type: SourceCode
     url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Overlay
+    url: overlays/nhs-booking-and-referral-fhir-overlay.yaml
 - aid: nhs-england:nhs-immunisation-history-fhir
   name: Immunisation History - FHIR API
-  description: >-
-    Access a patient's immunisation record (including coronavirus, influenza and
-    HPV immunisations) as an HL7 FHIR R4 API. OpenAPI harvested verbatim.
+  description: Access a patient's immunisation record (including coronavirus, influenza and HPV immunisations)
+    as an HL7 FHIR R4 API. OpenAPI harvested verbatim.
   humanURL: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
   baseURL: https://api.service.nhs.uk/immunisation-history/FHIR/R4
   tags:
@@ -135,12 +125,12 @@ apis:
     url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
   - type: SourceCode
     url: https://github.com/NHSDigital/immunisation-history-api
+  - type: Overlay
+    url: overlays/nhs-immunisation-history-overlay.yaml
 - aid: nhs-england:nhs-organisation-data-service-fhir
   name: Organisation Data Service (ODS) - FHIR API
-  description: >-
-    Reference data on NHS and healthcare organisations, roles and terminology
-    (the Organisation Data Service), exposed as an HL7 FHIR R4 API. OpenAPI
-    harvested verbatim (8 paths).
+  description: Reference data on NHS and healthcare organisations, roles and terminology (the Organisation
+    Data Service), exposed as an HL7 FHIR R4 API. OpenAPI harvested verbatim (8 paths).
   humanURL: https://github.com/NHSDigital/organisation-data-service-fhir-api
   baseURL: https://beta.ods.dc4h.link/fhir/
   tags:
@@ -152,11 +142,12 @@ apis:
     url: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml
   - type: SourceCode
     url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: Overlay
+    url: overlays/nhs-organisation-data-service-fhir-r4-overlay.yaml
 - aid: nhs-england:nhs-app-api
   name: NHS App API
-  description: >-
-    Integrate with the NHS App to deliver messages and content to citizens and
-    to link into NHS App journeys. OpenAPI harvested verbatim (4 paths).
+  description: Integrate with the NHS App to deliver messages and content to citizens and to link into
+    NHS App journeys. OpenAPI harvested verbatim (4 paths).
   humanURL: https://github.com/NHSDigital/nhs-app-api
   baseURL: https://api.service.nhs.uk/nhs-app
   tags:
@@ -168,12 +159,12 @@ apis:
     url: openapi/nhs-app-openapi.yaml
   - type: SourceCode
     url: https://github.com/NHSDigital/nhs-app-api
+  - type: Overlay
+    url: overlays/nhs-app-overlay.yaml
 - aid: nhs-england:nhs-notify-communications-manager
   name: NHS Notify (Communications Manager) API
-  description: >-
-    National service for sending messages to people about their health and care
-    across channels (NHS App, SMS, email, letter). OpenAPI harvested verbatim
-    (7 paths).
+  description: National service for sending messages to people about their health and care across channels
+    (NHS App, SMS, email, letter). OpenAPI harvested verbatim (7 paths).
   humanURL: https://github.com/NHSDigital/communications-manager-api
   baseURL: https://api.service.nhs.uk/comms
   tags:
@@ -185,11 +176,12 @@ apis:
     url: openapi/nhs-communications-manager-openapi.yaml
   - type: SourceCode
     url: https://github.com/NHSDigital/communications-manager-api
+  - type: Overlay
+    url: overlays/nhs-communications-manager-overlay.yaml
 - aid: nhs-england:nhs-service-search
   name: Service Search (Directory of Healthcare Services) API
-  description: >-
-    Search the national Directory of Healthcare Services for NHS organisations,
-    services and their attributes. OpenAPI harvested verbatim.
+  description: Search the national Directory of Healthcare Services for NHS organisations, services and
+    their attributes. OpenAPI harvested verbatim.
   humanURL: https://github.com/NHSDigital/service-search-api
   baseURL: https://api.service.nhs.uk/service-search-api
   tags:
@@ -201,7 +193,17 @@ apis:
     url: openapi/nhs-service-search-openapi.yaml
   - type: SourceCode
     url: https://github.com/NHSDigital/service-search-api
+  - type: Overlay
+    url: overlays/nhs-service-search-overlay.yaml
 common:
+- type: AgenticAccess
+  url: agentic-access/nhs-england-agentic-access.yml
+- type: VulnerabilityDisclosure
+  url: security/nhs-england-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/nhs-england-domain-security.yml
+- type: Authentication
+  url: authentication/nhs-england-authentication.yml
 - type: Website
   url: https://digital.nhs.uk/
 - type: DeveloperPortal
@@ -212,6 +214,44 @@ common:
   url: https://github.com/NHSDigital
 - type: Support
   url: https://digital.nhs.uk/developer/help-and-support
+- type: SecurityTxt
+  url: well-known/nhs-england-security.txt
+- type: WellKnown
+  url: well-known/nhs-england-well-known.yml
+- type: Security
+  url: https://www.england.nhs.uk/security-vulnerability-disclosure/
+- type: MCPServer
+  url: mcp/nhs-england-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/nhs-england-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/nhs-england-llms.txt
+- type: Conformance
+  url: conformance/nhs-england-conformance.yml
+- type: Compliance
+  url: https://www.england.nhs.uk/long-read/digital-clinical-safety-assurance/
+- type: ErrorCatalog
+  url: errors/nhs-england-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/nhs-england-lifecycle.yml
+- type: Deprecation
+  url: https://digital.nhs.uk/services/e-referral-service/api/updates-and-releases/sunsetting-policy
+- type: Conventions
+  url: conventions/nhs-england-conventions.yml
+- type: Webhooks
+  url: asyncapi/nhs-england-webhooks.yml
+- type: Sandbox
+  url: sandbox/nhs-england-sandbox.yml
+- type: DataModel
+  url: data-model/nhs-england-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Documentation
+  url: https://digital.nhs.uk/developer/guides-and-documentation/reference-guide
+- type: GettingStarted
+  url: https://digital.nhs.uk/developer/guides-and-documentation
+- type: Blog
+  url: https://digital.nhs.uk/blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

@@ -1,0 +1,13 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for NHS Notify (Communications Manager) API
+  version: 1.0.0
+extends: openapi/nhs-communications-manager-openapi.yaml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: nhs-england
+      x-apievangelist-standards: [HL7 FHIR R4, FHIR UK Core, OAuth 2.0]
+      x-apievangelist-auth: OAuth 2.0 bearer (application-restricted or user-restricted via NHS login / CIS2)
+      x-apievangelist-platform: NHS API platform (api.service.nhs.uk)
+      x-apievangelist-sandbox: https://sandbox.api.service.nhs.uk

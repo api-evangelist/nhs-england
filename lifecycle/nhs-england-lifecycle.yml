@@ -1,0 +1,31 @@
+generated: '2026-07-24'
+method: searched
+source: >-
+  https://digital.nhs.uk/developer/guides-and-documentation/api-policies-and-best-practice
+  and the e-RS updates-and-releases sunsetting/deprecation pages.
+versioning:
+  scheme: uri-path-and-fhir
+  note: >-
+    FHIR APIs version by FHIR release (STU3 / R4) in the URI path; the platform
+    also carries API status tags (In development, Beta, In production, Internal,
+    Under review for deprecation).
+  docs: https://digital.nhs.uk/developer/guides-and-documentation/reference-guide
+deprecation:
+  policy: true
+  policy_url: https://digital.nhs.uk/services/e-referral-service/api/updates-and-releases/sunsetting-policy
+  best_practice_url: https://digital.nhs.uk/developer/guides-and-documentation/api-policies-and-best-practice
+  deprecation_notices_url: https://digital.nhs.uk/services/e-referral-service/api/updates-and-releases/deprecation-notices
+  summary: >-
+    NHS England publishes a formal sunsetting policy. APIs move through a
+    "Under review for deprecation" status; partners must migrate to the
+    replacement endpoint before the retirement date and contact the API partners
+    team within 6 weeks of a deprecation notice if they cannot migrate.
+sla:
+  url: https://digital.nhs.uk/developer/help-and-support
+  note: >-
+    No single public uptime SLA / status dashboard is published. Live incidents
+    are logged via the NHS National Service Desk (ServiceNow customer portal) for
+    registered users.
+status_page: null
+status_page_note: No public statuspage-style dashboard found; support is desk/ticket based.
+deprecated_operations: []

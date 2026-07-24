@@ -1,0 +1,43 @@
+generated: '2026-07-24'
+method: derived
+source: openapi/*.yaml (FHIR R4 resource shapes and references)
+note: >-
+  DERIVED entity graph from the FHIR R4 resources exposed across the NHS APIs.
+  NHS clinical APIs are FHIR UK Core, so entities are standard FHIR resource
+  types and relationships follow FHIR reference fields (Reference(...)). This is
+  a light map, not an exhaustive FHIR profile listing.
+entities:
+  - name: Patient
+    api: PDS / GP Connect / Immunisation
+    id: NHS number (10-digit, Modulus 11 checksum)
+  - name: Organization
+    api: Organisation Data Service (ODS)
+    id: ODS code
+  - name: OrganizationAffiliation
+    api: Organisation Data Service (ODS)
+  - name: HealthcareService
+    api: Service Search / e-RS
+  - name: Immunization
+    api: Immunisation History
+  - name: ReferralRequest
+    api: e-Referral Service (e-RS)
+  - name: MedicationRequest
+    api: Electronic Prescription Service (EPS)
+  - name: Slot
+    api: Booking and Referral Standard (BaRS)
+  - name: Appointment
+    api: Booking and Referral Standard (BaRS)
+  - name: Task
+    api: NHS App (real-time receipts) / e-RS
+  - name: CommunicationRequest
+    api: NHS Notify / NHS App
+relationships:
+  - {from: Immunization, type: belongs_to, to: Patient, via: patient}
+  - {from: ReferralRequest, type: belongs_to, to: Patient, via: subject}
+  - {from: ReferralRequest, type: has_many, to: HealthcareService, via: recipient}
+  - {from: MedicationRequest, type: belongs_to, to: Patient, via: subject}
+  - {from: Slot, type: belongs_to, to: HealthcareService, via: schedule}
+  - {from: Appointment, type: has_many, to: Slot, via: slot}
+  - {from: OrganizationAffiliation, type: belongs_to, to: Organization, via: organization}
+  - {from: HealthcareService, type: belongs_to, to: Organization, via: providedBy}
+  - {from: CommunicationRequest, type: belongs_to, to: Patient, via: subject}

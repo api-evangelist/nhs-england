@@ -1,0 +1,41 @@
+generated: '2026-07-24'
+method: searched
+source: >-
+  https://digital.nhs.uk/developer/guides-and-documentation/testing ,
+  NHSDigital API README files, and https://nhsconnect.github.io/nhslogin/test-data/
+environments:
+  - name: sandbox
+    host: https://sandbox.api.service.nhs.uk
+    auth: none (open, no token required)
+    note: >-
+      Open mock implementation (NodeJS) backing the interactive "Try this API"
+      docs. Illustrative, not a faithful/exhaustive environment. Confirmed live
+      (returns FHIR OperationOutcome / 200 responses).
+  - name: integration
+    host: https://int.api.service.nhs.uk
+    auth: OAuth 2.0 (integration credentials)
+    note: >-
+      Full end-to-end testing against the Spine Integration Environment; test
+      accounts validate against a real PDS test dataset.
+  - name: production
+    host: https://api.service.nhs.uk
+    auth: OAuth 2.0 (production credentials, after assurance/onboarding)
+  - name: nhs-app-dep
+    host: https://dep.api.service.nhs.uk
+    note: NHS App developer/dep tier host.
+test_data:
+  nhs_numbers:
+    rule: >-
+      A test NHS number must be a valid 10-digit NHS number that passes the
+      Modulus 11 checksum. Test names should match a valid PDS record in the
+      Spine Integration Environment.
+    published_values: []
+    note: NHS does not publish a fixed magic NHS number; valid checksummed numbers + provisioned test records are used.
+  nhs_login:
+    static_otp: '190696'
+    condition: Used when the "Disable OTP" flag is true for a supplier test account.
+    sandpit_accounts: Provided as downloadable spreadsheets (Sandpit + Integration test accounts).
+    source: https://nhsconnect.github.io/nhslogin/test-data/
+tooling:
+  postman: Per-API Postman collections are published for exercising the sandbox.
+  try_this_api: Interactive "Try this API" feature in the developer portal per endpoint.

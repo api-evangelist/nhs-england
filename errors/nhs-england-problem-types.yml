@@ -1,0 +1,48 @@
+generated: '2026-07-24'
+method: derived
+format: fhir-operationoutcome
+source: openapi/*.yaml
+note: >-
+  NHS FHIR APIs return an HL7 FHIR OperationOutcome (application/fhir+json) on
+  error rather than RFC 9457 application/problem+json. Non-FHIR APIs (NHS App,
+  Communications Manager) return JSON error bodies. Problems below are DERIVED
+  from the 4xx/5xx responses declared across the harvested specs.
+envelope:
+  fhir: HL7 FHIR OperationOutcome (issue[].severity, issue[].code, issue[].details.coding)
+  non_fhir: JSON error object
+problems:
+  - status: 400
+    title: Bad request
+    description: Request was malformed or failed FHIR/schema validation.
+    outcome: OperationOutcome issue code "value" / "invalid"
+    source_operations:
+      - openapi/nhs-app-openapi.yaml#create-notification
+      - openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-organization-resources
+  - status: 401
+    title: Unauthorized / missing or invalid access token
+    description: No valid OAuth 2.0 bearer token was presented (application- or user-restricted).
+    outcome: OperationOutcome issue code "login" / "unknown"
+    source_operations:
+      - openapi/nhs-immunisation-history-openapi.yaml#get-immunisation-history
+      - openapi/nhs-app-openapi.yaml#create-notification
+  - status: 403
+    title: Forbidden / access denied
+    description: Token is valid but lacks the required role, scope or connection agreement for the resource.
+    outcome: OperationOutcome issue code "forbidden"
+    source_operations:
+      - openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-single-organization
+      - openapi/nhs-app-openapi.yaml#create-notification
+  - status: 404
+    title: Resource not found
+    description: The requested FHIR resource or record does not exist / is not visible to the caller.
+    outcome: OperationOutcome issue code "not-found"
+    source_operations:
+      - openapi/nhs-immunisation-history-openapi.yaml#get-immunisation-history
+      - openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-single-organization
+  - status: 429
+    title: Too many requests
+    description: The caller exceeded the NHS API platform rate limit; honour Retry-After and back off.
+    outcome: OperationOutcome / JSON error with throttling detail
+    source_operations:
+      - openapi/nhs-app-openapi.yaml#create-notification
+      - openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-organization-resources

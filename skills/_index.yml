@@ -1,0 +1,20 @@
+generated: '2026-07-24'
+method: generated
+source: Grounded in verified operationIds across the harvested NHS OpenAPI specs.
+skills:
+  - file: nhs-england-lookup-immunisation-history.md
+    name: Look up a patient's NHS immunisation history
+    api: openapi/nhs-immunisation-history-openapi.yaml
+    operations: [get-immunisation-history]
+  - file: nhs-england-find-nhs-services.md
+    name: Find NHS services and organisations
+    api: openapi/nhs-service-search-openapi.yaml
+    operations: [search-GET, search-POST, get-single-organization, get-organization-resources]
+  - file: nhs-england-book-appointment-bars.md
+    name: Book an appointment with the Booking and Referral Standard
+    api: openapi/nhs-booking-and-referral-fhir-openapi.yaml
+    operations: [getMessageDefinition, getSlots, processMessage, getBooking, getBookingByPatient]
+  - file: nhs-england-notify-citizen.md
+    name: Notify a citizen through the NHS App
+    api: openapi/nhs-app-openapi.yaml
+    operations: [create-notification, create-in-app, get-receipt-report, get-patient-report]

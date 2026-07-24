@@ -1,0 +1,13 @@
+generated: '2026-07-24'
+method: derived
+source: openapi/nhs-booking-and-referral-fhir-openapi.yaml, openapi/nhs-e-referral-service-openapi.yaml
+summary:
+  types:
+  - http
+schemes:
+- name: OAuth_Token
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/nhs-booking-and-referral-fhir-openapi.yaml
+  - openapi/nhs-e-referral-service-openapi.yaml

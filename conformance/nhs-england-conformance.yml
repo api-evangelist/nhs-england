@@ -1,0 +1,45 @@
+generated: '2026-07-24'
+method: searched
+source: >-
+  Derived from harvested OpenAPI (FHIR R4 shapes, OAuth2 bearer schemes) and
+  corroborated against NHS England published standards and best-practice pages.
+standards:
+  - id: hl7-fhir-r4
+    conforms: true
+    evidence: All catalogued clinical APIs are HL7 FHIR R4 (PDS, EPS, e-RS, BaRS, ODS, Immunisation, GP Connect).
+  - id: fhir-uk-core
+    conforms: true
+    evidence: Specs declare conformance to FHIR UK Core (fhir.r4.ukcore.stu1) and the NHS England FHIR Implementation Guide.
+    docs: https://digital.nhs.uk/services/fhir-uk-core
+  - id: careconnect-fhir-stu3
+    conforms: true
+    evidence: e-RS FHIR STU3 API is built against the CareConnect profile set.
+  - id: oauth2
+    conforms: true
+    evidence: APIs require OAuth 2.0 bearer tokens (http bearer JWT securitySchemes in specs; NHS API platform issues application- and user-restricted tokens).
+  - id: openid-connect
+    conforms: true
+    evidence: User-restricted access uses NHS login and NHS CIS2 (OpenID Connect).
+  - id: smart-on-fhir
+    conforms: true
+    evidence: Repository is tagged SMART on FHIR; user-restricted FHIR access follows the SMART/OAuth authorization pattern.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: FHIR APIs return HL7 FHIR OperationOutcome for errors, not application/problem+json.
+  - id: fhir-operationoutcome-errors
+    conforms: true
+    evidence: 4xx/5xx responses on the FHIR APIs return OperationOutcome resources.
+  - id: dcb0129-clinical-risk-management
+    conforms: true
+    evidence: NHS England mandates and operates under DCB0129 (Clinical Risk Management for health IT manufacturers).
+    docs: https://digital.nhs.uk/data-and-information/information-standards/governance/latest-activity/standards-and-collections/dcb0129-clinical-risk-management-its-application-in-the-manufacture-of-health-it-systems
+  - id: dcb0160-clinical-risk-management-deployment
+    conforms: true
+    evidence: Companion clinical-safety standard for deploying organisations.
+  - id: dsp-toolkit
+    conforms: true
+    evidence: NHS data-security posture is assessed annually against the Data Security and Protection Toolkit (National Data Guardian 10 standards).
+  - id: digital-clinical-safety-assurance
+    conforms: true
+    evidence: NHS England publishes a digital clinical safety assurance programme.
+    docs: https://www.england.nhs.uk/long-read/digital-clinical-safety-assurance/

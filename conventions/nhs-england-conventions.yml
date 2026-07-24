@@ -1,0 +1,52 @@
+generated: '2026-07-24'
+method: searched
+source: >-
+  https://digital.nhs.uk/developer/guides-and-documentation/reference-guide and
+  harvested OpenAPI (X-Correlation-ID headers, FHIR Bundle paging, OperationOutcome).
+authentication:
+  style: "OAuth 2.0 bearer (Authorization: Bearer <JWT>)"
+  modes:
+    - application-restricted (signed-JWT client credentials / API key, unattended)
+    - user-restricted (NHS login OIDC, or NHS CIS2 for care professionals)
+  ref: authentication/nhs-england-authentication.yml
+request_tracing:
+  header: X-Correlation-ID
+  behaviour: >-
+    Callers supply an X-Correlation-ID (and, on some APIs, X-Request-ID); the
+    platform echoes it on the response and in NHS-side logs for end-to-end tracing.
+  observed_in:
+    - openapi/nhs-app-openapi.yaml
+pagination:
+  style: fhir-bundle
+  note: >-
+    FHIR search results are returned as a FHIR Bundle; navigation uses Bundle
+    link[] relations (self / next) rather than offset/limit query params.
+versioning:
+  ref: lifecycle/nhs-england-lifecycle.yml
+  note: FHIR release in URI path (STU3/R4); platform API status tags govern lifecycle.
+error_envelope:
+  fhir: HL7 FHIR OperationOutcome (application/fhir+json)
+  non_fhir: JSON error object
+  ref: errors/nhs-england-problem-types.yml
+rate_limiting:
+  signalled: true
+  status: 429
+  guidance: Honour Retry-After and back off; per-application throttling on the NHS API platform.
+idempotency:
+  documented: false
+  note: >-
+    No provider-documented Idempotency-Key header was found across the harvested
+    specs or the reference guide. Message-based FHIR submissions (e-RS
+    $ers.createReferral, BaRS processMessage) carry their own message
+    identifiers, but a general idempotency contract is not published — not
+    asserting an Idempotency pointer to avoid fabrication.
+webhooks:
+  supported: true
+  ref: asyncapi/nhs-england-webhooks.yml
+  note: >-
+    NHS Notify (Communications Manager) and the NHS App expose client-hosted
+    callback endpoints (message/channel status, recipient response, real-time
+    receipts/replies).
+content_types:
+  fhir: application/fhir+json
+  non_fhir: application/json

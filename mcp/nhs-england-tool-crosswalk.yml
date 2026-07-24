@@ -1,0 +1,78 @@
+generated: '2026-07-24'
+method: derived
+source: mcp/nhs-england-mcp.yml + openapi/*.yaml
+note: >-
+  Binds each DERIVED candidate MCP tool to its backing OpenAPI operationId. There
+  is no live NHS MCP server and no GraphQL surface, so every binding is high
+  confidence by construction (each tool was derived one-to-one from a verified
+  operationId). The tool's real inputSchema is that operation's parameters +
+  requestBody in the referenced spec. rest_only[] captures the comms-manager and
+  e-referral operations that carry no operationId in the published spec and so
+  could not be given a stable tool binding.
+surfaces:
+  openapi:
+    - openapi/nhs-app-openapi.yaml
+    - openapi/nhs-booking-and-referral-fhir-openapi.yaml
+    - openapi/nhs-communications-manager-openapi.yaml
+    - openapi/nhs-e-referral-service-openapi.yaml
+    - openapi/nhs-immunisation-history-openapi.yaml
+    - openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml
+    - openapi/nhs-service-search-openapi.yaml
+  graphql: null
+  mcp:
+    url: null
+    status: candidate
+    gated: true
+    note: All NHS APIs require OAuth 2.0 bearer tokens; a live server would gate tools/list behind token exchange.
+crosswalk:
+  - {tool: search_immunisation_history, category: clinical-record, rest: [get-immunisation-history], binding: rest, confidence: high}
+  - {tool: search_healthcare_services, category: directory, rest: [search-GET], binding: rest, confidence: high}
+  - {tool: search_healthcare_services_post, category: directory, rest: [search-POST], binding: rest, confidence: high}
+  - {tool: get_organization, category: reference-data, rest: [get-single-organization], binding: rest, confidence: high}
+  - {tool: search_organizations, category: reference-data, rest: [get-organization-resources], binding: rest, confidence: high}
+  - {tool: get_organization_affiliation, category: reference-data, rest: [get-single-organizationaffiliation], binding: rest, confidence: high}
+  - {tool: search_organization_affiliations, category: reference-data, rest: [get-organizationaffiliation-resources], binding: rest, confidence: high}
+  - {tool: get_ods_deletion_notices, category: reference-data, rest: [get-deletion-notices], binding: rest, confidence: high}
+  - {tool: search_codesystem, category: terminology, rest: [search-codesystem], binding: rest, confidence: high}
+  - {tool: get_capability_statement, category: metadata, rest: [get-capability-statement], binding: rest, confidence: high}
+  - {tool: get_bars_slots, category: booking, rest: [getSlots], binding: rest, confidence: high}
+  - {tool: get_bars_booking, category: booking, rest: [getBooking], binding: rest, confidence: high}
+  - {tool: get_bars_booking_by_patient, category: booking, rest: [getBookingByPatient], binding: rest, confidence: high}
+  - {tool: get_bars_referral, category: referral, rest: [getReferral], binding: rest, confidence: high}
+  - {tool: get_bars_referral_by_patient, category: referral, rest: [getReferralByPatient], binding: rest, confidence: high}
+  - {tool: process_bars_message, category: booking, rest: [processMessage], binding: rest, confidence: high}
+  - {tool: get_bars_message_definition, category: metadata, rest: [getMessageDefinition], binding: rest, confidence: high}
+  - {tool: create_nhs_app_notification, category: messaging, rest: [create-notification], binding: rest, confidence: high}
+  - {tool: create_nhs_app_in_app_message, category: messaging, rest: [create-in-app], binding: rest, confidence: high}
+  - {tool: get_nhs_app_receipt_report, category: messaging, rest: [get-receipt-report], binding: rest, confidence: high}
+  - {tool: get_nhs_app_patient_report, category: messaging, rest: [get-patient-report], binding: rest, confidence: high}
+mcp_only: []
+rest_only:
+  - capability: NHS Notify (Communications Manager) — send/track messages
+    spec: openapi/nhs-communications-manager-openapi.yaml
+    paths:
+      - /v1/message-batches (post)
+      - /v1/messages (post)
+      - /v1/messages/{messageId} (get)
+      - /channels/nhsapp/accounts
+    reason: Spec declares no operationId (path-item style), so no stable tool id could be bound.
+  - capability: e-Referral Service (e-RS) — referrals, worklists, CRI, attachments
+    spec: openapi/nhs-e-referral-service-openapi.yaml
+    paths:
+      - /STU3/ReferralRequest/$ers.createReferral
+      - /STU3/ReferralRequest/$ers.fetchworklist
+      - /STU3/ReferralRequest/{ubrn}
+      - /STU3/ReferralRequest/{ubrn}/$ers.generateCRI
+      - /STU3/HealthcareService/$ers.searchHealthcareServicesForPatient
+      - /STU3/Binary/{attachmentLogicalID}
+      - /R4/Binary/{id}
+      - /STU3/Task
+      - /STU3/CodeSystem/{codeSystemType}
+    reason: Spec declares no operationId (path-item style), so no stable tool id could be bound.
+coverage:
+  tools_named: 21
+  tools_bound: 21
+  mcp_only: 0
+  rest_ops_with_operationid: 23
+  rest_ops_with_tool: 21
+  rest_ops_without_operationid_uncovered: 13

@@ -1,0 +1,38 @@
+generated: '2026-07-24'
+method: searched
+spec_type: Webhooks
+source: >-
+  openapi/nhs-communications-manager-openapi.yaml (callbacks: message_status,
+  channel_status, recipient_response) and openapi/nhs-app-openapi.yaml
+  (real-time receipts / real-time replies callback specifications).
+note: >-
+  NHS England publishes no standalone AsyncAPI document, but two APIs document a
+  webhook/callback surface: the integrating supplier hosts an endpoint that NHS
+  pushes events to. Delivery is over HTTPS to a supplier-registered, mutually
+  agreed callback URL (the NHS App RTR flow installs a supplier certificate).
+webhooks:
+  - name: message_status
+    api: NHS Notify (Communications Manager)
+    direction: nhs-to-supplier
+    payload: Message-level delivery status callback.
+    binding: openapi/nhs-communications-manager-openapi.yaml (callbacks/message_status.yaml)
+  - name: channel_status
+    api: NHS Notify (Communications Manager)
+    direction: nhs-to-supplier
+    payload: Per-channel (NHS App / SMS / email / letter) delivery status callback.
+    binding: openapi/nhs-communications-manager-openapi.yaml (callbacks/channel_status.yaml)
+  - name: recipient_response
+    api: NHS Notify (Communications Manager)
+    direction: nhs-to-supplier
+    payload: Recipient response / interaction callback.
+    binding: openapi/nhs-communications-manager-openapi.yaml (callbacks/recipient_response.yaml)
+  - name: realtime_receipts
+    api: NHS App
+    direction: nhs-to-supplier
+    payload: FHIR Task resources pushed as communication outcomes are produced.
+    binding: https://github.com/NHSDigital/nhs-app-api/tree/master/specifications-callbacks/realtime-receipts
+  - name: realtime_replies
+    api: NHS App
+    direction: nhs-to-supplier
+    payload: Real-time citizen replies pushed to the supplier callback endpoint.
+    binding: https://github.com/NHSDigital/nhs-app-api/tree/master/specifications-callbacks/realtime-replies
