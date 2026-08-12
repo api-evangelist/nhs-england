@@ -196,6 +196,16 @@ apis:
   - type: Overlay
     url: overlays/nhs-service-search-overlay.yaml
 common:
+- type: IssueTracker
+  url: https://github.com/NHSDigital/e-referrals-service-api/issues
+- type: Releases
+  url: https://github.com/NHSDigital/e-referrals-service-api/releases
+- type: SecurityPolicy
+  url: https://github.com/NHSDigital/e-referrals-service-api/blob/develop/SECURITY.md
+- type: CodeOfConduct
+  url: https://github.com/NHSDigital/e-referrals-service-api/blob/develop/CODE_OF_CONDUCT.md
+- type: ContributionGuide
+  url: https://github.com/NHSDigital/e-referrals-service-api/blob/develop/CONTRIBUTING.md
 - type: AgenticAccess
   url: agentic-access/nhs-england-agentic-access.yml
 - type: VulnerabilityDisclosure
