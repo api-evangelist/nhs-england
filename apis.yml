@@ -28,7 +28,7 @@ tags:
 - EHR
 created: '2026-07-24'
 modified: '2026-07-24'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: nhs-england:nhs-personal-demographics-service-fhir
   name: Personal Demographics Service (PDS) - FHIR API
