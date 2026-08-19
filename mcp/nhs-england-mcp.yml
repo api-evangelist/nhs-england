@@ -2,80 +2,83 @@ generated: '2026-07-24'
 method: derived
 status: candidate
 source: openapi/*.yaml
-note: >-
-  NHS England publishes no official hosted or remote MCP server (searched the
-  NHSDigital GitHub org, the MCP registries, and npm @modelcontextprotocol as of
-  2026-07-24 — no result). This is a DERIVED candidate tool surface: one tool per
-  verified OpenAPI operationId across the specs that declare operationIds
-  (nhs-app, booking-and-referral, immunisation-history, organisation-data-service,
-  service-search). The comms-manager and e-referral specs omit operationIds
-  (path-item $ref style) and are represented at path level only. Every NHS API is
-  auth-gated (OAuth 2.0 bearer), so any real server would require token exchange.
+note: 'NHS England publishes no official hosted or remote MCP server (searched the NHSDigital GitHub org,
+  the MCP registries, and npm @modelcontextprotocol as of 2026-07-24 — no result). This is a DERIVED candidate
+  tool surface: one tool per verified OpenAPI operationId across the specs that declare operationIds (nhs-app,
+  booking-and-referral, immunisation-history, organisation-data-service, service-search). The comms-manager
+  and e-referral specs omit operationIds (path-item $ref style) and are represented at path level only.
+  Every NHS API is auth-gated (OAuth 2.0 bearer), so any real server would require token exchange.'
 server:
   name: nhs-england
   transport: http
   url: null
 tools:
-  - name: search_immunisation_history
-    description: Retrieve a patient's immunisation record (coronavirus, influenza, HPV, etc.) as FHIR R4.
-    source_operation: openapi/nhs-immunisation-history-openapi.yaml#get-immunisation-history
-  - name: search_healthcare_services
-    description: Search the national Directory of Healthcare Services (GET query form).
-    source_operation: openapi/nhs-service-search-openapi.yaml#search-GET
-  - name: search_healthcare_services_post
-    description: Search the Directory of Healthcare Services with a structured POST query.
-    source_operation: openapi/nhs-service-search-openapi.yaml#search-POST
-  - name: get_organization
-    description: Retrieve a single NHS organisation by ODS code from the Organisation Data Service.
-    source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-single-organization
-  - name: search_organizations
-    description: Search NHS/healthcare organisations in the Organisation Data Service.
-    source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-organization-resources
-  - name: get_organization_affiliation
-    description: Retrieve a single OrganizationAffiliation (roles/relationships) resource.
-    source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-single-organizationaffiliation
-  - name: search_organization_affiliations
-    description: Search OrganizationAffiliation resources in the ODS.
-    source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-organizationaffiliation-resources
-  - name: get_ods_deletion_notices
-    description: Retrieve ODS organisation deletion notices.
-    source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-deletion-notices
-  - name: search_codesystem
-    description: Search a terminology CodeSystem exposed by the ODS FHIR API.
-    source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#search-codesystem
-  - name: get_capability_statement
-    description: Retrieve the ODS FHIR CapabilityStatement.
-    source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-capability-statement
-  - name: get_bars_slots
-    description: Retrieve bookable appointment slots (Booking and Referral Standard).
-    source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getSlots
-  - name: get_bars_booking
-    description: Retrieve a booking by id (Booking and Referral Standard).
-    source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getBooking
-  - name: get_bars_booking_by_patient
-    description: Retrieve bookings for a patient (Booking and Referral Standard).
-    source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getBookingByPatient
-  - name: get_bars_referral
-    description: Retrieve a referral by id (Booking and Referral Standard).
-    source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getReferral
-  - name: get_bars_referral_by_patient
-    description: Retrieve referrals for a patient (Booking and Referral Standard).
-    source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getReferralByPatient
-  - name: process_bars_message
-    description: Submit a FHIR message (booking/referral) for processing.
-    source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#processMessage
-  - name: get_bars_message_definition
-    description: Retrieve the MessageDefinition for the Booking and Referral Standard.
-    source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getMessageDefinition
-  - name: create_nhs_app_notification
-    description: Send a notification / message to a citizen via the NHS App.
-    source_operation: openapi/nhs-app-openapi.yaml#create-notification
-  - name: create_nhs_app_in_app_message
-    description: Create an in-app message for an NHS App user.
-    source_operation: openapi/nhs-app-openapi.yaml#create-in-app
-  - name: get_nhs_app_receipt_report
-    description: Retrieve the daily receipt report for NHS App communications.
-    source_operation: openapi/nhs-app-openapi.yaml#get-receipt-report
-  - name: get_nhs_app_patient_report
-    description: Retrieve the NHS App patient report.
-    source_operation: openapi/nhs-app-openapi.yaml#get-patient-report
+- name: search_immunisation_history
+  description: Retrieve a patient's immunisation record (coronavirus, influenza, HPV, etc.) as FHIR R4.
+  source_operation: openapi/nhs-immunisation-history-openapi.yaml#get-immunisation-history
+- name: search_healthcare_services
+  description: Search the national Directory of Healthcare Services (GET query form).
+  source_operation: openapi/nhs-service-search-openapi.yaml#search-GET
+- name: search_healthcare_services_post
+  description: Search the Directory of Healthcare Services with a structured POST query.
+  source_operation: openapi/nhs-service-search-openapi.yaml#search-POST
+- name: get_organization
+  description: Retrieve a single NHS organisation by ODS code from the Organisation Data Service.
+  source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-single-organization
+- name: search_organizations
+  description: Search NHS/healthcare organisations in the Organisation Data Service.
+  source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-organization-resources
+- name: get_organization_affiliation
+  description: Retrieve a single OrganizationAffiliation (roles/relationships) resource.
+  source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-single-organizationaffiliation
+- name: search_organization_affiliations
+  description: Search OrganizationAffiliation resources in the ODS.
+  source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-organizationaffiliation-resources
+- name: get_ods_deletion_notices
+  description: Retrieve ODS organisation deletion notices.
+  source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-deletion-notices
+- name: search_codesystem
+  description: Search a terminology CodeSystem exposed by the ODS FHIR API.
+  source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#search-codesystem
+- name: get_capability_statement
+  description: Retrieve the ODS FHIR CapabilityStatement.
+  source_operation: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml#get-capability-statement
+- name: get_bars_slots
+  description: Retrieve bookable appointment slots (Booking and Referral Standard).
+  source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getSlots
+- name: get_bars_booking
+  description: Retrieve a booking by id (Booking and Referral Standard).
+  source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getBooking
+- name: get_bars_booking_by_patient
+  description: Retrieve bookings for a patient (Booking and Referral Standard).
+  source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getBookingByPatient
+- name: get_bars_referral
+  description: Retrieve a referral by id (Booking and Referral Standard).
+  source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getReferral
+- name: get_bars_referral_by_patient
+  description: Retrieve referrals for a patient (Booking and Referral Standard).
+  source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getReferralByPatient
+- name: process_bars_message
+  description: Submit a FHIR message (booking/referral) for processing.
+  source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#processMessage
+- name: get_bars_message_definition
+  description: Retrieve the MessageDefinition for the Booking and Referral Standard.
+  source_operation: openapi/nhs-booking-and-referral-fhir-openapi.yaml#getMessageDefinition
+- name: create_nhs_app_notification
+  description: Send a notification / message to a citizen via the NHS App.
+  source_operation: openapi/nhs-app-openapi.yaml#create-notification
+- name: create_nhs_app_in_app_message
+  description: Create an in-app message for an NHS App user.
+  source_operation: openapi/nhs-app-openapi.yaml#create-in-app
+- name: get_nhs_app_receipt_report
+  description: Retrieve the daily receipt report for NHS App communications.
+  source_operation: openapi/nhs-app-openapi.yaml#get-receipt-report
+- name: get_nhs_app_patient_report
+  description: Retrieve the NHS App patient report.
+  source_operation: openapi/nhs-app-openapi.yaml#get-patient-report
+deployment:
+  mode: none
+  verified: derived
+  tools: 21
+  checked: '2026-08-12'
+  source: catalog MCP census
