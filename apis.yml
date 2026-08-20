@@ -168,6 +168,10 @@ apis:
   humanURL: https://github.com/NHSDigital/communications-manager-api
   baseURL: https://api.service.nhs.uk/comms
   tags:
+  - Notification
+  - Messaging
+  - Citizen
+  tags_raw:
   - Notifications
   - Messaging
   - Citizen
