@@ -32,9 +32,10 @@ specificationVersion: '0.23'
 apis:
 - aid: nhs-england:nhs-personal-demographics-service-fhir
   name: Personal Demographics Service (PDS) - FHIR API
-  description: National electronic database of NHS patient demographic details - name, address, date of
-    birth, related people, registered GP, nominated pharmacy and NHS number - exposed as an HL7 FHIR R4
-    API. Production endpoint confirmed live and auth-gated (HTTP 401 without a token).
+  description: >-
+    National electronic database of NHS patient demographic details - name, address, date of birth, related
+    people, registered GP, nominated pharmacy and NHS number - exposed as an HL7 FHIR R4 API. Production
+    endpoint confirmed live and auth-gated (HTTP 401 without a token).
   humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
   baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
   tags:
@@ -46,9 +47,10 @@ apis:
     url: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
 - aid: nhs-england:nhs-gp-connect-access-record-structured-fhir
   name: GP Connect Access Record - Structured - FHIR API
-  description: Lets authorised health and social care staff retrieve a patient's GP practice record as
-    structured HL7 FHIR resources (medications, allergies, problems, immunisations, and more) from EMIS
-    and TPP SystmOne GP systems.
+  description: >-
+    Lets authorised health and social care staff retrieve a patient's GP practice record as structured
+    HL7 FHIR resources (medications, allergies, problems, immunisations, and more) from EMIS and TPP SystmOne
+    GP systems.
   humanURL: https://digital.nhs.uk/developer/api-catalogue/gp-connect-access-record-structured-fhir
   tags:
   - FHIR
@@ -59,7 +61,8 @@ apis:
     url: https://digital.nhs.uk/developer/api-catalogue/gp-connect-access-record-structured-fhir
 - aid: nhs-england:nhs-electronic-prescription-service-fhir
   name: Electronic Prescription Service (EPS) - FHIR API
-  description: National service for sending electronic prescriptions from prescribers to dispensers (pharmacies),
+  description: >-
+    National service for sending electronic prescriptions from prescribers to dispensers (pharmacies),
     exposed as an HL7 FHIR R4 API. Sandbox FHIR endpoint confirmed live (returns a FHIR OperationOutcome
     when required headers are absent).
   humanURL: https://digital.nhs.uk/developer/api-catalogue/electronic-prescription-service-fhir
@@ -71,135 +74,554 @@ apis:
   properties:
   - type: Documentation
     url: https://digital.nhs.uk/developer/api-catalogue/electronic-prescription-service-fhir
-- aid: nhs-england:nhs-e-referral-service-fhir
-  name: e-Referral Service (e-RS) - FHIR API
-  description: Create paperless referrals from primary to secondary care and receive referrals, Clinical
-    Referral Information (CRI) and attachments from the NHS e-Referral Service, as an HL7 FHIR API. OpenAPI
-    harvested verbatim (38 paths).
-  humanURL: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
-  baseURL: https://api.service.nhs.uk/referrals/FHIR
+- aid: nhs-england:nhs-england-booking-api
+  name: NHS England Booking API
+  description: The Booking API from NHS England — 2 operation(s) for booking.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
   tags:
-  - FHIR
-  - Referrals
-  - e-RS
+  - Booking
   properties:
   - type: OpenAPI
-    url: openapi/nhs-e-referral-service-openapi.yaml
+    url: openapi/nhs-england-booking-api-openapi.yml
   - type: Documentation
     url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
   - type: SourceCode
     url: https://github.com/NHSDigital/e-referrals-service-api
-  - type: Overlay
-    url: overlays/nhs-e-referral-service-overlay.yaml
-- aid: nhs-england:nhs-booking-and-referral-fhir
-  name: Booking and Referral Standard (BaRS) - FHIR API
-  description: Sends booking and referral information between NHS service providers using the Booking
-    and Referral Standard as an HL7 FHIR R4 API. OpenAPI harvested verbatim (8 paths).
-  humanURL: https://github.com/NHSDigital/booking-and-referral-fhir-api
-  baseURL: https://api.service.nhs.uk/booking-and-referral/FHIR/R4
-  tags:
-  - FHIR
-  - Booking
-  - Referrals
-  properties:
-  - type: OpenAPI
-    url: openapi/nhs-booking-and-referral-fhir-openapi.yaml
   - type: SourceCode
     url: https://github.com/NHSDigital/booking-and-referral-fhir-api
-  - type: Overlay
-    url: overlays/nhs-booking-and-referral-fhir-overlay.yaml
-- aid: nhs-england:nhs-immunisation-history-fhir
-  name: Immunisation History - FHIR API
-  description: Access a patient's immunisation record (including coronavirus, influenza and HPV immunisations)
-    as an HL7 FHIR R4 API. OpenAPI harvested verbatim.
-  humanURL: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
-  baseURL: https://api.service.nhs.uk/immunisation-history/FHIR/R4
-  tags:
-  - FHIR
-  - Immunisation
-  - Public Health
-  properties:
-  - type: OpenAPI
-    url: openapi/nhs-immunisation-history-openapi.yaml
   - type: Documentation
     url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
   - type: SourceCode
     url: https://github.com/NHSDigital/immunisation-history-api
-  - type: Overlay
-    url: overlays/nhs-immunisation-history-overlay.yaml
-- aid: nhs-england:nhs-organisation-data-service-fhir
-  name: Organisation Data Service (ODS) - FHIR API
-  description: Reference data on NHS and healthcare organisations, roles and terminology (the Organisation
-    Data Service), exposed as an HL7 FHIR R4 API. OpenAPI harvested verbatim (8 paths).
-  humanURL: https://github.com/NHSDigital/organisation-data-service-fhir-api
-  baseURL: https://beta.ods.dc4h.link/fhir/
-  tags:
-  - FHIR
-  - Reference Data
-  - Organisations
-  properties:
-  - type: OpenAPI
-    url: openapi/nhs-organisation-data-service-fhir-r4-openapi.yaml
   - type: SourceCode
     url: https://github.com/NHSDigital/organisation-data-service-fhir-api
-  - type: Overlay
-    url: overlays/nhs-organisation-data-service-fhir-r4-overlay.yaml
-- aid: nhs-england:nhs-app-api
-  name: NHS App API
-  description: Integrate with the NHS App to deliver messages and content to citizens and to link into
-    NHS App journeys. OpenAPI harvested verbatim (4 paths).
-  humanURL: https://github.com/NHSDigital/nhs-app-api
-  baseURL: https://api.service.nhs.uk/nhs-app
-  tags:
-  - NHS App
-  - Citizen
-  - Messaging
-  properties:
-  - type: OpenAPI
-    url: openapi/nhs-app-openapi.yaml
   - type: SourceCode
     url: https://github.com/NHSDigital/nhs-app-api
-  - type: Overlay
-    url: overlays/nhs-app-overlay.yaml
-- aid: nhs-england:nhs-notify-communications-manager
-  name: NHS Notify (Communications Manager) API
-  description: National service for sending messages to people about their health and care across channels
-    (NHS App, SMS, email, letter). OpenAPI harvested verbatim (7 paths).
-  humanURL: https://github.com/NHSDigital/communications-manager-api
-  baseURL: https://api.service.nhs.uk/comms
-  tags:
-  - Notification
-  - Messaging
-  - Citizen
-  tags_raw:
-  - Notifications
-  - Messaging
-  - Citizen
-  properties:
-  - type: OpenAPI
-    url: openapi/nhs-communications-manager-openapi.yaml
   - type: SourceCode
     url: https://github.com/NHSDigital/communications-manager-api
-  - type: Overlay
-    url: overlays/nhs-communications-manager-overlay.yaml
-- aid: nhs-england:nhs-service-search
-  name: Service Search (Directory of Healthcare Services) API
-  description: Search the national Directory of Healthcare Services for NHS organisations, services and
-    their attributes. OpenAPI harvested verbatim.
-  humanURL: https://github.com/NHSDigital/service-search-api
-  baseURL: https://api.service.nhs.uk/service-search-api
-  tags:
-  - Directory
-  - Service Search
-  - Reference Data
-  properties:
-  - type: OpenAPI
-    url: openapi/nhs-service-search-openapi.yaml
   - type: SourceCode
     url: https://github.com/NHSDigital/service-search-api
-  - type: Overlay
-    url: overlays/nhs-service-search-overlay.yaml
+- aid: nhs-england:nhs-england-callbacks-api
+  name: NHS England Callbacks API
+  description: The Callbacks API from NHS England — 3 operation(s) for callbacks.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Callbacks
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-callbacks-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-channels-api
+  name: NHS England Channels API
+  description: The Channels API from NHS England — 1 operation(s) for channels.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Channels
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-channels-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-codesystem-api
+  name: NHS England Code System API
+  description: The CodeSystem API from NHS England — 1 operation(s) for codesystem.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - CodeSystem
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-codesystem-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-communication-api
+  name: NHS England Communication API
+  description: The communication API from NHS England — 4 operation(s) for communication.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - communication
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-communication-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-immunization-api
+  name: NHS England Immunization API
+  description: The Immunization API from NHS England — 1 operation(s) for immunization.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Immunization
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-immunization-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-list-id-api
+  name: NHS England List{id} API
+  description: The List{id} API from NHS England — 1 operation(s) for list{id}.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - List{id}
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-list-id-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-message-api
+  name: NHS England Message API
+  description: The Message API from NHS England — 1 operation(s) for message.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Message
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-message-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-message-batches-api
+  name: NHS England Message Batches API
+  description: The Message Batches API from NHS England — 1 operation(s) for message batches.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Message Batches
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-message-batches-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-messages-api
+  name: NHS England Messages API
+  description: The Messages API from NHS England — 2 operation(s) for messages.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Messages
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-messages-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-metadata-api
+  name: NHS England Metadata API
+  description: The Metadata API from NHS England — 2 operation(s) for metadata.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-metadata-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-organisation-api
+  name: NHS England Organisation API
+  description: The Organisation API from NHS England — 1 operation(s) for organisation.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Organisation
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-organisation-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-organization-api
+  name: NHS England Organization API
+  description: The Organization API from NHS England — 2 operation(s) for organization.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Organization
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-organization-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-organizationaffiliation-api
+  name: NHS England Organization Affiliation API
+  description: >-
+    The OrganizationAffiliation API from NHS England — 2 operation(s) for organizationaffiliation.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - OrganizationAffiliation
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-organizationaffiliation-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-r4-api
+  name: NHS England R4 API
+  description: The R4 API from NHS England — 6 operation(s) for r4.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - R4
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-r4-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-referral-api
+  name: NHS England Referral API
+  description: The Referral API from NHS England — 2 operation(s) for referral.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Referral
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-referral-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-slots-api
+  name: NHS England Slots API
+  description: The Slots API from NHS England — 1 operation(s) for slots.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - Slots
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-slots-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-stu3-api
+  name: NHS England STU3 API
+  description: The STU3 API from NHS England — 32 operation(s) for stu3.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - STU3
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-stu3-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:nhs-england-valueset-api
+  name: NHS England Value Set API
+  description: The ValueSet API from NHS England — 1 operation(s) for valueset.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
+  baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
+  tags:
+  - ValueSet
+  properties:
+  - type: OpenAPI
+    url: openapi/nhs-england-valueset-api-openapi.yml
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  - type: SourceCode
+    url: https://github.com/NHSDigital/e-referrals-service-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/booking-and-referral-fhir-api
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/immunisation-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/immunisation-history-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/organisation-data-service-fhir-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/nhs-app-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/communications-manager-api
+  - type: SourceCode
+    url: https://github.com/NHSDigital/service-search-api
 common:
+- type: Overlay
+  url: overlays/nhs-e-referral-service-overlay.yaml
+- type: Overlay
+  url: overlays/nhs-booking-and-referral-fhir-overlay.yaml
+- type: Overlay
+  url: overlays/nhs-immunisation-history-overlay.yaml
+- type: Overlay
+  url: overlays/nhs-organisation-data-service-fhir-r4-overlay.yaml
+- type: Overlay
+  url: overlays/nhs-app-overlay.yaml
+- type: Overlay
+  url: overlays/nhs-communications-manager-overlay.yaml
+- type: Overlay
+  url: overlays/nhs-service-search-overlay.yaml
 - type: IssueTracker
   url: https://github.com/NHSDigital/e-referrals-service-api/issues
 - type: Releases
