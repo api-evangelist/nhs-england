@@ -14,6 +14,18 @@ description: 'NHS England (which absorbed NHS Digital in 2023) is the national b
   connection agreements. Home market is the United Kingdom (England). Positioning: a single national health
   system operating public, standards-based (FHIR UK Core) interoperability APIs rather than a commercial
   API vendor.'
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: false
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Healthcare
