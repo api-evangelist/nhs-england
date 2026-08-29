@@ -1,0 +1,57 @@
+slug: nhs-england
+provider: NHS England
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Healthcare Providers
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Referral
+  spec_file: nhs-england-referral-api-openapi.yml
+  capability_id: BC-2820.10
+  capability_id_l1: BC-2820
+  capability_name: Referral Management
+  confidence: 0.9
+  evidence: GET /ServiceRequest  getReferralByPatient  Get referral/s for a patient
+  reason: Operations retrieve a patient's referrals (FHIR ServiceRequest) within the Booking and Referral
+    service — plainly referral lifecycle access, i.e. Referral Management within Care Coordination.
+- tag: Booking
+  spec_file: nhs-england-booking-api-openapi.yml
+  capability_id: BC-2800.10
+  capability_id_l1: BC-2800
+  capability_name: Scheduling & Appointment Management
+  confidence: 0.85
+  evidence: 'GET /Appointment getBookingByPatient Get bookings for a patient; schemas: Appointment, SearchBundleAppt'
+  reason: Operations retrieve appointment bookings for a patient using the FHIR Appointment resource,
+    which is appointment/booking management within patient access. Not referral (no referral resources)
+    and not generic messaging.
+- tag: communication
+  spec_file: nhs-england-communication-api-openapi.yml
+  capability_id: BC-2910.10
+  capability_id_l1: BC-2910
+  capability_name: Patient Engagement & Communication
+  confidence: 0.82
+  evidence: POST /communication/in-app/FHIR/R4/CommunicationRequest  create-in-app  Send an in-app message;
+    POST .../create-notification  Send a push notification
+  reason: Operations send in-app messages and push notifications to NHS App users (patients registered
+    with a GP surgery), i.e. multi-channel communication with patients. Some ambiguity between Patient
+    Engagement & Communication and Patient Portal & Digital Services since the channel is the NHS App
+    itself.
+- tag: STU3
+  spec_file: nhs-england-stu3-api-openapi.yml
+  capability_id: BC-2820.10
+  capability_id_l1: BC-2820
+  capability_name: Referral Management
+  confidence: 0.8
+  evidence: POST /STU3/ReferralRequest/$ers.createReferral; POST /STU3/ReferralRequest/$ers.createReferralAndSendForTriage;
+    POST /STU3/ReferralRequest/$ers.fetchworklist
+  reason: Despite the version-string tag, the operations create referrals, send them for triage and fetch
+    referral worklists in the e-Referral Service — end-to-end referral management. Some ambiguity because
+    the same slice also books appointments and retrieves slots (scheduling).

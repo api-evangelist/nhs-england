@@ -620,6 +620,9 @@ apis:
   - type: SourceCode
     url: https://github.com/NHSDigital/service-search-api
 common:
+- type: CapabilityMap
+  url: capabilities/nhs-england-capability-edges.yml
+  name: NHS England Business Capability Map
 - type: Overlay
   url: overlays/nhs-e-referral-service-overlay.yaml
 - type: Overlay
