@@ -1,0 +1,35 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: NHS Notify Callbacks API
+  description:
+    $ref: documentation/APIDescription.md
+  contact:
+    name: NHS Notify API Support
+    url: https://digital.nhs.uk/developer/help-and-support
+    email: api.management@nhs.net
+servers:
+- url: https://sandbox.api.service.nhs.uk/comms
+  description: Sandbox environment
+- url: https://int.api.service.nhs.uk/comms
+  description: Integration test environment
+- url: https://api.service.nhs.uk/comms
+  description: Production environment
+tags:
+- name: Callbacks
+paths:
+  /{client-provided-message-status-URI}:
+    post:
+      $ref: callbacks/message_status.yaml
+      tags:
+      - Callbacks
+  /{client-provided-channel-status-URI}:
+    post:
+      $ref: callbacks/channel_status.yaml
+      tags:
+      - Callbacks
+  /{client-provided-recipient-response-URI}:
+    post:
+      $ref: callbacks/recipient_response.yaml
+      tags:
+      - Callbacks

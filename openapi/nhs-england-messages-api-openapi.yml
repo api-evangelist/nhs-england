@@ -1,0 +1,37 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: NHS Notify Messages API
+  description:
+    $ref: documentation/APIDescription.md
+  contact:
+    name: NHS Notify API Support
+    url: https://digital.nhs.uk/developer/help-and-support
+    email: api.management@nhs.net
+servers:
+- url: https://sandbox.api.service.nhs.uk/comms
+  description: Sandbox environment
+- url: https://int.api.service.nhs.uk/comms
+  description: Integration test environment
+- url: https://api.service.nhs.uk/comms
+  description: Production environment
+tags:
+- name: Messages
+paths:
+  /v1/messages:
+    post:
+      $ref: endpoints/create_message.yaml
+      tags:
+      - Messages
+  /v1/messages/{messageId}:
+    parameters:
+    - schema:
+        $ref: schemas/types/KSUID.yaml
+      name: messageId
+      in: path
+      required: true
+      description: The unique identifier for the message.
+    get:
+      $ref: endpoints/get_message.yaml
+      tags:
+      - Messages

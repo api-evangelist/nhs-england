@@ -1,0 +1,276 @@
+openapi: 3.2.0
+info:
+  title: Nhs England Metadata API
+  version: '1.0'
+  description: 'Operations tagged Metadata across 2 of this provider''s published API definitions: nhs-booking-and-referral-fhir-openapi.yaml, nhs-organisation-data-service-fhir-r4-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://sandbox.api.service.nhs.uk/booking-and-referral/FHIR/R4
+  description: Sandbox Server
+- url: https://int.api.service.nhs.uk/booking-and-referral/FHIR/R4
+  description: Production
+- url: https://api.service.nhs.uk/booking-and-referral/FHIR/R4
+  description: Integration Server
+- url: https://beta.ods.dc4h.link/fhir/
+  description: User acceptance test (UAT) environment.
+- url: https://jenkins.ods.dc4h.link/fhir/
+  description: Production environment.
+tags:
+- name: Metadata
+paths:
+  /metadata:
+    parameters:
+    - $ref: '#/components/parameters/RequestId_HParam'
+    - $ref: '#/components/parameters/CorrelationId_HParam'
+    - $ref: '#/components/parameters/TargetIdentifierMeta_HParam'
+    - $ref: '#/components/parameters/RequestingOrganisation_HParam'
+    - $ref: '#/components/parameters/RequestingPractitioner_HParam'
+    - $ref: '#/components/parameters/RequestingDevice_HParam'
+    - $ref: '#/components/parameters/Accept_HParam'
+    get:
+      tags:
+      - Metadata
+      summary: Get capability statement
+      description: "\n### Returns the target endpoints CapabilityStatement \n\nThe sender must initially request the receiver's [CapabilityStatement](https://www.hl7.org/fhir/capabilitystatement.html) (GET /metadata) to establish how to interact with the receivers API (its capabilities). If the receiver does not support BaRS functionality the BaRS API will provide an error response to indicate this and the sender will pursue an alternative workflow. \n\nA receiver may only implement a subset of the functionality within the standard and the CapabilityStatement will make this clear to a sender. \n\nWhat is returned is a server level response to indicate what functionality the target API supports and how to interact with it. This includes its Version, Security, Endpoints and their associated parameters as well as which MessageDefinitions are supported.\n\nAny given endpoint will describe its full capabilities as a client and as a server in response. As the Sender and Receiver roles are interchangeable in certain Application Workflows, all capabilities should be described. \n\nThe BaRS proxy will also respond with its own CapabilityStatement, which can be used as an example, by calling this endpoint and omitting the NHSD-Target-Identifier header.\n"
+      operationId: getMeta
+      responses:
+        '200':
+          description: Success
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Capability'
+              example:
+                $ref: examples/metadata/BaRS_API_Capability_Statement.json
+            application/fhir+xml:
+              schema:
+                $ref: '#/components/schemas/Capability'
+          headers:
+            X-Correlation-Id:
+              description: The X-Correlation-Id from the request header, if supplied, mirrored back.
+              schema:
+                type: string
+                format: uuid
+                example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
+            X-Request-Id:
+              description: The X-Request-Id from the request header, if supplied, mirrored back.
+              schema:
+                type: string
+                format: uuid
+                example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
+        4XX:
+          $ref: '#/components/responses/4XX-BARS'
+        5XX:
+          $ref: '#/components/responses/5XX-BARS'
+      security:
+      - OAuth_Token: []
+    servers:
+    - url: https://sandbox.api.service.nhs.uk/booking-and-referral/FHIR/R4
+      description: Sandbox Server
+    - url: https://int.api.service.nhs.uk/booking-and-referral/FHIR/R4
+      description: Production
+    - url: https://api.service.nhs.uk/booking-and-referral/FHIR/R4
+      description: Integration Server
+  /MessageDefinition:
+    parameters:
+    - $ref: '#/components/parameters/RequestId_HParam'
+    - $ref: '#/components/parameters/CorrelationId_HParam'
+    - $ref: '#/components/parameters/RequestingOrganisation_HParam'
+    - $ref: '#/components/parameters/RequestingPractitioner_HParam'
+    - $ref: '#/components/parameters/RequestingDevice_HParam'
+    - $ref: '#/components/parameters/TargetIdentifier_HParam'
+    - $ref: '#/components/parameters/Accept_HParam'
+    get:
+      tags:
+      - Metadata
+      summary: Get Message Definition
+      description: "\n### Returns MessageDefinitions supported by the target endpoint\n\nThe Message Definition retrieval is required to inform a Sender on building the payload. A request is made using the Service Identifier and workflow type values, linking to the useContext and event elements, respectively, in the Message Definition resource, returning a list of FHIR resources. \n\nThe order of workflow beyond this point is relatively flexible, the only stipulation being responses occurring after requests.\n\n### Sender\n\nThe request for Message Definition is the next step for a Sender following the metadata acquisition. \nThe sender must request the Message Definition for the Service Identifier obtained previously, along with the type of workflow type e.g. booking-request, servicerequest-request. The Message Definition will contain a list of FHIR resources which the sender must include when making a booking or referral. \n\n### Receiver\n\nA receiver dictates what they need from a sender making a request and the MessageDefinition is the mechanism to support this. The Message Definition details what FHIR resources need to be included in the body (payload).\nThe receiver may support multiple services e.g. Out-of-Hours, Clinical Assessment Service under one organisation (on the same system) and consideration should be given to maintaining service identifiers and workflow type against Message Definitions.  It's advisable to make this a configurable option which providers can maintain themselves as new services come onboard.\n"
+      operationId: getMessageDefinition
+      parameters:
+      - $ref: '#/components/parameters/context_QParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/MessageDefinition'
+              example:
+                $ref: examples/message_definition/MessageDefinition_ServiceRequest-request_CaseTransfer.json
+            application/fhir+xml:
+              schema:
+                $ref: '#/components/schemas/MessageDefinition'
+          headers:
+            X-Correlation-Id:
+              description: The X-Correlation-Id from the request header, if supplied, mirrored back.
+              schema:
+                type: string
+                format: uuid
+                example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
+            X-Request-Id:
+              description: The X-Request-Id from the request header, if supplied, mirrored back.
+              schema:
+                type: string
+                format: uuid
+                example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
+        4XX:
+          $ref: '#/components/responses/4XX-BARS'
+        5XX:
+          $ref: '#/components/responses/5XX-BARS'
+      security:
+      - OAuth_Token: []
+    servers:
+    - url: https://sandbox.api.service.nhs.uk/booking-and-referral/FHIR/R4
+      description: Sandbox Server
+    - url: https://int.api.service.nhs.uk/booking-and-referral/FHIR/R4
+      description: Production
+    - url: https://api.service.nhs.uk/booking-and-referral/FHIR/R4
+      description: Integration Server
+components:
+  parameters:
+    TargetIdentifierMeta_HParam:
+      name: NHSD-Target-Identifier
+      description: The identifier of the Target system. A Base64 encoded object containing value and system properties.
+      required: false
+      in: header
+      schema:
+        $ref: '#/components/schemas/TargetIdentifier'
+    Accept_HParam:
+      name: Accept
+      description: The Accept Header must also contain the version of the API required.
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "'application/fhir+json; version=1.0.0'        \n"
+    TargetIdentifier_HParam:
+      name: NHSD-Target-Identifier
+      description: The identifier of the Target system. A Base64 encoded object containing value and system properties.
+      required: true
+      in: header
+      schema:
+        $ref: '#/components/schemas/TargetIdentifier'
+    RequestingOrganisation_HParam:
+      name: NHSD-End-User-Organisation
+      description: "Requesting Organization described in an object based on a FHIR 'Organization' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \nIn the example given an ODS code and the Organisation name is provided. Other identifiers are permitted if required. \n"
+      required: true
+      in: header
+      schema:
+        $ref: '#/components/schemas/RequestingOrganisationToken'
+    context_QParam:
+      name: context
+      description: 'The target service identifier. Allowing the ability to filter returned message definitions by the specified service id. In this example a DoS id. The preferred format is system|value however a value should be accepted and honoured as per [FHIR guidance](https://www.hl7.org/fhir/search.html#token).
+
+        '
+      required: true
+      in: query
+      schema:
+        type: string
+        example: https%3A%2F%2Ffhir.nhs.uk%2FId%2Fdos-service-id%7C2000099999
+    RequestingDevice_HParam:
+      name: NHSD-Requesting-Software
+      description: "Requesting Software described in an object based on a FHIR 'Device' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \n\nThe identifier used, though arbitrary, should be consistent across instances of a product, the name and version of the product should also be accurate and consistent.\n"
+      required: true
+      in: header
+      schema:
+        $ref: '#/components/schemas/RequestingSoftwareToken'
+    RequestingPractitioner_HParam:
+      name: NHSD-Requesting-Practitioner
+      description: 'Requesting Practitioner described in an object based on a FHIR ''PractitionerRole'' resource (Standard Base64 encoded JSON).
+
+
+        This item is not mandatory, however if the information is available it must be included in the request. Only in the event that it is not available, should it be omitted.
+
+
+        The example given shows a General Practitioner and their SDS Role profile Id.
+
+        '
+      required: false
+      in: header
+      schema:
+        $ref: '#/components/schemas/RequestingPractitionerToken'
+    RequestId_HParam:
+      name: X-Request-Id
+      description: The X-Request-Id for the request header, when supplied, mirrored back by the receiver.
+      required: true
+      in: header
+      schema:
+        type: string
+        format: uuid
+        example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
+    CorrelationId_HParam:
+      name: X-Correlation-Id
+      description: The X-Correlation-Id for the request header, when supplied, mirrored back by the receiver.
+      required: true
+      in: header
+      schema:
+        type: string
+        format: uuid
+        example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
+  schemas:
+    RequestingOrganisationToken:
+      $ref: schemas/RequestingOrganisation.yaml
+    OperationalOutcome:
+      $ref: schemas/OperationalOutcome.yaml
+    Capability:
+      $ref: schemas/Capability.yaml
+    RequestingSoftwareToken:
+      $ref: schemas/RequestingSoftware.yaml
+    TargetIdentifier:
+      $ref: schemas/TargetIdentifier.yaml
+    MessageDefinition:
+      $ref: schemas/MessageDefinition.yaml
+    RequestingPractitionerToken:
+      $ref: schemas/RequestingPractitioner.yaml
+  responses:
+    5XX-BARS:
+      description: "Below are examples of potential HTTP status codes and their associated error codes, which could be returned in the event of a fault. \nGuidance on error handling within BaRS can be found [here](https://simplifier.net/guide/nhsbookingandreferralstandard/Home/Design/Design--Core#Error-handling).\n\n| HTTP status | Error code                 | Description |\n| ----------- | -------------------------- | --------------------------------------------- |\n| 500         | REC_SERVER_ERROR           | The receiver server has encountered an Error processing the request. |\n| 500         | PROXY_SERVER_ERROR         | Proxy Error. |\n| 501         | SEND_NOT_IMPLEMENTED       | The Request was not recognized. |\n| 501         | REC_NOT_IMPLEMENTED        | The Receiver did not recognize the request. |\n| 501         | PROXY_NOT_IMPLEMENTED      | The Proxy did not recognize the request. |\n| 503         | REC_UNAVAILABLE            | The Receiver was unavailable to service the request.|\n| 503         | PROXY_UNAVAILABLE          | The Proxy was unavailable to service the request. |\n"
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationalOutcome'
+          example:
+            $ref: examples/500-REC.json
+      headers:
+        X-Correlation-Id:
+          description: The X-Correlation-Id from the request header, if supplied, mirrored back.
+          schema:
+            type: string
+            format: uuid
+            example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
+        X-Request-Id:
+          description: The X-Request-Id from the request header, if supplied, mirrored back.
+          schema:
+            type: string
+            format: uuid
+            example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
+    4XX-BARS:
+      description: "Below are examples of potential HTTP status codes and their associated error codes, which could be returned in the event of a fault. \nGuidance on error handling within BaRS can be found [here](https://simplifier.net/guide/nhsbookingandreferralstandard/Home/Design/Design--Core#Error-handling).\n\n| HTTP status | Error code                 | Description |\n| ----------- | -------------------------- | --------------------------------------------- |\n| 400         | SEND_BAD_REQUEST           | The API was unable to process the request. |\n| 400         | REC_BAD_REQUEST            | The Receiver has responded stating the message was malformed. |\n| 401         | SEND_UNAUTHORIZED          | The API deemed you unauthorized to make this request. |\n| 401         | REC_UNAUTHORIZED           | The receiver deemed you unauthorized to make request. |\n| 403         | SEND_FORBIDDEN             | Missing or Expired Token. |\n| 404         | PROXY_NOT_FOUND            | No related people exist for given NHS number. |\n| 404         | REC_NOT_FOUND              | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |\n| 405         | SEND_METHOD_NOT_ALLOWED    | HTTP Verb is not correct for this scenario.|\n| 405         | REC_METHOD_NOT_ALLOWED     | Receiver does not allow this.|\n| 405         | PROXY_METHOD_NOT_ALLOWED   | Proxy does not allow this.|\n| 406         | SEND_NOT_ACCEPTABLE        | Senders message had an incorrect content type defined for a response.|\n| 408         | REC_TIMEOUT                | The downstream domain processing has not completed within the configured timeout period. |\n| 409         | SEND_CONFLICT              |  |\n| 409         | REC_CONFLICT               |  |\n| 409         | PROXY_CONFLICT             |  |\n| 422         | SEND_UNPROCESSABLE_ENTITY  | Message was not malformed but deemed unprocessable. |\n| 422         | REC_UNPROCESSABLE_ENTITY   | Message was not malformed but deemed unprocessable. |         \n| 422         | PROXY_UNPROCESSABLE_ENTITY | Message was not malformed but deemed unprocessable. |         \n| 429         | SEND_TOO_MANY_REQUESTS     | The user has sent too many requests in a given amount of time|\n| 429         | REC_TOO_MANY_REQUESTS      | The user has sent too many requests in a given amount of time|\n"
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationalOutcome'
+          example:
+            $ref: examples/400-SEND.json
+      headers:
+        X-Correlation-Id:
+          description: The X-Correlation-Id from the request header, if supplied, mirrored back.
+          schema:
+            type: string
+            format: uuid
+            example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
+        X-Request-Id:
+          description: The X-Request-Id from the request header, if supplied, mirrored back.
+          schema:
+            type: string
+            format: uuid
+            example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
+  securitySchemes:
+    OAuth_Token:
+      type: http
+      scheme: bearer
+x-refined-from:
+- nhs-booking-and-referral-fhir-openapi.yaml
+- nhs-organisation-data-service-fhir-r4-openapi.yaml
+x-spec-publication:
+  try-this-api:
+    disabled: true
