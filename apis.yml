@@ -261,8 +261,7 @@ apis:
   description: The List{id} API from NHS England — 1 operation(s) for list{id}.
   humanURL: https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir
   baseURL: https://api.service.nhs.uk/personal-demographics/FHIR/R4
-  tags:
-  - List_id
+  tags: []
   tags_raw:
   - List{id}
   properties:
