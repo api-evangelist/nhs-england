@@ -23,13 +23,25 @@ paths:
       $ref: callbacks/message_status.yaml
       tags:
       - Callbacks
+      summary: Create by client provided message status uri
+      x-summary-source: derived
+      operationId: postByClientProvidedMessageStatusURI
+      x-operation-id-source: derived
   /{client-provided-channel-status-URI}:
     post:
       $ref: callbacks/channel_status.yaml
       tags:
       - Callbacks
+      summary: Create by client provided channel status uri
+      x-summary-source: derived
+      operationId: postByClientProvidedChannelStatusURI
+      x-operation-id-source: derived
   /{client-provided-recipient-response-URI}:
     post:
       $ref: callbacks/recipient_response.yaml
       tags:
       - Callbacks
+      summary: Create by client provided recipient response uri
+      x-summary-source: derived
+      operationId: postByClientProvidedRecipientResponseURI
+      x-operation-id-source: derived

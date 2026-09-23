@@ -23,6 +23,10 @@ paths:
       $ref: endpoints/create_message.yaml
       tags:
       - Messages
+      summary: Create messages
+      x-summary-source: derived
+      operationId: postV1Messages
+      x-operation-id-source: derived
   /v1/messages/{messageId}:
     parameters:
     - schema:
@@ -35,3 +39,7 @@ paths:
       $ref: endpoints/get_message.yaml
       tags:
       - Messages
+      summary: Get messages by message id
+      x-summary-source: derived
+      operationId: getV1MessagesByMessageId
+      x-operation-id-source: derived

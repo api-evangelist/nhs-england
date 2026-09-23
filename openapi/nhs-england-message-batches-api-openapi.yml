@@ -23,3 +23,7 @@ paths:
       $ref: endpoints/create_message_batch.yaml
       tags:
       - Message Batches
+      summary: Create message batches
+      x-summary-source: derived
+      operationId: postV1MessageBatches
+      x-operation-id-source: derived

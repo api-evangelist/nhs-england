@@ -30,7 +30,22 @@ paths:
       tags:
       - Metadata
       summary: Get capability statement
-      description: "\n### Returns the target endpoints CapabilityStatement \n\nThe sender must initially request the receiver's [CapabilityStatement](https://www.hl7.org/fhir/capabilitystatement.html) (GET /metadata) to establish how to interact with the receivers API (its capabilities). If the receiver does not support BaRS functionality the BaRS API will provide an error response to indicate this and the sender will pursue an alternative workflow. \n\nA receiver may only implement a subset of the functionality within the standard and the CapabilityStatement will make this clear to a sender. \n\nWhat is returned is a server level response to indicate what functionality the target API supports and how to interact with it. This includes its Version, Security, Endpoints and their associated parameters as well as which MessageDefinitions are supported.\n\nAny given endpoint will describe its full capabilities as a client and as a server in response. As the Sender and Receiver roles are interchangeable in certain Application Workflows, all capabilities should be described. \n\nThe BaRS proxy will also respond with its own CapabilityStatement, which can be used as an example, by calling this endpoint and omitting the NHSD-Target-Identifier header.\n"
+      description: '### Returns the target endpoints CapabilityStatement
+
+
+        The sender must initially request the receiver''s CapabilityStatement (GET /metadata) to establish how to interact with the receivers API (its capabilities). If the receiver does not support BaRS functionality the BaRS API will provide an error response to indicate this and the sender will pursue an alternative workflow.
+
+
+        A receiver may only implement a subset of the functionality within the standard and the CapabilityStatement will make this clear to a sender.
+
+
+        What is returned is a server level response to indicate what functionality the target API supports and how to interact with it. This includes its Version, Security, Endpoints and their associated parameters as well as which MessageDefinitions are supported.
+
+
+        Any given endpoint will describe its full capabilities as a client and as a server in response. As the Sender and Receiver roles are interchangeable in certain Application Workflows, all capabilities should be described.
+
+
+        The BaRS proxy will also respond with its own CapabilityStatement, which can be used as an example, by calling this endpoint and omitting the NHSD-Target-Identifier header.'
       operationId: getMeta
       responses:
         '200':
@@ -83,7 +98,29 @@ paths:
       tags:
       - Metadata
       summary: Get Message Definition
-      description: "\n### Returns MessageDefinitions supported by the target endpoint\n\nThe Message Definition retrieval is required to inform a Sender on building the payload. A request is made using the Service Identifier and workflow type values, linking to the useContext and event elements, respectively, in the Message Definition resource, returning a list of FHIR resources. \n\nThe order of workflow beyond this point is relatively flexible, the only stipulation being responses occurring after requests.\n\n### Sender\n\nThe request for Message Definition is the next step for a Sender following the metadata acquisition. \nThe sender must request the Message Definition for the Service Identifier obtained previously, along with the type of workflow type e.g. booking-request, servicerequest-request. The Message Definition will contain a list of FHIR resources which the sender must include when making a booking or referral. \n\n### Receiver\n\nA receiver dictates what they need from a sender making a request and the MessageDefinition is the mechanism to support this. The Message Definition details what FHIR resources need to be included in the body (payload).\nThe receiver may support multiple services e.g. Out-of-Hours, Clinical Assessment Service under one organisation (on the same system) and consideration should be given to maintaining service identifiers and workflow type against Message Definitions.  It's advisable to make this a configurable option which providers can maintain themselves as new services come onboard.\n"
+      description: '### Returns MessageDefinitions supported by the target endpoint
+
+
+        The Message Definition retrieval is required to inform a Sender on building the payload. A request is made using the Service Identifier and workflow type values, linking to the useContext and event elements, respectively, in the Message Definition resource, returning a list of FHIR resources.
+
+
+        The order of workflow beyond this point is relatively flexible, the only stipulation being responses occurring after requests.
+
+
+        ### Sender
+
+
+        The request for Message Definition is the next step for a Sender following the metadata acquisition.
+
+        The sender must request the Message Definition for the Service Identifier obtained previously, along with the type of workflow type e.g. booking-request, servicerequest-request. The Message Definition will contain a list of FHIR resources which the sender must include when making a booking or referral.
+
+
+        ### Receiver
+
+
+        A receiver dictates what they need from a sender making a request and the MessageDefinition is the mechanism to support this. The Message Definition details what FHIR resources need to be included in the body (payload).
+
+        The receiver may support multiple services e.g. Out-of-Hours, Clinical Assessment Service under one organisation (on the same system) and consideration should be given to maintaining service identifiers and workflow type against Message Definitions. It''s advisable to make this a configurable option which providers can maintain themselves as new services come onboard.'
       operationId: getMessageDefinition
       parameters:
       - $ref: '#/components/parameters/context_QParam'
@@ -127,35 +164,21 @@ paths:
       description: Integration Server
 components:
   parameters:
-    TargetIdentifierMeta_HParam:
-      name: NHSD-Target-Identifier
-      description: The identifier of the Target system. A Base64 encoded object containing value and system properties.
+    RequestingPractitioner_HParam:
+      name: NHSD-Requesting-Practitioner
+      description: 'Requesting Practitioner described in an object based on a FHIR ''PractitionerRole'' resource (Standard Base64 encoded JSON).
+
+
+        This item is not mandatory, however if the information is available it must be included in the request. Only in the event that it is not available, should it be omitted.
+
+
+        The example given shows a General Practitioner and their SDS Role profile Id.
+
+        '
       required: false
       in: header
       schema:
-        $ref: '#/components/schemas/TargetIdentifier'
-    Accept_HParam:
-      name: Accept
-      description: The Accept Header must also contain the version of the API required.
-      in: header
-      required: true
-      schema:
-        type: string
-        example: "'application/fhir+json; version=1.0.0'        \n"
-    TargetIdentifier_HParam:
-      name: NHSD-Target-Identifier
-      description: The identifier of the Target system. A Base64 encoded object containing value and system properties.
-      required: true
-      in: header
-      schema:
-        $ref: '#/components/schemas/TargetIdentifier'
-    RequestingOrganisation_HParam:
-      name: NHSD-End-User-Organisation
-      description: "Requesting Organization described in an object based on a FHIR 'Organization' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \nIn the example given an ODS code and the Organisation name is provided. Other identifiers are permitted if required. \n"
-      required: true
-      in: header
-      schema:
-        $ref: '#/components/schemas/RequestingOrganisationToken'
+        $ref: '#/components/schemas/RequestingPractitionerToken'
     context_QParam:
       name: context
       description: 'The target service identifier. Allowing the ability to filter returned message definitions by the specified service id. In this example a DoS id. The preferred format is system|value however a value should be accepted and honoured as per [FHIR guidance](https://www.hl7.org/fhir/search.html#token).
@@ -173,30 +196,13 @@ components:
       in: header
       schema:
         $ref: '#/components/schemas/RequestingSoftwareToken'
-    RequestingPractitioner_HParam:
-      name: NHSD-Requesting-Practitioner
-      description: 'Requesting Practitioner described in an object based on a FHIR ''PractitionerRole'' resource (Standard Base64 encoded JSON).
-
-
-        This item is not mandatory, however if the information is available it must be included in the request. Only in the event that it is not available, should it be omitted.
-
-
-        The example given shows a General Practitioner and their SDS Role profile Id.
-
-        '
-      required: false
-      in: header
-      schema:
-        $ref: '#/components/schemas/RequestingPractitionerToken'
-    RequestId_HParam:
-      name: X-Request-Id
-      description: The X-Request-Id for the request header, when supplied, mirrored back by the receiver.
+    RequestingOrganisation_HParam:
+      name: NHSD-End-User-Organisation
+      description: "Requesting Organization described in an object based on a FHIR 'Organization' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \nIn the example given an ODS code and the Organisation name is provided. Other identifiers are permitted if required. \n"
       required: true
       in: header
       schema:
-        type: string
-        format: uuid
-        example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
+        $ref: '#/components/schemas/RequestingOrganisationToken'
     CorrelationId_HParam:
       name: X-Correlation-Id
       description: The X-Correlation-Id for the request header, when supplied, mirrored back by the receiver.
@@ -206,15 +212,46 @@ components:
         type: string
         format: uuid
         example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
+    Accept_HParam:
+      name: Accept
+      description: The Accept Header must also contain the version of the API required.
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "'application/fhir+json; version=1.0.0'        \n"
+    RequestId_HParam:
+      name: X-Request-Id
+      description: The X-Request-Id for the request header, when supplied, mirrored back by the receiver.
+      required: true
+      in: header
+      schema:
+        type: string
+        format: uuid
+        example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
+    TargetIdentifierMeta_HParam:
+      name: NHSD-Target-Identifier
+      description: The identifier of the Target system. A Base64 encoded object containing value and system properties.
+      required: false
+      in: header
+      schema:
+        $ref: '#/components/schemas/TargetIdentifier'
+    TargetIdentifier_HParam:
+      name: NHSD-Target-Identifier
+      description: The identifier of the Target system. A Base64 encoded object containing value and system properties.
+      required: true
+      in: header
+      schema:
+        $ref: '#/components/schemas/TargetIdentifier'
   schemas:
     RequestingOrganisationToken:
       $ref: schemas/RequestingOrganisation.yaml
+    RequestingSoftwareToken:
+      $ref: schemas/RequestingSoftware.yaml
     OperationalOutcome:
       $ref: schemas/OperationalOutcome.yaml
     Capability:
       $ref: schemas/Capability.yaml
-    RequestingSoftwareToken:
-      $ref: schemas/RequestingSoftware.yaml
     TargetIdentifier:
       $ref: schemas/TargetIdentifier.yaml
     MessageDefinition:

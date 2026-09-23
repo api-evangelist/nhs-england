@@ -1,8 +1,10 @@
 openapi: 3.2.0
 info:
-  description: "## Overview   \nUse this API to find information about organisations that provide NHS healthcare services, NHS organisation types, and coronavirus (COVID-19) walk-in sites.\n\nYou can:\n* retrieve a list of organisation types, for example, GP practices or hospitals\n* search for NHS organisations that provide healthcare services listed in [NHS service near you](https://www.nhs.uk/nhs-services/services-near-you/), for example, Leeds General Infirmary\n* search for coronavirus (COVID-19) walk-in sites\n\nThis API does not support the FHIR standard.\n\n## Who can use this API\nThis API can only be used where there is a legal basis to do so. Make sure you have a valid use case before you go too far with your development. To do this, [contact us](https://digital.nhs.uk/developer/help-and-support). You must do this before you can go live (see ‘Onboarding’ below).\n\n## Related APIs\nThe following APIs are related to this API:\n\n* [Directory of Services - Urgent and Emergency Care - SOAP API](https://digital.nhs.uk/developer/api-catalogue/directory-of-services-soap) - use this SOAP API to access information on a wide range of health and care services across England\n* [Directory of Services - Urgent and Emergency Care - REST API](https://digital.nhs.uk/developer/api-catalogue/directory-of-services-urgent-and-emergency-care-rest) - use this REST API to access information on a wide range of health and care services across England\n* [EPS Directory of Services - REST API](https://digital.nhs.uk/developer/api-catalogue/electronic-prescription-service-directory-of-services) - use this to access information about dispensing services, including searching for dispensers who can provide services for a patient with a given location and urgency\n* [Electronic Transmission of Prescriptions Web Services - SOAP API](https://digital.nhs.uk/developer/api-catalogue/electronic-transmission-of-prescriptions-web-services-soap) - use this to access EPS dispenser (and dispensing appliance contractor) information for a patient via NHS UK Web Services\n* [e-Referral Services - A010 Patient service search endpoint](https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir#api-Default-a010-patient-service-search) - use this endpoint to find services that meet the referral needs of a patient\n\n## API status and roadmap\nThis API is [in development](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses), meaning:\n  * it is available for testing in the integration environment\n  * we expect to make breaking changes based on developer feedback\n\n## Service level\nThis API is a bronze service, meaning it is operational and supported only during business hours (8am to 6pm), Monday to Friday excluding bank holidays.\nFor more details, see [service levels](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#service-levels).\n\n## Technology\nThis API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#basic-rest).\n\nThis API does not support the FHIR standard.\n\n## Network access\nThis API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).\nFor more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).\n\n## Security and authorisation\nThis API is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),\nmeaning we authenticate the calling application but not the end user.\n\nTo use this API, use the following security pattern:\n* [application-restricted RESTful API - API key authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-api-key-authentication)\n\n## Environments and testing\n\n| Environment       | Base URL                                                  |\n| ----------------- |---------------------------------------------------------- |\n| Sandbox           | `https://sandbox.api.service.nhs.uk/service-search-api/`    |\n| Integration test  | `https://int.api.service.nhs.uk/service-search-api/`        |\n| Production        | Not yet available         |\n\n### Sandbox testing\nOur [sandbox environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#sandbox-testing):\n* is for early developer testing\n* only covers a limited set of scenarios\n* is open access, so does not allow you to test authorisation\n\nFor details of sandbox test scenarios, or to try out the sandbox using our 'Try this API' feature, see the documentation for each endpoint.\n\nOur [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing) is for formal integration testing.\n\n### Integration testing\nOur [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):\n* is for formal integration testing\n* includes authorisation, with options for appliation-restricted access\n* test data is a close copy of the production data\n\nFor more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing-with-our-restful-apis).\n\n### Rate Limiting\nRate limits apply to both integration test and production environments:\n* 7800 requests per minute per product\n* 6000 requests per minute per application\n\n## Onboarding\nThis API is not yet available for onboarding.\n\n## Errors\nWe use standard HTTP status codes to show whether an API request succeeded or not. They are usually in the range:\n\n* 200 to 299 if it succeeded, including code 202 if it was accepted by an API that needs to wait for further action\n* 400 to 499 if it failed because of a client error by your application\n* 500 to 599 if it failed because of an error on our server\n\nErrors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.\n\n## Examples\nThe Directory of Healthcare Services (Service Search) API can be used to search for services and sites based on a variety of filters. These filters can be passed as query parameters for a GET request or as part of the body for a POST request, examples of which are below.\n\n## Contact us\nFor help and support connecting to our APIs and to join our developer community, see [Help and support building healthcare software](https://digital.nhs.uk/developer/help-and-support).\n"
+  description: '## Overview
+
+    Use this API to find information about organisations that provide NHS healthcare services, NHS organisation types, and coronavirus (COVID-19) walk-in sites.'
   version: Computed and injected at build time by `scripts/set_version.py`
-  title: Directory of Healthcare Services API - version 3 Organisation API
+  title: Directory of Healthcare Services API - version 3…
   contact:
     name: Directory of Healthcare Services API - version 3
     url: https://digital.nhs.uk/developer/help-and-support
@@ -25,7 +27,65 @@ paths:
       tags:
       - Organisation
       operationId: search-GET
-      description: "## Overview\nUse this endpoint to find information about services provided by NHS organisations.\n\nFor more information on how to use search identifiers with this endpoint, see [DoHS API guide to search identifiers and service codes](https://digital.nhs.uk/developer/api-catalogue/directory-of-healthcare-services/guide-to-search-identifiers-and-service-codes).\n\n## Sandbox test scenarios\nYou can test the following scenarios in our sandbox environment:\n\n| Scenario                                                           | Request                                                                                                                                                                                                                                   | Response                                 |\n| -------------------------------------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ---------------------------------------- |\n| All organisations                                                  | No parameters                                                                                                                                                                                                                             | HTTP status 200 with all organisations   |\n| Single organisation                                                | `search`=`Y02494`                                                                                                                                                                                                                         | HTTP status 200 with single organisation |\n| Search By ODS Code and Filter by EPS enabled                       | `searchFields`=`ODSCode` <br /> `$filter`=`IsEpsEnabled eq 'true'`                                                                                                                                                                        | HTTP status 200 with filtered results    |\n| Filtered by EPS enabled and organisation type                      | `search`=`pharmacy2u` <br /> `searchfields`=`OrganisationName` <br /> `$filter`=`IsEpsEnabled eq 'true' and OrganisationTypeId eq 'PHA' and OrganisationSubType eq 'DistanceSelling'`                                                     | HTTP status 200 with filtered results    |\n| Search by location                                                 | `search`=`Bletchley` <br /> `searchfields`=`Address3,City,County`                                                                                                                                                                         | HTTP status 200 with found organisations |                                                                                                                             \n| Filtered by EPS enabled, organisation type and ordered by geocode  | `$filter`=`\"IsEpsEnabled eq 'true' and OrganisationTypeId eq 'PHA' and OrganisationSubType eq 'Community'\"` <br /> `$orderby`= `geo.distance(Geocode, geography'POINT(-0.76444095373153675 52.000820159912109)')`                         | HTTP status 200 with ordered results     | \n| Filtered by postcode, EPS enabled and organisation type            | `$filter`=`search.ismatch('B11', 'Postcode') and IsEpsEnabled eq 'true' and OrganisationTypeId eq 'PHA' and OrganisationSubType eq 'Community'`                                                                                           | Http status 200 with filtered results    | \n| Filtered by closing time and location                              | `search`=`Bletchley` <br /> `searchFields`=`Address3` <br /> `$filter`=`OpeningTimes / any (x: x/ClosingTime eq '14:00')`                                                                                                                 | Http status 200 with filtered results    | \n| Filtered by location, EPS enabled and wheelchair access            | `search`=`Bletchley` <br /> `searchFields`=`Address3` <br /> `$filter`=`Facilities / any (x: x/Name eq 'Wheelchair access' and x/Value eq 'Yes') and IsEpsEnabled eq 'true'`                                                              | Http status 200 with filtered results    | \n| No organisations found                                             | `search`=`no-organisation`                                                                                                                                                                                                                | HTTP status 200 with no organisations    |\n| Invalid API version                                                | No api-version parameter                                                                                                                                                                                                                  | HTTP status 404 with problem description |\n\nYou can try out the sandbox using the 'Try this API feature' on this page.\n"
+      description: '## Overview
+
+        Use this endpoint to find information about services provided by NHS organisations.
+
+
+        For more information on how to use search identifiers with this endpoint, see DoHS API guide to search identifiers and service codes.
+
+
+        ## Sandbox test scenarios
+
+        You can test the following scenarios in our sandbox environment:
+
+
+        | Scenario | Request | Response |
+
+        | -------------------------------------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ---------------------------------------- |
+
+        | All organisations | No parameters | HTTP status 200 with all organisations |
+
+        | Single organisation | `search`=`Y02494` | HTTP status 200 with single organisation |
+
+        | Search By ODS Code and Filter by EPS enabled | `searchFields`=`ODSCode`
+
+        `$filter`=`IsEpsEnabled eq ''true''` | HTTP status 200 with filtered results |
+
+        | Filtered by EPS enabled and organisation type | `search`=`pharmacy2u`
+
+        `searchfields`=`OrganisationName`
+
+        `$filter`=`IsEpsEnabled eq ''true'' and OrganisationTypeId eq ''PHA'' and OrganisationSubType eq ''DistanceSelling''` | HTTP status 200 with filtered results |
+
+        | Search by location | `search`=`Bletchley`
+
+        `searchfields`=`Address3,City,County` | HTTP status 200 with found organisations |
+
+        | Filtered by EPS enabled, organisation type and ordered by geocode | `$filter`=`"IsEpsEnabled eq ''true'' and OrganisationTypeId eq ''PHA'' and OrganisationSubType eq ''Community''"`
+
+        `$orderby`= `geo.distance(Geocode, geography''POINT(-0.76444095373153675 52.000820159912109)'')` | HTTP status 200 with ordered results |
+
+        | Filtered by postcode, EPS enabled and organisation type | `$filter`=`search.ismatch(''B11'', ''Postcode'') and IsEpsEnabled eq ''true'' and OrganisationTypeId eq ''PHA'' and OrganisationSubType eq ''Community''` | Http status 200 with filtered results |
+
+        | Filtered by closing time and location | `search`=`Bletchley`
+
+        `searchFields`=`Address3`
+
+        `$filter`=`OpeningTimes / any (x: x/ClosingTime eq ''14:00'')` | Http status 200 with filtered results |
+
+        | Filtered by location, EPS enabled and wheelchair access | `search`=`Bletchley`
+
+        `searchFields`=`Address3`
+
+        `$filter`=`Facilities / any (x: x/Name eq ''Wheelchair access'' and x/Value eq ''Yes'') and IsEpsEnabled eq ''true''` | Http status 200 with filtered results |
+
+        | No organisations found | `search`=`no-organisation` | HTTP status 200 with no organisations |
+
+        | Invalid API version | No api-version parameter | HTTP status 404 with problem description |
+
+
+        You can try out the sandbox using the ''Try this API feature'' on this page.'
       parameters:
       - name: api-version
         description: 'The API version number can be supplied as a query parameter.
@@ -150,7 +210,7 @@ paths:
         Use this endpoint to find information about services provided by NHS organisations.
 
 
-        For more information on how to use search identifiers with this endpoint, see [DoHS API guide to search identifiers and service codes](https://digital.nhs.uk/developer/api-catalogue/directory-of-healthcare-services/guide-to-search-identifiers-and-service-codes).
+        For more information on how to use search identifiers with this endpoint, see DoHS API guide to search identifiers and service codes.
 
 
         ## Sandbox test scenarios
@@ -158,22 +218,20 @@ paths:
         You can test the following scenarios in our sandbox environment:
 
 
-        | Scenario               | Request                    | Response                                 |
+        | Scenario | Request | Response |
 
         | ---------------------- | -------------------------- | ---------------------------------------- |
 
-        | All organisations      | No parameters              | HTTP status 200 with all organisations   |
+        | All organisations | No parameters | HTTP status 200 with all organisations |
 
-        | Single organisation    | `search`=`Y02494`           | HTTP status 200 with single organisation |
+        | Single organisation | `search`=`Y02494` | HTTP status 200 with single organisation |
 
-        | No organisations found | `search`=`no-organisation` | HTTP status 200 with no organisations    |
+        | No organisations found | `search`=`no-organisation` | HTTP status 200 with no organisations |
 
-        | Invalid API version    | No api-version parameter   | HTTP status 404 with problem description |
+        | Invalid API version | No api-version parameter | HTTP status 404 with problem description |
 
 
-        You can try out the sandbox using the ''Try this API feature'' on this page.
-
-        '
+        You can try out the sandbox using the ''Try this API feature'' on this page.'
       parameters:
       - name: api-version
         description: Specify the version of the API.  MUST be 3.
@@ -262,7 +320,99 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: {}
+    OrganisationSearchPostResponse:
+      description: Organisation post response
+      content:
+        application/json:
+          examples:
+            AllOrganisations:
+              summary: All Organisations
+              $ref: examples/search-organisation-response-body_v3.json
+            FilteredByServicecode:
+              summary: Organisations filtered by service code
+              $ref: examples/search-organisations-service-code-filtered-response.json
+            ByLocation:
+              summary: Organisations by location
+              $ref: examples/search-organisations-location-response.json
+            ByNameFilteredByServicecodeAndOrgType:
+              summary: Organisations by name filtered by service code
+              $ref: examples/search-organisations-by-name-filtered-response.json
+            FilteredByServieCodeAndOrgTypeOrdered:
+              summary: Organisations filtered by service code and organisation type and ordered by geocode
+              $ref: examples/search-organisations-geocode-filtered-response.json
+            ByLocationAndClosingTimeFiltered:
+              summary: Organisations searched by location, filtered by closing time
+              $ref: examples/search-organisation-closing-time-location.json
+            ByLocationAndWheelchairAccessFiltered:
+              summary: Organisations search by location, filtered by available wheelchair access and EPS enabled
+              $ref: examples/search-organisations-by-location-filter-by-wheelchair-access.json
+            ByPostcodeFiltered:
+              summary: Organisations by postcode, filtered by service code and organisation type
+              $ref: examples/search-organisations-by-nearest-filter-postcode-response.json
+    SearchResponse:
+      description: Search Response
+      content:
+        application/json:
+          examples:
+            Organisations:
+              $ref: examples/organisations_v3.json
+            SingleItem:
+              $ref: examples/organisations-single_v3.json
+            NotFound:
+              $ref: examples/organisations-not-found_v3.json
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/SearchResults'
+            - type: object
+              properties:
+                value:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Organisation'
+    4XX-BARS:
+      description: "Below are examples of potential HTTP status codes and their associated error codes, which could be returned in the event of a fault. \nGuidance on error handling within BaRS can be found [here](https://simplifier.net/guide/nhsbookingandreferralstandard/Home/Design/Design--Core#Error-handling).\n\n| HTTP status | Error code                 | Description |\n| ----------- | -------------------------- | --------------------------------------------- |\n| 400         | SEND_BAD_REQUEST           | The API was unable to process the request. |\n| 400         | REC_BAD_REQUEST            | The Receiver has responded stating the message was malformed. |\n| 401         | SEND_UNAUTHORIZED          | The API deemed you unauthorized to make this request. |\n| 401         | REC_UNAUTHORIZED           | The receiver deemed you unauthorized to make request. |\n| 403         | SEND_FORBIDDEN             | Missing or Expired Token. |\n| 404         | PROXY_NOT_FOUND            | No related people exist for given NHS number. |\n| 404         | REC_NOT_FOUND              | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |\n| 405         | SEND_METHOD_NOT_ALLOWED    | HTTP Verb is not correct for this scenario.|\n| 405         | REC_METHOD_NOT_ALLOWED     | Receiver does not allow this.|\n| 405         | PROXY_METHOD_NOT_ALLOWED   | Proxy does not allow this.|\n| 406         | SEND_NOT_ACCEPTABLE        | Senders message had an incorrect content type defined for a response.|\n| 408         | REC_TIMEOUT                | The downstream domain processing has not completed within the configured timeout period. |\n| 409         | SEND_CONFLICT              |  |\n| 409         | REC_CONFLICT               |  |\n| 409         | PROXY_CONFLICT             |  |\n| 422         | SEND_UNPROCESSABLE_ENTITY  | Message was not malformed but deemed unprocessable. |\n| 422         | REC_UNPROCESSABLE_ENTITY   | Message was not malformed but deemed unprocessable. |         \n| 422         | PROXY_UNPROCESSABLE_ENTITY | Message was not malformed but deemed unprocessable. |         \n| 429         | SEND_TOO_MANY_REQUESTS     | The user has sent too many requests in a given amount of time|\n| 429         | REC_TOO_MANY_REQUESTS      | The user has sent too many requests in a given amount of time|\n"
+      headers:
+        X-Correlation-Id:
+          description: The X-Correlation-Id from the request header, if supplied, mirrored back.
+          schema:
+            type: string
+            format: uuid
+            example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
+        X-Request-Id:
+          description: The X-Request-Id from the request header, if supplied, mirrored back.
+          schema:
+            type: string
+            format: uuid
+            example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          examples:
+            OrganisationNotFound:
+              $ref: examples/organisations-not-found_v3.json
+          schema:
+            type: object
+            properties: {}
   schemas:
+    OrganisationPostRequest:
+      description: Organisation post request
+      type: object
+      example:
+        $ref: examples/search-organisation-request-body_v3.json
+    SearchResult:
+      type: object
+      properties:
+        '@search.score':
+          type: number
     SearchResults:
       type: object
       properties:
@@ -279,11 +429,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SearchResult'
-    OrganisationPostRequest:
-      description: Organisation post request
-      type: object
-      example:
-        $ref: examples/search-organisation-request-body_v3.json
     Organisation:
       description: Organisation v3
       type: object
@@ -797,90 +942,3 @@ components:
         IsEpsEnabled:
           type: string
           description: '"Yes" or "No" string value indicating whether the organisation is EPS enabled'
-    SearchResult:
-      type: object
-      properties:
-        '@search.score':
-          type: number
-  responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties: {}
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          examples:
-            OrganisationNotFound:
-              $ref: examples/organisations-not-found_v3.json
-          schema:
-            type: object
-            properties: {}
-    OrganisationSearchPostResponse:
-      description: Organisation post response
-      content:
-        application/json:
-          examples:
-            AllOrganisations:
-              summary: All Organisations
-              $ref: examples/search-organisation-response-body_v3.json
-            FilteredByServicecode:
-              summary: Organisations filtered by service code
-              $ref: examples/search-organisations-service-code-filtered-response.json
-            ByLocation:
-              summary: Organisations by location
-              $ref: examples/search-organisations-location-response.json
-            ByNameFilteredByServicecodeAndOrgType:
-              summary: Organisations by name filtered by service code
-              $ref: examples/search-organisations-by-name-filtered-response.json
-            FilteredByServieCodeAndOrgTypeOrdered:
-              summary: Organisations filtered by service code and organisation type and ordered by geocode
-              $ref: examples/search-organisations-geocode-filtered-response.json
-            ByLocationAndClosingTimeFiltered:
-              summary: Organisations searched by location, filtered by closing time
-              $ref: examples/search-organisation-closing-time-location.json
-            ByLocationAndWheelchairAccessFiltered:
-              summary: Organisations search by location, filtered by available wheelchair access and EPS enabled
-              $ref: examples/search-organisations-by-location-filter-by-wheelchair-access.json
-            ByPostcodeFiltered:
-              summary: Organisations by postcode, filtered by service code and organisation type
-              $ref: examples/search-organisations-by-nearest-filter-postcode-response.json
-    SearchResponse:
-      description: Search Response
-      content:
-        application/json:
-          examples:
-            Organisations:
-              $ref: examples/organisations_v3.json
-            SingleItem:
-              $ref: examples/organisations-single_v3.json
-            NotFound:
-              $ref: examples/organisations-not-found_v3.json
-          schema:
-            allOf:
-            - $ref: '#/components/schemas/SearchResults'
-            - type: object
-              properties:
-                value:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Organisation'
-    4XX-BARS:
-      description: "Below are examples of potential HTTP status codes and their associated error codes, which could be returned in the event of a fault. \nGuidance on error handling within BaRS can be found [here](https://simplifier.net/guide/nhsbookingandreferralstandard/Home/Design/Design--Core#Error-handling).\n\n| HTTP status | Error code                 | Description |\n| ----------- | -------------------------- | --------------------------------------------- |\n| 400         | SEND_BAD_REQUEST           | The API was unable to process the request. |\n| 400         | REC_BAD_REQUEST            | The Receiver has responded stating the message was malformed. |\n| 401         | SEND_UNAUTHORIZED          | The API deemed you unauthorized to make this request. |\n| 401         | REC_UNAUTHORIZED           | The receiver deemed you unauthorized to make request. |\n| 403         | SEND_FORBIDDEN             | Missing or Expired Token. |\n| 404         | PROXY_NOT_FOUND            | No related people exist for given NHS number. |\n| 404         | REC_NOT_FOUND              | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |\n| 405         | SEND_METHOD_NOT_ALLOWED    | HTTP Verb is not correct for this scenario.|\n| 405         | REC_METHOD_NOT_ALLOWED     | Receiver does not allow this.|\n| 405         | PROXY_METHOD_NOT_ALLOWED   | Proxy does not allow this.|\n| 406         | SEND_NOT_ACCEPTABLE        | Senders message had an incorrect content type defined for a response.|\n| 408         | REC_TIMEOUT                | The downstream domain processing has not completed within the configured timeout period. |\n| 409         | SEND_CONFLICT              |  |\n| 409         | REC_CONFLICT               |  |\n| 409         | PROXY_CONFLICT             |  |\n| 422         | SEND_UNPROCESSABLE_ENTITY  | Message was not malformed but deemed unprocessable. |\n| 422         | REC_UNPROCESSABLE_ENTITY   | Message was not malformed but deemed unprocessable. |         \n| 422         | PROXY_UNPROCESSABLE_ENTITY | Message was not malformed but deemed unprocessable. |         \n| 429         | SEND_TOO_MANY_REQUESTS     | The user has sent too many requests in a given amount of time|\n| 429         | REC_TOO_MANY_REQUESTS      | The user has sent too many requests in a given amount of time|\n"
-      headers:
-        X-Correlation-Id:
-          description: The X-Correlation-Id from the request header, if supplied, mirrored back.
-          schema:
-            type: string
-            format: uuid
-            example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
-        X-Request-Id:
-          description: The X-Request-Id from the request header, if supplied, mirrored back.
-          schema:
-            type: string
-            format: uuid
-            example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91

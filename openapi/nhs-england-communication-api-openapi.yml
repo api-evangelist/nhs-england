@@ -2,7 +2,9 @@ openapi: 3.2.0
 info:
   version: 0.1.0
   title: NHS App Communication API
-  description: "## Overview\nUse this API to engage with users of the [NHS App](https://www.nhs.uk/using-the-nhs/nhs-services/the-nhs-app/). The NHS App is a simple and secure way for patients registered with a GP surgery in England to access a range of services on their smartphone, tablet or computer web browser.\n\nYou can:\n* send in-app messages to specific users of the NHS App\n* include keyword replies to in-app messages\n* include free text replies to in-app messages\n* send native Apple or Android push notifications to mobile devices registered by specific users of the NHS App\n\n## Who can use this API\nTo use this API, you must [integrate with the NHS App](https://digital.nhs.uk/services/nhs-app/partners-and-developers/integrate-with-the-nhs-app).\n\n[Contact us](mailto:app.onboarding@nhs.net) before you begin any development work with this API, even if your service is already integrated.\n\n## API status and roadmap\nThis API is [in production, beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses).\n\nTo see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=nhs-app-api).\n\nIf you would like to be involved in our beta programme or have any other queries, [contact us](https://digital.nhs.uk/developer/help-and-support).\n\n## Service level\nThis API is a silver plus service, meaning it is operational 24 hours a day, 365 days a year but only supported during business hours (8am to 6pm), Monday to Friday excluding bank holidays. However, we respond to severity 1 and severity 2 incidents outside of business hours.\n\nFor more details, see [service levels](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#service-levels).\n\n## Technology\nThis API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/our-api-technologies#basic-rest).\n\nIt conforms to the [FHIR](https://digital.nhs.uk/developer/guides-and-documentation/our-api-technologies#fhir) global standard for health care data exchange, specifically to [FHIR R4 (v4.0.1)](https://hl7.org/fhir/r4/), except that it does not support the [capabilities](http://hl7.org/fhir/R4/http.html#capabilities) interaction.\n\nIt includes some country-specific FHIR extensions, which conform to [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), specifically [fhir.r4.ukcore.stu1 0.5.1](https://simplifier.net/packages/fhir.r4.ukcore.stu1/0.5.1).\n\n### Specific rules for FHIR APIs\nFHIR APIs are RESTful APIs that follow specific rules. In particular:\n\n- resource names are capitalised and singular, for example `/CommunicationRequest` not `/communicationRequests`\n\n- array names are singular, for example `recipient` not `recipients` for communication recipients\n\n- data items that are country-specific and thus not included in the FHIR global base resources are usually wrapped in an `extension` object\n\nThere are [libraries and SDKs available](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir-libraries-and-sdks) to help with FHIR integration.\n\n## Network access\nThis API is available on the internet, and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).\n\nFor more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).\n\n## Security and authorisation\nThis API is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),\nmeaning we authenticate the calling application but not the end user. In particular, the two FHIR `CommunicationRequest` endpoints use signed JWT authentication - you authenticate your application by sending a signed JSON web token (JWT) to our OAuth 2.0 authorisation server. For more details see [Application-restricted RESTful APIs - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication).\n\nAfter following these steps to create an application and register the public key, the App ID should be provided to the [NHS App onboarding team](mailto:app.onboarding@nhs.net) to grant your application permissions to the features that are appropriate to your use cases. If this step is not completed, all calls to this API will return responses with status code 403 Forbidden.\n\n## Environments and testing\n| API Environment      | NHS Login Environment | Base URL                                        |\n| -------------------- | --------------------- | ----------------------------------------------- |\n| Development          | Sandpit               | `https://dep.api.service.nhs.uk/nhs-app-dep/`   |\n| Integration Testing  | Integration (AOS)     | `https://int.api.service.nhs.uk/nhs-app/`       |\n| Production           | Production            | `https://api.service.nhs.uk/nhs-app/`           |\n\n### Development\nOur development environment:\n* includes authorisation\n* is for initial development and [integration testing](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing)\n* points to the [Onboarding Sandpit NHS App environment](https://www-onboardingsandpit.nhsapp.service.nhs.uk/), which in turn is using the NHS Login Sandpit environment\n* has a [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits) of 20 requests per second per application\n\nWe have created a [Postman collection](https://github.com/NHSDigital/nhs-app-api/tree/master/postman) during internal development and testing of the API, which you may find useful when working with this environment.\n\nDevelopers working with C# may also be interested in [the integration tests](https://github.com/NHSDigital/nhs-app-api/tree/master/tests) that we have developed for the API, which make use of the [fire.ly .NET SDK](https://fire.ly/products/firely-net-sdk/). \n\n### Integration testing\nOur [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):\n* includes authorisation\n* is for formal release testing and assurance when onboarding with NHS Login\n* points to the [Onboarding AOS NHS App environment](https://www-onboardingaos.nhsapp.service.nhs.uk/), which in turn is using the NHS Login Integration (AOS) environment\n* has a [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits) of 20 requests per second per application\n\nFor more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing-with-our-restful-apis).\n\n### Production\nNHS England will work with you to define an appropriate [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits) for your channel in our production environment, based on the anticipated traffic from your service. \n\n## Onboarding\nYou need to get your product or service approved by us before you can use this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.\n\nTo understand how our online digital onboarding process works, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/digital-onboarding).\n\n<div class=\"nhsd-m-emphasis-box nhsd-m-emphasis-box--emphasis nhsd-!t-margin-bottom-6\" aria-label=\"Highlighted Information\">\n    <div class=\"nhsd-a-box nhsd-a-box--border-blue\">\n        <div class=\"nhsd-m-emphasis-box__image-box\">\n            <figure class=\"nhsd-a-image\">\n                <picture class=\"nhsd-a-image__picture\">\n                    <img src=\"http://digital.nhs.uk/binaries/content/gallery/icons/play-circle.svg?colour=231f20\" alt=\"\" style=\"object-fit:fill\">\n                </picture>\n            </figure>\n        </div>\n        <div class=\"nhsd-m-emphasis-box__content-box\">\n            <div data-uipath=\"website.contentblock.emphasis.content\" class=\"nhsd-t-word-break\"><p class=\"nhsd-t-body\">To get started, sign in or create a <a href=\"https://onboarding.prod.api.platform.nhs.uk/\">developer account</a>, then select 'product onboarding'.</p></div>            \n        </div>\n    </div>\n</div> \n\n### Services not yet integrated\nIf your service is not yet integrated with the NHS App, you will need to follow our [step by step process](https://digital.nhs.uk/services/nhs-app/partners-and-developers/integrate-with-the-nhs-app) to onboard with us.\n### Integrated services\nIf your service is already integrated, and you now want to add notifications and messaging to your integration, you will need to take some extra steps before you can use this API. [Explore notifications and messaging in the NHS App](https://digital.nhs.uk/services/nhs-app/partners-and-developers/integrate-with-the-nhs-app/explore-notifications-and-messaging) for guidelines and restrictions, and the documents you will need to complete.\n\nTo onboard for this API, please get in touch with the NHS App onboarding team at [app.onboarding@nhs.net](mailto:app.onboarding@nhs.net).\n\n## Real-Time Receipts\nWe provide our onboarded suppliers with the capability to instantly receive the status of their sent communications in real-time. This is achieved by delivering individual Task resources directly to the endpoint that suppliers have designated for this purpose. This feature, aptly named 'Real-Time Receipts,' ensures swift and immediate updates on the outcome of their interactions.\n\nWe have created an [OpenAPI specification](https://github.com/NHSDigital/nhs-app-api/tree/master/specifications-callbacks/realtime-receipts) detailing the behaviour of the endpoint that suppliers should create to subscribe to realtime receipts.\n\nSteps to setup real-time receipts\n\n* The NHS App team initiates the creation of a certificate for MTLS (Mutual Transport Layer Security) authentication. They will send the Certificate Signing Request (CSR) to the Supplier for signing and return\n* The Supplier is responsible for configuring and sharing the callback endpoint with the NHS App team, which will manage the RTR (Real-Time Receipts) callback requests\n* Upon receiving the signed certificate and endpoint url, the NHS App team will install it and incorporate the callback endpoint into the Supplier's App configuration\n\n## Errors\nWe use standard HTTP status codes to show whether an API request succeeded or not. They are usually in the range:\n\n* 200 to 299 if it succeeded, including code 202 if it was accepted by an API that needs to wait for further action\n* 400 to 499 if it failed because of a client error by your application\n* 500 to 599 if it failed because of an error on our server\n\nErrors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.\n"
+  description: '## Overview
+
+    Use this API to engage with users of the NHS App.'
   contact:
     name: NHS App API Support
     url: https://digital.nhs.uk/developer/help-and-support
@@ -15,7 +17,7 @@ servers:
 - url: https://api.service.nhs.uk/nhs-app
   description: Production environment.
 tags:
-- name: communication
+- name: Communication
 paths:
   /communication/in-app/FHIR/R4/CommunicationRequest:
     parameters:
@@ -40,21 +42,19 @@ paths:
         If a recipient is an active NHS App user but has not registered a device to receive native push notifications, they will still receive the in-app message.
 
 
-        This endpoint allows you to specify the content that will appear in the in-app message. It does not allow you to specify the content that will appear in the associated push notification. By default, the content of the associated push notification will read "NHS App. You have a new message." To discuss changing this standard push notification content for your application, [contact the NHS App team](mailto:app.onboarding@nhs.net).
+        This endpoint allows you to specify the content that will appear in the in-app message. It does not allow you to specify the content that will appear in the associated push notification. By default, the content of the associated push notification will read "NHS App. You have a new message." To discuss changing this standard push notification content for your application, contact the NHS App team.
 
 
         When a recipient taps the native notification, the NHS App will open on the in-app messaging inbox page.
 
 
-        We support a subset of [Markdown](https://en.wikipedia.org/wiki/Markdown) for describing the body text of in-app messages. For details of the subset see the ''payload'' property of the schema. Note that HTML encoded characters will be decoded on displaying them in the NHS App to the user. The length of each in-app message is limited to 5000 characters, including any markdown characters and embedded hyperlinks.
+        We support a subset of Markdown for describing the body text of in-app messages. For details of the subset see the ''payload'' property of the schema. Note that HTML encoded characters will be decoded on displaying them in the NHS App to the user. The length of each in-app message is limited to 5000 characters, including any markdown characters and embedded hyperlinks.
 
 
-        The body of requests made to this endpoint are instances of [HL7 FHIR R4 CommunicationRequest](https://www.hl7.org/fhir/communicationrequest.html) resources. This schema documentation describes which fields on that resource we require and support. The API is tolerant of (but will silently ignore) any additionally supplied optional fields. For example, we do not currently honour the [doNotPerform](https://www.hl7.org/fhir/communicationrequest-definitions.html#CommunicationRequest.doNotPerform) or [priority](https://www.hl7.org/fhir/communicationrequest-definitions.html#CommunicationRequest.priority) fields.
+        The body of requests made to this endpoint are instances of HL7 FHIR R4 CommunicationRequest resources. This schema documentation describes which fields on that resource we require and support. The API is tolerant of (but will silently ignore) any additionally supplied optional fields. For example, we do not currently honour the doNotPerform or priority fields.
 
 
-        The outcome of communication requests can be determined using the [daily receipt report endpoint](#api-Communication-get-receipt-report). You may also create an endpoint into which NHS App can post the outcome of individual communication requests in realtime — we call this feature "realtime receipts". We have created [an Open API specification](https://github.com/NHSDigital/nhs-app-api/tree/master/specifications-callbacks/realtime-receipts) detailing the behaviour of the endpoint that you should create to subscribe to realtime receipts. Similarly, you can subscribe to the realtime replies responses to the same or different endpoint, we have created an [Open API specification](https://github.com/NHSDigital/nhs-app-api/tree/master/specifications-callbacks/realtime-replies) detailing the format/behaviour of the response that will be posted.
-
-        '
+        The outcome of communication requests can be determined using the daily receipt report endpoint. You may also create an endpoint into which NHS App can post the outcome of individual communication requests in realtime — we call this feature "realtime receipts". We have created an Open API specification detailing the behaviour of the endpoint that you should create to subscribe to realtime receipts. Similarly, you can subscribe to the realtime replies responses to the same or different endpoint, we have created an Open API specification detailing the format/behaviour of the response that will be posted.'
       requestBody:
         required: true
         content:
@@ -75,7 +75,7 @@ paths:
                 value:
                   $ref: components/examples/requests/communication/in-app-with-free-text-reply.json
       tags:
-      - communication
+      - Communication
       responses:
         '201':
           description: Request successfully received by the server and queued for sending to recipient.
@@ -212,7 +212,38 @@ paths:
     post:
       summary: Send a push notification
       operationId: create-notification
-      description: "## Overview\nUse this endpoint to send a native Apple or Android push notifications to mobile devices registered by specific users of the NHS App.\n\nPush notifications will not be sent to users between the hours of 10pm and 6am UK time. If a valid request to send a push notification is processed between these hours, the push notification will be scheduled for delivery at 6am.\n\nRecipients are specified by NHS number. A single request to this endpoint can send a push notification to a single NHS number.\nPush notifications will only be sent to users who have had their identity verified to 'high' (P9) level.\n\nThe body text of notifications can be up to 200 characters in length.\n\nThey must not contain:\n  * personally identifiable information (for example, the name of a user’s doctor)\n  * sensitive information (for example, details about a health condition)\n  * links to external websites\n\nYou can also optionally specify a URL for a page within the NHS App to be opened when the recipient taps on the push notification. If a URL is not specified, the NHS App will open on the home page.\n\nThe body of requests made to this endpoint are instances of [HL7 FHIR R4 CommunicationRequest](https://www.hl7.org/fhir/communicationrequest.html) resources. This schema documentation describes which fields on that resource we require and support. The API is tolerant of (but will silently ignore) any additionally supplied optional fields. For example, we do not currently honour the [doNotPerform](https://www.hl7.org/fhir/communicationrequest-definitions.html#CommunicationRequest.doNotPerform) or [priority](https://www.hl7.org/fhir/communicationrequest-definitions.html#CommunicationRequest.priority) fields.\n\nThe outcome of communication requests can be determined using the [daily receipt report endpoint](#api-Communication-get-receipt-report). You may also create an endpoint into which NHS App can post the outcome of individual communication requests in realtime — we call this feature \"realtime receipts\". We have created [an OpenAPI specification](https://github.com/NHSDigital/nhs-app-api/tree/master/specifications-callbacks/realtime-receipts) detailing the behaviour of the endpoint that you should create to subscribe to realtime receipts.\n"
+      description: '## Overview
+
+        Use this endpoint to send a native Apple or Android push notifications to mobile devices registered by specific users of the NHS App.
+
+
+        Push notifications will not be sent to users between the hours of 10pm and 6am UK time. If a valid request to send a push notification is processed between these hours, the push notification will be scheduled for delivery at 6am.
+
+
+        Recipients are specified by NHS number. A single request to this endpoint can send a push notification to a single NHS number.
+
+        Push notifications will only be sent to users who have had their identity verified to ''high'' (P9) level.
+
+
+        The body text of notifications can be up to 200 characters in length.
+
+
+        They must not contain:
+
+        * personally identifiable information (for example, the name of a user’s doctor)
+
+        * sensitive information (for example, details about a health condition)
+
+        * links to external websites
+
+
+        You can also optionally specify a URL for a page within the NHS App to be opened when the recipient taps on the push notification. If a URL is not specified, the NHS App will open on the home page.
+
+
+        The body of requests made to this endpoint are instances of HL7 FHIR R4 CommunicationRequest resources. This schema documentation describes which fields on that resource we require and support. The API is tolerant of (but will silently ignore) any additionally supplied optional fields. For example, we do not currently honour the doNotPerform or priority fields.
+
+
+        The outcome of communication requests can be determined using the daily receipt report endpoint. You may also create an endpoint into which NHS App can post the outcome of individual communication requests in realtime — we call this feature "realtime receipts". We have created an OpenAPI specification detailing the behaviour of the endpoint that you should create to subscribe to realtime receipts.'
       requestBody:
         required: true
         content:
@@ -225,7 +256,7 @@ paths:
             schema:
               $ref: components/schemas/requests/communication/communication-push-notifications-request.yaml
       tags:
-      - communication
+      - Communication
       responses:
         '201':
           description: Request successfully received by the server and queued for sending to recipient.
@@ -359,20 +390,18 @@ paths:
         * `Read` – a user has read an in-app message for the first time.
 
 
-        ![Message Overview](https://github.com/NHSDigital/nhs-app-api/blob/master/specification/diagrams/Message_Workflow.png?raw=true)
+        !Message Overview
 
 
         A diagram of a finite state machine showing the transition between delivery states based on events occurring throughout the delivery process, such as successfully adding a message to a citizen’s inbox and displaying a notification on their mobile device.
 
 
-        In addition to this daily report endpoint, we also offer the ability for onboarded partners to receive these receipts in realtime by having us push individual Task resources to an endpoint that you make available to us for this purpose. We call this feature "real-time receipts". We have created [an OpenAPI specification](https://github.com/NHSDigital/nhs-app-api/tree/master/specifications-callbacks/realtime-receipts) detailing the behaviour of the endpoint that you should create to subscribe to realtime receipts.
+        In addition to this daily report endpoint, we also offer the ability for onboarded partners to receive these receipts in realtime by having us push individual Task resources to an endpoint that you make available to us for this purpose. We call this feature "real-time receipts". We have created an OpenAPI specification detailing the behaviour of the endpoint that you should create to subscribe to realtime receipts.
 
 
         ## Pagination
 
-        To avoid returning excessively large response bodies, the results may be split across multiple pages. On retrieving the response for the first page of results, the `Link` header or `Link` array in the response body should be inspected to determine whether any additional pages of results exist. If so, these can be retrieved by making additional request(s) with the optional `page` parameter specified.
-
-        '
+        To avoid returning excessively large response bodies, the results may be split across multiple pages. On retrieving the response for the first page of results, the `Link` header or `Link` array in the response body should be inspected to determine whether any additional pages of results exist. If so, these can be retrieved by making additional request(s) with the optional `page` parameter specified.'
       parameters:
       - name: day
         description: The day for which to retrieve a receipt report.
@@ -391,7 +420,7 @@ paths:
           type: integer
           format: int32
       tags:
-      - communication
+      - Communication
       responses:
         '200':
           description: Information successfully returned.
@@ -501,9 +530,7 @@ paths:
         To avoid returning excessively large response bodies, the results may be split across multiple pages. On retrieving the response for the first page of results, the `Link` header should be inspected to determine whether any additional pages of results exist. If so, these can be retrieved by making additional request(s) with the optional `page` parameter specified.
 
 
-        In order to test the pagination feature in the development and integration environments, use the ODS code `T00001` to return a report with multiple pages.
-
-        '
+        In order to test the pagination feature in the development and integration environments, use the ODS code `T00001` to return a report with multiple pages.'
       parameters:
       - name: ods-organisation-code
         description: 'The Organisation Data Service (ODS) code of the GP practice for which to retrieve a list of NHS App users.
@@ -526,7 +553,7 @@ paths:
           type: integer
           format: int32
       tags:
-      - communication
+      - Communication
       responses:
         '200':
           description: Information successfully returned.

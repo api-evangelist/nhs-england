@@ -23,3 +23,7 @@ paths:
       $ref: endpoints/get_nhsapp_account_details.yaml
       tags:
       - Channels
+      summary: Get channels nhsapp accounts
+      x-summary-source: derived
+      operationId: getChannelsNhsappAccounts
+      x-operation-id-source: derived
