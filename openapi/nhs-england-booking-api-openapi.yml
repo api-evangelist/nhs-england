@@ -125,22 +125,32 @@ paths:
         5XX:
           $ref: '#/components/responses/5XX-BARS'
 components:
+  schemas:
+    RequestingSoftwareToken:
+      $ref: schemas/RequestingSoftware.yaml
+    OperationalOutcome:
+      $ref: schemas/OperationalOutcome.yaml
+    SearchBundleAppt:
+      $ref: schemas/SearchBundleAppt.yaml
+    TargetIdentifier:
+      $ref: schemas/TargetIdentifier.yaml
+    RequestingOrganisationToken:
+      $ref: schemas/RequestingOrganisation.yaml
+    RequestingPractitionerToken:
+      $ref: schemas/RequestingPractitioner.yaml
+    Appointment:
+      $ref: schemas/Appointment.yaml
   parameters:
-    RequestingPractitioner_HParam:
-      name: NHSD-Requesting-Practitioner
-      description: 'Requesting Practitioner described in an object based on a FHIR ''PractitionerRole'' resource (Standard Base64 encoded JSON).
-
-
-        This item is not mandatory, however if the information is available it must be included in the request. Only in the event that it is not available, should it be omitted.
-
-
-        The example given shows a General Practitioner and their SDS Role profile Id.
-
-        '
-      required: false
-      in: header
+    RegistryId_Param:
+      name: id
+      description: The identifier of the registry object.
+      in: path
       schema:
-        $ref: '#/components/schemas/RequestingPractitionerToken'
+        type: string
+        format: uuid
+        example: c3f6145e-1a26-4345-b3f2-dccbcba62049
+      required: true
+      allowEmptyValue: false
     PatientId_QParam:
       name: patient:identifier
       description: 'The patient''s NHS number. The primary identifier of a patient across systems, unique to NHS England and Wales.
@@ -158,16 +168,35 @@ components:
       schema:
         type: string
         example: https%3A%2F%2Ffhir.nhs.uk%2FId%2Fnhs-number%7C4857773456
-    RegistryId_Param:
-      name: id
-      description: The identifier of the registry object.
-      in: path
-      schema:
-        type: string
-        format: uuid
-        example: c3f6145e-1a26-4345-b3f2-dccbcba62049
+    RequestingDevice_HParam:
+      name: NHSD-Requesting-Software
+      description: "Requesting Software described in an object based on a FHIR 'Device' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \n\nThe identifier used, though arbitrary, should be consistent across instances of a product, the name and version of the product should also be accurate and consistent.\n"
       required: true
-      allowEmptyValue: false
+      in: header
+      schema:
+        $ref: '#/components/schemas/RequestingSoftwareToken'
+    RequestingPractitioner_HParam:
+      name: NHSD-Requesting-Practitioner
+      description: 'Requesting Practitioner described in an object based on a FHIR ''PractitionerRole'' resource (Standard Base64 encoded JSON).
+
+
+        This item is not mandatory, however if the information is available it must be included in the request. Only in the event that it is not available, should it be omitted.
+
+
+        The example given shows a General Practitioner and their SDS Role profile Id.
+
+        '
+      required: false
+      in: header
+      schema:
+        $ref: '#/components/schemas/RequestingPractitionerToken'
+    TargetIdentifier_HParam:
+      name: NHSD-Target-Identifier
+      description: The identifier of the Target system. A Base64 encoded object containing value and system properties.
+      required: true
+      in: header
+      schema:
+        $ref: '#/components/schemas/TargetIdentifier'
     RequestingOrganisation_HParam:
       name: NHSD-End-User-Organisation
       description: "Requesting Organization described in an object based on a FHIR 'Organization' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \nIn the example given an ODS code and the Organisation name is provided. Other identifiers are permitted if required. \n"
@@ -175,6 +204,14 @@ components:
       in: header
       schema:
         $ref: '#/components/schemas/RequestingOrganisationToken'
+    Accept_HParam:
+      name: Accept
+      description: The Accept Header must also contain the version of the API required.
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "'application/fhir+json; version=1.0.0'        \n"
     CorrelationId_HParam:
       name: X-Correlation-Id
       description: The X-Correlation-Id for the request header, when supplied, mirrored back by the receiver.
@@ -184,21 +221,6 @@ components:
         type: string
         format: uuid
         example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
-    RequestingDevice_HParam:
-      name: NHSD-Requesting-Software
-      description: "Requesting Software described in an object based on a FHIR 'Device' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \n\nThe identifier used, though arbitrary, should be consistent across instances of a product, the name and version of the product should also be accurate and consistent.\n"
-      required: true
-      in: header
-      schema:
-        $ref: '#/components/schemas/RequestingSoftwareToken'
-    Accept_HParam:
-      name: Accept
-      description: The Accept Header must also contain the version of the API required.
-      in: header
-      required: true
-      schema:
-        type: string
-        example: "'application/fhir+json; version=1.0.0'        \n"
     RequestId_HParam:
       name: X-Request-Id
       description: The X-Request-Id for the request header, when supplied, mirrored back by the receiver.
@@ -208,28 +230,6 @@ components:
         type: string
         format: uuid
         example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
-    TargetIdentifier_HParam:
-      name: NHSD-Target-Identifier
-      description: The identifier of the Target system. A Base64 encoded object containing value and system properties.
-      required: true
-      in: header
-      schema:
-        $ref: '#/components/schemas/TargetIdentifier'
-  schemas:
-    Appointment:
-      $ref: schemas/Appointment.yaml
-    RequestingOrganisationToken:
-      $ref: schemas/RequestingOrganisation.yaml
-    RequestingSoftwareToken:
-      $ref: schemas/RequestingSoftware.yaml
-    SearchBundleAppt:
-      $ref: schemas/SearchBundleAppt.yaml
-    OperationalOutcome:
-      $ref: schemas/OperationalOutcome.yaml
-    TargetIdentifier:
-      $ref: schemas/TargetIdentifier.yaml
-    RequestingPractitionerToken:
-      $ref: schemas/RequestingPractitioner.yaml
   responses:
     5XX-BARS:
       description: "Below are examples of potential HTTP status codes and their associated error codes, which could be returned in the event of a fault. \nGuidance on error handling within BaRS can be found [here](https://simplifier.net/guide/nhsbookingandreferralstandard/Home/Design/Design--Core#Error-handling).\n\n| HTTP status | Error code                 | Description |\n| ----------- | -------------------------- | --------------------------------------------- |\n| 500         | REC_SERVER_ERROR           | The receiver server has encountered an Error processing the request. |\n| 500         | PROXY_SERVER_ERROR         | Proxy Error. |\n| 501         | SEND_NOT_IMPLEMENTED       | The Request was not recognized. |\n| 501         | REC_NOT_IMPLEMENTED        | The Receiver did not recognize the request. |\n| 501         | PROXY_NOT_IMPLEMENTED      | The Proxy did not recognize the request. |\n| 503         | REC_UNAVAILABLE            | The Receiver was unavailable to service the request.|\n| 503         | PROXY_UNAVAILABLE          | The Proxy was unavailable to service the request. |\n"

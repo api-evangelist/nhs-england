@@ -16,6 +16,13 @@ description: 'NHS England (which absorbed NHS Digital in 2023) is the national b
   API vendor.'
 deliveryModel:
   model: unknown
+  license_evidence:
+    not_product:
+    - nhsdigital/booking-and-referral-fhir-api
+    - nhsdigital/communications-manager-api
+    - nhsdigital/e-referrals-service-api
+    - nhsdigital/immunisation-history-api
+    - nhsdigital/nhs-app-api
   open_source: unknown
   commercial: false
   callable_host: true
@@ -23,8 +30,8 @@ deliveryModel:
   confidence: low
   source:
   - openapi
-  - repository-unlicensed
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: unknown
@@ -52,6 +59,14 @@ tags:
 - Health Data
 - e-Prescribing
 - EHR
+- Clinical
+- Demographics
+- Government
+- Health
+- NHS
+- Open Data
+- Patient Records
+- Prescriptions
 created: '2026-07-24'
 modified: '2026-07-24'
 specificationVersion: '0.23'
@@ -644,6 +659,44 @@ apis:
     url: https://github.com/NHSDigital/communications-manager-api
   - type: SourceCode
     url: https://github.com/NHSDigital/service-search-api
+- aid: nhs-england:e-referral-service
+  name: e-Referral Service (e-RS) FHIR API
+  description: The NHS e-Referral Service combines electronic booking with a choice of place, date and
+    time for first hospital or clinic appointments. The e-RS FHIR API enables clinical systems to integrate
+    referral and booking workflows directly into the patient pathway.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+  tags:
+  - Appointments
+  - FHIR
+  - Referrals
+  properties:
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-fhir
+- aid: nhs-england:summary-care-record
+  name: Summary Care Record (SCR) API
+  description: The Summary Care Record holds essential patient information from the GP record. The SCR
+    API enables authorised health and care professionals to retrieve a patient's medication, allergies
+    and adverse reactions, and any additional information shared by the patient's GP.
+  humanURL: https://digital.nhs.uk/developer/api-catalogue/summary-care-record
+  tags:
+  - Clinical
+  - Patient Records
+  properties:
+  - type: Documentation
+    url: https://digital.nhs.uk/developer/api-catalogue/summary-care-record
+- aid: nhs-england:nhs-login
+  name: NHS Login API
+  description: NHS login provides a single, secure way for citizens to access NHS digital services. The
+    NHS login API enables relying parties to authenticate users, verify identity to a known level of assurance,
+    and obtain consented identity claims using OpenID Connect.
+  humanURL: https://digital.nhs.uk/services/nhs-login
+  tags:
+  - Authentication
+  - Identity
+  - OpenID Connect
+  properties:
+  - type: Documentation
+    url: https://digital.nhs.uk/services/nhs-login
 common:
 - type: CapabilityMap
   url: capabilities/nhs-england-capability-edges.yml

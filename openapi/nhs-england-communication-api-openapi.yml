@@ -648,6 +648,17 @@ paths:
                     $ref: components/examples/responses/communication/429throttled-quotaperproxy.json
 components:
   parameters:
+    BearerAuthorization:
+      in: header
+      name: Authorization
+      description: 'An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
+
+        '
+      required: true
+      schema:
+        type: string
+        format: ^Bearer\ [[:ascii:]]+$
+        example: Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM
     CorrelationId:
       in: header
       name: X-Correlation-ID
@@ -664,17 +675,6 @@ components:
       schema:
         type: string
         example: b5bc6879-103e-4a78-975e-87e815c5da58
-    BearerAuthorization:
-      in: header
-      name: Authorization
-      description: 'An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
-
-        '
-      required: true
-      schema:
-        type: string
-        format: ^Bearer\ [[:ascii:]]+$
-        example: Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM
 x-spec-publication:
   try-this-api:
     disabled: true

@@ -128,20 +128,118 @@ paths:
           $ref: '#/components/responses/5XX-BARS'
 components:
   schemas:
-    RequestingPractitionerToken:
-      $ref: schemas/RequestingPractitioner.yaml
-    RequestingSoftwareToken:
-      $ref: schemas/RequestingSoftware.yaml
-    OperationalOutcome:
-      $ref: schemas/OperationalOutcome.yaml
-    TargetIdentifier:
-      $ref: schemas/TargetIdentifier.yaml
-    ServiceRequest:
-      $ref: schemas/ServiceRequest.yaml
     RequestingOrganisationToken:
       $ref: schemas/RequestingOrganisation.yaml
     SearchBundleRef:
       $ref: schemas/SearchBundleRef.yaml
+    OperationalOutcome:
+      $ref: schemas/OperationalOutcome.yaml
+    ServiceRequest:
+      $ref: schemas/ServiceRequest.yaml
+    RequestingSoftwareToken:
+      $ref: schemas/RequestingSoftware.yaml
+    TargetIdentifier:
+      $ref: schemas/TargetIdentifier.yaml
+    RequestingPractitionerToken:
+      $ref: schemas/RequestingPractitioner.yaml
+  parameters:
+    PatientId_QParam:
+      name: patient:identifier
+      description: 'The patient''s NHS number. The primary identifier of a patient across systems, unique to NHS England and Wales.
+
+
+        |Type           |Expression|
+
+        |-------             | --------|
+
+        |[token](https://hl7.org/implement/standards/FHIR/search.html#token) |Appointment.participant.actor:identifier |
+
+        '
+      required: true
+      in: query
+      schema:
+        type: string
+        example: https%3A%2F%2Ffhir.nhs.uk%2FId%2Fnhs-number%7C4857773456
+    RegistryId_Param:
+      name: id
+      description: The identifier of the registry object.
+      in: path
+      schema:
+        type: string
+        format: uuid
+        example: c3f6145e-1a26-4345-b3f2-dccbcba62049
+      required: true
+      allowEmptyValue: false
+    RequestingDevice_HParam:
+      name: NHSD-Requesting-Software
+      description: "Requesting Software described in an object based on a FHIR 'Device' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \n\nThe identifier used, though arbitrary, should be consistent across instances of a product, the name and version of the product should also be accurate and consistent.\n"
+      required: true
+      in: header
+      schema:
+        $ref: '#/components/schemas/RequestingSoftwareToken'
+    TargetIdentifier_HParam:
+      name: NHSD-Target-Identifier
+      description: The identifier of the Target system. A Base64 encoded object containing value and system properties.
+      required: true
+      in: header
+      schema:
+        $ref: '#/components/schemas/TargetIdentifier'
+    CorrelationId_HParam:
+      name: X-Correlation-Id
+      description: The X-Correlation-Id for the request header, when supplied, mirrored back by the receiver.
+      required: true
+      in: header
+      schema:
+        type: string
+        format: uuid
+        example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
+    RequestId_HParam:
+      name: X-Request-Id
+      description: The X-Request-Id for the request header, when supplied, mirrored back by the receiver.
+      required: true
+      in: header
+      schema:
+        type: string
+        format: uuid
+        example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
+    RequestingPractitioner_HParam:
+      name: NHSD-Requesting-Practitioner
+      description: 'Requesting Practitioner described in an object based on a FHIR ''PractitionerRole'' resource (Standard Base64 encoded JSON).
+
+
+        This item is not mandatory, however if the information is available it must be included in the request. Only in the event that it is not available, should it be omitted.
+
+
+        The example given shows a General Practitioner and their SDS Role profile Id.
+
+        '
+      required: false
+      in: header
+      schema:
+        $ref: '#/components/schemas/RequestingPractitionerToken'
+    RequestingOrganisation_HParam:
+      name: NHSD-End-User-Organisation
+      description: "Requesting Organization described in an object based on a FHIR 'Organization' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \nIn the example given an ODS code and the Organisation name is provided. Other identifiers are permitted if required. \n"
+      required: true
+      in: header
+      schema:
+        $ref: '#/components/schemas/RequestingOrganisationToken'
+    Accept_HParam:
+      name: Accept
+      description: The Accept Header must also contain the version of the API required.
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "'application/fhir+json; version=1.0.0'        \n"
+    ServiceRequestId_QParam:
+      name: ServiceRequest.identifier
+      description: "The unique booking reference number of the refferal, or the Unique GUID/UUID of the referral request. This is not the same as ServiceRequest.id. The preferred format is system|value however a value should be accepted and honoured as per [FHIR guidance](https://www.hl7.org/fhir/search.html#token).\n     \n|Type           |Expression|\n|-------             | --------|\n|[token](https://hl7.org/fhir/R4/servicerequest.html#search) |ServiceRequest.identifier |\n"
+      required: false
+      in: query
+      schema:
+        type: string
+        example: http%3A%2F%2Fservicerequest.system%7C10000000000
   responses:
     4XX-BARS:
       description: "Below are examples of potential HTTP status codes and their associated error codes, which could be returned in the event of a fault. \nGuidance on error handling within BaRS can be found [here](https://simplifier.net/guide/nhsbookingandreferralstandard/Home/Design/Design--Core#Error-handling).\n\n| HTTP status | Error code                 | Description |\n| ----------- | -------------------------- | --------------------------------------------- |\n| 400         | SEND_BAD_REQUEST           | The API was unable to process the request. |\n| 400         | REC_BAD_REQUEST            | The Receiver has responded stating the message was malformed. |\n| 401         | SEND_UNAUTHORIZED          | The API deemed you unauthorized to make this request. |\n| 401         | REC_UNAUTHORIZED           | The receiver deemed you unauthorized to make request. |\n| 403         | SEND_FORBIDDEN             | Missing or Expired Token. |\n| 404         | PROXY_NOT_FOUND            | No related people exist for given NHS number. |\n| 404         | REC_NOT_FOUND              | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |\n| 405         | SEND_METHOD_NOT_ALLOWED    | HTTP Verb is not correct for this scenario.|\n| 405         | REC_METHOD_NOT_ALLOWED     | Receiver does not allow this.|\n| 405         | PROXY_METHOD_NOT_ALLOWED   | Proxy does not allow this.|\n| 406         | SEND_NOT_ACCEPTABLE        | Senders message had an incorrect content type defined for a response.|\n| 408         | REC_TIMEOUT                | The downstream domain processing has not completed within the configured timeout period. |\n| 409         | SEND_CONFLICT              |  |\n| 409         | REC_CONFLICT               |  |\n| 409         | PROXY_CONFLICT             |  |\n| 422         | SEND_UNPROCESSABLE_ENTITY  | Message was not malformed but deemed unprocessable. |\n| 422         | REC_UNPROCESSABLE_ENTITY   | Message was not malformed but deemed unprocessable. |         \n| 422         | PROXY_UNPROCESSABLE_ENTITY | Message was not malformed but deemed unprocessable. |         \n| 429         | SEND_TOO_MANY_REQUESTS     | The user has sent too many requests in a given amount of time|\n| 429         | REC_TOO_MANY_REQUESTS      | The user has sent too many requests in a given amount of time|\n"
@@ -185,104 +283,6 @@ components:
             type: string
             format: uuid
             example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
-  parameters:
-    RequestingOrganisation_HParam:
-      name: NHSD-End-User-Organisation
-      description: "Requesting Organization described in an object based on a FHIR 'Organization' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \nIn the example given an ODS code and the Organisation name is provided. Other identifiers are permitted if required. \n"
-      required: true
-      in: header
-      schema:
-        $ref: '#/components/schemas/RequestingOrganisationToken'
-    Accept_HParam:
-      name: Accept
-      description: The Accept Header must also contain the version of the API required.
-      in: header
-      required: true
-      schema:
-        type: string
-        example: "'application/fhir+json; version=1.0.0'        \n"
-    RequestId_HParam:
-      name: X-Request-Id
-      description: The X-Request-Id for the request header, when supplied, mirrored back by the receiver.
-      required: true
-      in: header
-      schema:
-        type: string
-        format: uuid
-        example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
-    RequestingPractitioner_HParam:
-      name: NHSD-Requesting-Practitioner
-      description: 'Requesting Practitioner described in an object based on a FHIR ''PractitionerRole'' resource (Standard Base64 encoded JSON).
-
-
-        This item is not mandatory, however if the information is available it must be included in the request. Only in the event that it is not available, should it be omitted.
-
-
-        The example given shows a General Practitioner and their SDS Role profile Id.
-
-        '
-      required: false
-      in: header
-      schema:
-        $ref: '#/components/schemas/RequestingPractitionerToken'
-    PatientId_QParam:
-      name: patient:identifier
-      description: 'The patient''s NHS number. The primary identifier of a patient across systems, unique to NHS England and Wales.
-
-
-        |Type           |Expression|
-
-        |-------             | --------|
-
-        |[token](https://hl7.org/implement/standards/FHIR/search.html#token) |Appointment.participant.actor:identifier |
-
-        '
-      required: true
-      in: query
-      schema:
-        type: string
-        example: https%3A%2F%2Ffhir.nhs.uk%2FId%2Fnhs-number%7C4857773456
-    RegistryId_Param:
-      name: id
-      description: The identifier of the registry object.
-      in: path
-      schema:
-        type: string
-        format: uuid
-        example: c3f6145e-1a26-4345-b3f2-dccbcba62049
-      required: true
-      allowEmptyValue: false
-    CorrelationId_HParam:
-      name: X-Correlation-Id
-      description: The X-Correlation-Id for the request header, when supplied, mirrored back by the receiver.
-      required: true
-      in: header
-      schema:
-        type: string
-        format: uuid
-        example: 9562466f-c982-4bd5-bb0e-255e9f5e6689
-    RequestingDevice_HParam:
-      name: NHSD-Requesting-Software
-      description: "Requesting Software described in an object based on a FHIR 'Device' resource (Standard Base64 encoded JSON).\nDifferent BaRS Applications may have different standards and requirements for the Access Control which these headers are used for. \n\nThe identifier used, though arbitrary, should be consistent across instances of a product, the name and version of the product should also be accurate and consistent.\n"
-      required: true
-      in: header
-      schema:
-        $ref: '#/components/schemas/RequestingSoftwareToken'
-    TargetIdentifier_HParam:
-      name: NHSD-Target-Identifier
-      description: The identifier of the Target system. A Base64 encoded object containing value and system properties.
-      required: true
-      in: header
-      schema:
-        $ref: '#/components/schemas/TargetIdentifier'
-    ServiceRequestId_QParam:
-      name: ServiceRequest.identifier
-      description: "The unique booking reference number of the refferal, or the Unique GUID/UUID of the referral request. This is not the same as ServiceRequest.id. The preferred format is system|value however a value should be accepted and honoured as per [FHIR guidance](https://www.hl7.org/fhir/search.html#token).\n     \n|Type           |Expression|\n|-------             | --------|\n|[token](https://hl7.org/fhir/R4/servicerequest.html#search) |ServiceRequest.identifier |\n"
-      required: false
-      in: query
-      schema:
-        type: string
-        example: http%3A%2F%2Fservicerequest.system%7C10000000000
   securitySchemes:
     OAuth_Token:
       type: http
