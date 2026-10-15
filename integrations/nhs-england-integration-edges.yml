@@ -1,0 +1,52 @@
+edges:
+- partner_name: GA4GH Service Registry
+  partner: null
+  partner_match: register
+  type: register
+  direction: partner-built
+  channel: standard-directory
+  relationship: standard-participant
+  evidence: https://registry.ga4gh.org/v1/services
+  match:
+    method: domain+name-among-holders
+    domain: nhs.uk
+    seen_as:
+    - service url
+    registered_as:
+    - NHS Genomic Medicine Service / Genomics England
+  life_sciences:
+    register: ga4gh
+    listings:
+    - id: api.service.nhs.uk/genomic-data-access
+      artifact: drs
+      version: 1.4.0
+      environment: Development
+    listings_total: 1
+    signals:
+    - drs
+    artifacts:
+    - drs
+  contract_reference:
+    register: GA4GH Service Registry
+    spec_file: null
+    role: ga4gh-service
+    registered_name: NHS Genomic Medicine Service / Genomics England
+    register_id: NHS Genomic Medicine Service / Genomics England
+    matched_domain: nhs.uk
+    detected_by: sweep-life-sciences.py
+    detected: '2026-10-15'
+    standard: GA4GH
+  detected_by: sweep-life-sciences.py
+  first_seen: '2026-10-15'
+generated: '2026-10-15'
+method: searched
+source:
+- https://bio.tools/api/tool/?format=json&toolType=%22Web%20API%22&page=1
+- https://registry.api.identifiers.org/resolutionApi/getResolverDataset
+- https://registry.ga4gh.org/v1/implementations
+- https://registry.ga4gh.org/v1/services
+checked:
+- https://bio.tools/api/tool/?format=json&toolType=%22Web%20API%22&page=1
+- https://registry.api.identifiers.org/resolutionApi/getResolverDataset
+- https://registry.ga4gh.org/v1/implementations
+- https://registry.ga4gh.org/v1/services
