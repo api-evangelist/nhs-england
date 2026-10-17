@@ -321,6 +321,26 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
+    SearchResponse:
+      description: Search Response
+      content:
+        application/json:
+          examples:
+            Organisations:
+              $ref: examples/organisations_v3.json
+            SingleItem:
+              $ref: examples/organisations-single_v3.json
+            NotFound:
+              $ref: examples/organisations-not-found_v3.json
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/SearchResults'
+            - type: object
+              properties:
+                value:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Organisation'
     OrganisationSearchPostResponse:
       description: Organisation post response
       content:
@@ -375,26 +395,6 @@ components:
             type: string
             format: uuid
             example: c1ab3fba-6bae-4ba4-b257-5a87c44d4a91
-    SearchResponse:
-      description: Search Response
-      content:
-        application/json:
-          examples:
-            Organisations:
-              $ref: examples/organisations_v3.json
-            SingleItem:
-              $ref: examples/organisations-single_v3.json
-            NotFound:
-              $ref: examples/organisations-not-found_v3.json
-          schema:
-            allOf:
-            - $ref: '#/components/schemas/SearchResults'
-            - type: object
-              properties:
-                value:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Organisation'
     Unauthorized:
       description: Unauthorized
       content:
@@ -403,11 +403,32 @@ components:
             type: object
             properties: {}
   schemas:
+    SearchResults:
+      type: object
+      properties:
+        '@odata.context':
+          type: string
+          format: uri
+        '@odata.count':
+          type: number
+          format: int32
+        '@odata.next':
+          type: string
+          format: uri
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'
     SearchResult:
       type: object
       properties:
         '@search.score':
           type: number
+    OrganisationPostRequest:
+      description: Organisation post request
+      type: object
+      example:
+        $ref: examples/search-organisation-request-body_v3.json
     Organisation:
       description: Organisation v3
       type: object
@@ -921,24 +942,3 @@ components:
         IsEpsEnabled:
           type: string
           description: '"Yes" or "No" string value indicating whether the organisation is EPS enabled'
-    OrganisationPostRequest:
-      description: Organisation post request
-      type: object
-      example:
-        $ref: examples/search-organisation-request-body_v3.json
-    SearchResults:
-      type: object
-      properties:
-        '@odata.context':
-          type: string
-          format: uri
-        '@odata.count':
-          type: number
-          format: int32
-        '@odata.next':
-          type: string
-          format: uri
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchResult'
